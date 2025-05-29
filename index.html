@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشروع Flash - أنظمة التوزيع الكهربي الذكية (مستجيب للهاتف)</title>
+    <title>مشروع Flash - أنظمة التوزيع الكهربي الذكية (مؤمن بـ Edge Functions)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
@@ -12,11 +12,13 @@
 
     <style>
         :root {
-            --primary-color: #00f0ff;
-            --secondary-color: #1a1a1a;
-            --accent-color: #ff3c00;
-            --text-color: #ffffff;
-            --background-color: #0a1020;
+            --primary-color: #00AEEF; 
+            --secondary-color: #333333; 
+            --accent-color: #FF6B6B; 
+            --text-color: #333333; 
+            --background-color: #ffffff; 
+            --light-gray-bg: #f4f7f9; 
+            --border-color: #e0e0e0; 
         }
         
         html {
@@ -25,34 +27,45 @@
 
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 800 800"><g fill="none" stroke="rgba(50, 100, 150, 0.1)" stroke-width="1"><path d="M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63"/><path d="M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764"/><path d="M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880"/><path d="M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382"/><path d="M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5"/><path d="M578 842L295 764M40-201L127 80M102 382L-31 229"/></g><g fill="rgba(0, 240, 255, 0.05)"><circle cx="769" cy="229" r="5"/><circle cx="539" cy="269" r="5"/><circle cx="603" cy="493" r="5"/><circle cx="731" cy="737" r="5"/><circle cx="520" cy="660" r="5"/><circle cx="309" cy="538" r="5"/><circle cx="295" cy="764" r="5"/><circle cx="40" cy="599" r="5"/><circle cx="102" cy="382" r="5"/><circle cx="127" cy="80" r="5"/><circle cx="370" cy="105" r="5"/><circle cx="578" cy="42" r="5"/><circle cx="237" cy="261" r="5"/><circle cx="390" cy="382" r="5"/></g></svg>');
-            background-attachment: fixed;
+            background-color: var(--background-color); 
+            color: var(--text-color); 
             margin: 0;
             padding: 0;
-            padding-top: 64px; /* Navbar height */
+            padding-top: 64px; 
+            position: relative; 
+        }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; 
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1rem; 
+            position: relative; 
+            z-index: 1;
         }
         
         .section {
             margin-bottom: 3rem; 
             padding: 1.5rem; 
-            background-color: rgba(26, 26, 26, 0.85); 
+            background-color: var(--light-gray-bg); 
             border-radius: 0.75rem; 
             border-right: 4px solid var(--primary-color);
-            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
             animation: fadeIn 0.5s ease-out;
+            color: var(--secondary-color); 
         }
          @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
         .section h2 {
-            color: var(--primary-color);
+            color: var(--primary-color); 
             border-bottom: 2px solid var(--primary-color);
             padding-bottom: 0.75rem; 
             margin-bottom: 1.5rem; 
@@ -67,8 +80,8 @@
         }
         
         .btn {
-            background-color: var(--primary-color);
-            color: var(--secondary-color);
+            background-color: var(--primary-color); 
+            color: #ffffff; 
             padding: 0.625rem 1.25rem; 
             border: none;
             border-radius: 0.375rem; 
@@ -82,34 +95,34 @@
         }
         
         .btn:hover {
-            background-color: #00c0cc;
+            background-color: #0095c7; 
             transform: translateY(-2px);
         }
         .btn:disabled {
-            background-color: #555;
-            color: #888;
+            background-color: #cccccc; 
+            color: #888888;
             cursor: not-allowed;
             transform: translateY(0);
         }
         
         .btn-outline {
             background-color: transparent;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
+            border: 2px solid var(--primary-color); 
+            color: var(--primary-color); 
         }
         
         .btn-outline:hover {
-            background-color: var(--primary-color);
-            color: var(--secondary-color);
+            background-color: var(--primary-color); 
+            color: #ffffff; 
         }
 
-        .btn-danger { background-color: #f44336; color: white; border: 2px solid #f44336 !important; }
-        .btn-danger:hover { background-color: #d32f2f; border-color: #d32f2f !important; }
+        .btn-danger { background-color: #e53e3e; color: white; border: 2px solid #e53e3e !important; } 
+        .btn-danger:hover { background-color: #c53030; border-color: #c53030 !important; } 
         
         .header-logo {
             font-size: 1.5rem; 
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--primary-color); 
         }
         
         .form-group {
@@ -119,32 +132,32 @@
         .form-control, .form-textarea, .form-input {
             width: 100%;
             padding: 0.75rem; 
-            border: 1px solid #444; 
+            border: 1px solid var(--border-color); 
             border-radius: 0.375rem; 
-            background-color: rgba(255, 255, 255, 0.05); 
-            color: var(--text-color);
+            background-color: #ffffff; 
+            color: var(--secondary-color); 
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         
         .form-control:focus, .form-textarea:focus, .form-input:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.2);
+            border-color: var(--primary-color); 
+            box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.2);
         }
         
         .card {
-            background-color: rgba(40, 40, 40, 0.8); 
+            background-color: #ffffff; 
             border-radius: 0.5rem; 
             padding: 1.25rem; 
             margin-bottom: 1.25rem; 
             border-right: 3px solid var(--primary-color);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); 
-            transition: all 0.3s ease;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08); 
+            color: var(--secondary-color); 
         }
         
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 174, 239, 0.15); 
         }
         
         .navbar {
@@ -152,11 +165,12 @@
             top: 0;
             right: 0; 
             left: 0;
-            background-color: rgba(10, 16, 32, 0.95); 
+            background-color: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(10px);
             z-index: 1030; 
             padding: 0.75rem 1rem; 
-            border-bottom: 1px solid var(--primary-color);
+            border-bottom: 1px solid var(--border-color); 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         
         .navbar-items {
@@ -168,7 +182,7 @@
         .nav-links-desktop { 
             display: none; 
         }
-        @media (min-width: 768px) { /* md breakpoint */
+        @media (min-width: 768px) { 
             .nav-links-desktop {
                 display: flex;
                 gap: 0.75rem; 
@@ -182,9 +196,9 @@
             top: 100%; 
             left: 0;
             right: 0;
-            background-color: rgba(10, 16, 32, 0.98);
+            background-color: rgba(250, 250, 250, 0.98); 
             padding: 1rem;
-            border-top: 1px solid var(--primary-color); 
+            border-top: 1px solid var(--border-color); 
             z-index: 1020;
             max-height: calc(100vh - 64px); 
             overflow-y: auto; 
@@ -193,14 +207,15 @@
             display: block;
             padding: 0.75rem 0;
             text-align: center;
-            border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 174, 239, 0.05);
+            color: var(--secondary-color); 
         }
         .nav-links-mobile a:last-child {
             border-bottom: none;
         }
         
         .nav-link {
-            color: var(--text-color);
+            color: var(--secondary-color); 
             text-decoration: none;
             padding: 0.5rem 0.75rem; 
             border-radius: 0.375rem; 
@@ -209,11 +224,11 @@
         }
         
         .nav-link:hover, .nav-link.active {
-            background-color: rgba(0, 240, 255, 0.1);
-            color: var(--primary-color);
+            background-color: rgba(0, 174, 239, 0.08); 
+            color: var(--primary-color); 
         }
         
-        .flash-logo {
+        .flash-logo { 
             max-width: 120px; 
             margin: 0 auto;
             display: block;
@@ -229,7 +244,7 @@
         .team-member {
             text-align: center;
             padding: 0.75rem; 
-            background-color: rgba(255,255,255,0.03);
+            background-color: var(--light-gray-bg); 
             border-radius: 0.5rem; 
             transition: transform 0.2s ease-in-out;
         }
@@ -255,23 +270,23 @@
         .tech-item {
             text-align: center;
             padding: 1.25rem; 
-            background-color: rgba(40, 40, 40, 0.7); 
+            background-color: var(--light-gray-bg); 
             border-radius: 0.5rem;
             transition: all 0.3s ease;
             border-bottom: 3px solid transparent;
         }
         .tech-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 174, 239, 0.15);
             border-bottom-color: var(--primary-color);
         }
         .tech-item i {
             font-size: 2.25rem; 
-            color: var(--primary-color);
+            color: var(--primary-color); 
             margin-bottom: 0.75rem; 
         }
         .tech-item h3 {
-            color: var(--text-color);
+            color: var(--secondary-color); 
             font-size: 1.125rem; 
             margin-bottom: 0.5rem; 
             font-weight: 600;
@@ -286,7 +301,7 @@
         }
         
         .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.1); 
+            border: 4px solid rgba(0, 0, 0, 0.1); 
             border-radius: 50%;
             border-top: 4px solid var(--primary-color);
             width: 30px;
@@ -308,22 +323,22 @@
             width: 100%;
             height: 100%;
             overflow: auto; 
-            background-color: rgba(0,0,0,0.8); 
+            background-color: rgba(0,0,0,0.6); 
             align-items: center;
             justify-content: center;
             padding: 1rem; 
         }
         
         .modal-content { 
-            background-color: #1e1e1e; 
-            color: #e0e0e0; 
-            border: 1px solid #333;
+            background-color: #ffffff; 
+            color: var(--secondary-color); 
+            border: 1px solid var(--border-color);
             margin: auto; 
             padding: 1.5rem; 
             border-radius: 0.5rem; 
             width: 100%; 
             max-width: 500px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             position: relative;
         }
         
@@ -336,13 +351,13 @@
             margin-bottom: 1.25rem;
         }
         .modal-header h2 { 
-            color: var(--primary-color);
+            color: var(--primary-color); 
             font-size: 1.5rem; 
             font-weight: 700;
         }
         
         .close { 
-            color: #aaa;
+            color: #888; 
             float: left; 
             font-size: 2rem; 
             font-weight: bold;
@@ -355,16 +370,16 @@
         
         .tab-container { margin-top: 1.25rem; }
         .tab-buttons { display: flex; border-bottom: 2px solid var(--primary-color); margin-bottom: 1rem; }
-        .tab-button { padding: 0.625rem 1.25rem; background-color: transparent; border: none; color: var(--text-color); cursor: pointer; font-weight: 600; transition: all 0.3s ease; font-size: 0.875rem; }
-        .tab-button.active { background-color: var(--primary-color); color: var(--secondary-color); border-radius: 5px 5px 0 0; }
+        .tab-button { padding: 0.625rem 1.25rem; background-color: transparent; border: none; color: var(--secondary-color); cursor: pointer; font-weight: 600; transition: all 0.3s ease; font-size: 0.875rem; }
+        .tab-button.active { background-color: var(--primary-color); color: #ffffff; border-radius: 5px 5px 0 0; }
         .tab-content { padding: 1.25rem 0; }
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
         
-        .reaction-buttons { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; padding-bottom: 0.5rem; border-bottom: 1px solid #33333330; }
-        .reaction-btn { background-color: #333; color: #ccc; border: 1px solid #444; padding: 0.2rem 0.6rem; border-radius: 15px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s ease; display: inline-flex; align-items: center; }
-        .reaction-btn:hover { background-color: #444; border-color: #555; color: #fff; }
-        .reaction-btn.active { background-color: var(--primary-color); color: var(--secondary-color); border-color: var(--primary-color); }
+        .reaction-buttons { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; padding-bottom: 0.5rem; border-bottom: 1px solid #eeeeee; }
+        .reaction-btn { background-color: #eeeeee; color: #555; border: 1px solid #dddddd; padding: 0.2rem 0.6rem; border-radius: 15px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s ease; display: inline-flex; align-items: center; }
+        .reaction-btn:hover { background-color: #dddddd; border-color: #cccccc; color: #333; }
+        .reaction-btn.active { background-color: var(--primary-color); color: #ffffff; border-color: var(--primary-color); }
         .reaction-btn .emoji { margin-right: 0.3rem; font-size: 0.9rem; }
         .reaction-btn .count { font-size: 0.7rem; }
         
@@ -373,7 +388,7 @@
         @media (min-width: 768px) {
             .hero-section h1 { font-size: 2.5rem; }
         }
-        .hero-section p { font-size: 1rem; max-width: 700px; margin: 0 auto 1.5rem auto; line-height: 1.7; }
+        .hero-section p { font-size: 1rem; max-width: 700px; margin: 0 auto 1.5rem auto; line-height: 1.7; color: #555; }
          @media (min-width: 768px) {
             .hero-section p { font-size: 1.125rem; }
         }
@@ -382,12 +397,12 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: var(--primary-color);
+            background-color: var(--primary-color); 
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: bold;
-            color: var(--secondary-color);
+            color: #ffffff; 
             cursor: pointer;
             font-size: 1rem; 
             transition: transform 0.2s;
@@ -398,50 +413,51 @@
 
         #profileModal .profile-avatar-container { position: relative; width: 100px; height: 100px; margin: 0 auto 1rem auto; } 
         #profileModal .profile-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color); }
-        #profileModal .avatar-upload-label { position: absolute; bottom: 0; right: 0; background-color: rgba(0, 240, 255, 0.8); color: white; padding: 0.25rem 0.4rem; border-radius: 50%; cursor: pointer; font-size: 0.8rem; transition: background-color 0.2s; }
-        #profileModal .avatar-upload-label:hover { background-color: rgba(0, 192, 204, 0.9); }
+        #profileModal .avatar-upload-label { position: absolute; bottom: 0; right: 0; background-color: rgba(0, 174, 239, 0.8); color: white; padding: 0.25rem 0.4rem; border-radius: 50%; cursor: pointer; font-size: 0.8rem; transition: background-color 0.2s; }
+        #profileModal .avatar-upload-label:hover { background-color: rgba(0, 150, 200, 0.9); }
         #profileAvatarInput { display: none; }
 
-        .comments-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #333; }
-        .comment { background-color: #282828; padding: 0.5rem 0.75rem; border-radius: 0.375rem; margin-bottom: 0.5rem; border-left: 3px solid var(--primary-color); }
+        .comments-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); }
+        .comment { background-color: #f9f9f9; padding: 0.5rem 0.75rem; border-radius: 0.375rem; margin-bottom: 0.5rem; border-left: 3px solid var(--primary-color); color: var(--secondary-color); }
         .comment p { margin-bottom: 0.25rem; font-size: 0.875rem; }
         .comment .commenter-name { font-weight: 600; color: var(--primary-color); }
-        .comment .comment-date { font-size: 0.625rem; color: #888; }
+        .comment .comment-date { font-size: 0.625rem; color: #777; }
         .comment-form input, .comment-form textarea { margin-bottom: 0.5rem; }
         .form-file-input { 
-            background-color: #2a2a2a; border: 1px solid #3a3a3a; color: #e0e0e0;
+            background-color: #ffffff; border: 1px solid var(--border-color); color: var(--secondary-color);
             border-radius: 0.25rem; padding: 0.75rem; width: 100%; margin-bottom: 1rem;
         }
         .form-file-input::-webkit-file-upload-button { 
-            background-color: var(--primary-color); color: var(--secondary-color); border: none;
+            background-color: var(--primary-color); color: #ffffff; border: none;
             padding: 0.5rem 1rem; border-radius: 0.25rem; margin-inline-end: 1rem; 
             font-weight: 600; cursor: pointer; transition: background-color 0.3s ease;
         }
-        .form-file-input::-webkit-file-upload-button:hover { background-color: #00c0cc; }
+        .form-file-input::-webkit-file-upload-button:hover { background-color: #0095c7; }
         .form-file-input::file-selector-button { 
-            background-color: var(--primary-color); color: var(--secondary-color); border: none;
+            background-color: var(--primary-color); color: #ffffff; border: none;
             padding: 0.5rem 1rem; border-radius: 0.25rem; margin-inline-end: 1rem;
             font-weight: 600; cursor: pointer; transition: background-color 0.3s ease;
         }
-        .form-file-input::file-selector-button:hover { background-color: #00c0cc; }
+        .form-file-input::file-selector-button:hover { background-color: #0095c7; }
 
         #imageUploadProgress {
-            width: 100%; background-color: #2a2a2a; border-radius: 0.25rem;
+            width: 100%; background-color: #e0e0e0; border-radius: 0.25rem;
             margin-top: 0.5rem; overflow: hidden; display: none; 
         }
         #imageUploadProgressBar {
-            width: 0%; background-color: var(--primary-color); color: var(--secondary-color);
+            width: 0%; background-color: var(--primary-color); color: #ffffff;
             text-align: center; line-height: 1.25rem; height: 1.25rem;
             transition: width 0.4s ease;
         }
         .event-image-display {
             max-width: 100%; height: auto; max-height: 200px; 
-            object-fit: cover; border-radius: 0.25rem; margin-bottom: 0.75rem; border: 1px solid #333;
+            object-fit: cover; border-radius: 0.25rem; margin-bottom: 0.75rem; border: 1px solid var(--border-color);
         }
         .user-id-display { 
-            background-color: rgba(0,0,0,0.8); color: var(--primary-color); border: 1px solid var(--primary-color); 
+            background-color: rgba(255,255,255,0.9); color: var(--primary-color); border: 1px solid var(--primary-color); 
             padding: 0.25rem 0.5rem; border-radius:0.25rem; font-size: 0.75rem; 
             position:fixed; bottom:0.5rem; left: 0.5rem; z-index: 1000;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
         .navbar-toggler {
             color: var(--primary-color);
@@ -455,11 +471,18 @@
                 display: none;
             }
         }
-
+        p, .text-gray-400, .text-gray-300 { 
+            color: #55595c; 
+        }
+        .card .text-gray-400, .card .text-gray-300 { 
+             color: #6c757d; 
+        }
+        .footer p { color: #6c757d; }
 
     </style>
 </head>
 <body>
+    <canvas id="particleCanvas"></canvas>
 
     <nav class="navbar">
         <div class="container mx-auto navbar-items">
@@ -494,7 +517,7 @@
     
     <div class="container mt-8">
         <div class="hero-section">
-            <img src="https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/494309535_122098633448856506_897280692111650141_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=111&ccb=1-7&_nc_sid=e99d92&_nc_ohc=Bz25boy6AoEQ7kNvwHvK5Bt&_nc_oc=Adm74NanuwpouikJmdMAKYTsNw1FZ5VopC-V0U5DmSU9_MZ6V9idT_3hXk4N3SNDeRQ&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=5AL02Pb_UfveNX4KWmkw5g&oh=00_AfLNC_zZRQ_f07_aq7akNrfeK96dZl0CYNG8W5XIK5utPQ&oe=68393267" alt="شعار فريق Flash" class="flash-logo rounded-full w-32 h-32 md:w-40 md:h-40 object-cover shadow-lg border-2 border-[var(--primary-color)]" onerror="this.onerror=null; this.src='https://placehold.co/150x150/0a1020/00f0ff?text=FLASH&font=cairo'">
+            <img src="https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/494309535_122098633448856506_897280692111650141_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=111&ccb=1-7&_nc_sid=e99d92&_nc_ohc=Bz25boy6AoEQ7kNvwHvK5Bt&_nc_oc=Adm74NanuwpouikJmdMAKYTsNw1FZ5VopC-V0U5DmSU9_MZ6V9idT_3hXk4N3SNDeRQ&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=5AL02Pb_UfveNX4KWmkw5g&oh=00_AfLNC_zZRQ_f07_aq7akNrfeK96dZl0CYNG8W5XIK5utPQ&oe=68393267" alt="شعار فريق Flash" class="flash-logo rounded-full w-32 h-32 md:w-40 md:h-40 object-cover" onerror="this.onerror=null; this.src='https://placehold.co/150x150/0a1020/00f0ff?text=FLASH&font=cairo'">
             <h1>فريق Flash: نحو مستقبل كهربي ذكي</h1>
             <p>نبتكر حلولاً متقدمة في التوزيع الكهربي، دمج التيار الخفيف، الأتمتة المتقدمة، وتطبيقات الذكاء الاصطناعي.</p>
         </div>
@@ -532,7 +555,7 @@
                 <input type="text" id="eventTitleInput" placeholder="عنوان الحدث/المنشور" class="form-input mb-3">
                 <textarea id="eventDescriptionInput" placeholder="وصف الحدث/المنشور..." rows="4" class="form-textarea mb-3"></textarea>
                 <input type="date" id="eventDateInput" class="form-input mb-3">
-                <label for="eventImageFileInput" class="block mb-2 text-sm font-medium text-gray-300">رفع صورة للحدث (اختياري):</label>
+                <label for="eventImageFileInput" class="block mb-2 text-sm font-medium text-gray-700">رفع صورة للحدث (اختياري):</label>
                 <input type="file" id="eventImageFileInput" accept="image/*" class="form-file-input mb-3">
                 <div id="imageUploadProgress" class="mb-3"><div id="imageUploadProgressBar">0%</div></div>
                 <button id="saveEventButton" class="btn w-full mt-4"> <i class="fas fa-calendar-plus mr-2"></i> إضافة الحدث</button>
@@ -566,7 +589,7 @@
                 <h2 id="authModalTitle">تسجيل الدخول</h2>
                 <span class="close" onclick="closeModal('authModal')">&times;</span>
             </div>
-            <div id="authError" class="text-red-400 mb-4 text-center p-2 bg-red-900 bg-opacity-30 rounded" style="display: none;"></div>
+            <div id="authError" class="text-red-400 mb-4 text-center p-2 bg-red-100 border border-red-400 rounded" style="display: none;"></div>
             <div class="tab-container">
                 <div class="tab-buttons">
                     <button class="tab-button active" data-tab="loginPaneAuth">تسجيل الدخول</button>
@@ -604,15 +627,15 @@
              <div id="profileAvatarUploadProgress" class="text-sm text-[var(--primary-color)] mt-1 mb-3 text-center" style="display:none;"></div>
 
             <div class="form-group">
-                <label for="profileFullNameInput" class="block text-sm font-medium text-gray-300 mb-1">الاسم الكامل:</label>
+                <label for="profileFullNameInput" class="block text-sm font-medium text-gray-700 mb-1">الاسم الكامل:</label>
                 <input type="text" id="profileFullNameInput" placeholder="اسمك الكامل" class="form-input">
             </div>
             <div class="form-group">
-                <label for="profileAcademicIdInput" class="block text-sm font-medium text-gray-300 mb-1">الرقم الأكاديمي:</label>
+                <label for="profileAcademicIdInput" class="block text-sm font-medium text-gray-700 mb-1">الرقم الأكاديمي:</label>
                 <input type="text" id="profileAcademicIdInput" placeholder="الرقم الأكاديمي" class="form-input">
             </div>
             <div id="profileReferralCodeSection" style="display:none;" class="form-group">
-                <label for="profileReferralCodeInput" class="block text-sm font-medium text-gray-300 mb-1">إضافة كود إحالة لترقية الصلاحيات:</label>
+                <label for="profileReferralCodeInput" class="block text-sm font-medium text-gray-700 mb-1">إضافة كود إحالة لترقية الصلاحيات:</label>
                 <input type="text" id="profileReferralCodeInput" placeholder="أدخل كود الإحالة" class="form-input">
                 <button onclick="submitReferralCode()" class="btn btn-outline w-full mt-2 text-sm py-2">تطبيق كود الإحالة</button>
             </div>
@@ -697,6 +720,71 @@
         const userIdDisplayContainer = document.getElementById('userIdDisplay');
         const currentUserDisplaySpan = document.getElementById('currentUserDisplay');
         const currentUserRoleSpan = document.getElementById('currentUserRole');
+
+        // --- Particle Animation ---
+        const particleCanvas = document.getElementById('particleCanvas');
+        const ctxParticles = particleCanvas.getContext('2d');
+        let particlesArrayForAnimation;
+
+        function resizeParticleCanvas() {
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+        }
+        
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color, glowColor) {
+                this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY;
+                this.size = size; this.color = color; this.glowColor = glowColor || color;
+                this.opacity = Math.random() * 0.5 + 0.3; 
+            }
+            draw() {
+                ctxParticles.beginPath();
+                ctxParticles.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctxParticles.shadowBlur = 8; 
+                ctxParticles.shadowColor = this.glowColor; 
+                ctxParticles.globalAlpha = this.opacity;
+                ctxParticles.fillStyle = this.color;
+                ctxParticles.fill();
+                ctxParticles.globalAlpha = 1; 
+                ctxParticles.shadowBlur = 0; 
+            }
+            update() {
+                if (this.x + this.size > particleCanvas.width || this.x - this.size < 0) { this.directionX = -this.directionX; }
+                if (this.y + this.size > particleCanvas.height || this.y - this.size < 0) { this.directionY = -this.directionY; }
+                this.x += this.directionX; this.y += this.directionY;
+                if (Math.random() < 0.02) { 
+                     this.opacity = Math.random() * 0.6 + 0.2; 
+                }
+                this.draw();
+            }
+        }
+
+        function initParticles() {
+            particlesArrayForAnimation = [];
+            let numberOfParticles = (particleCanvas.height * particleCanvas.width) / 15000; 
+            if (numberOfParticles > 100) numberOfParticles = 100; 
+            if (numberOfParticles < 30) numberOfParticles = 30; 
+
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = Math.random() * 1.5 + 0.5; 
+                let x = Math.random() * (particleCanvas.width - size * 2) + size;
+                let y = Math.random() * (particleCanvas.height - size * 2) + size;
+                let directionX = (Math.random() * 0.2) - 0.1; 
+                let directionY = (Math.random() * 0.2) - 0.1;
+                let particleBaseColor = `rgba(0, 174, 239, ${Math.random() * 0.4 + 0.4})`; 
+                let particleGlowColor = 'rgba(0, 220, 255, 0.6)'; 
+                particlesArrayForAnimation.push(new Particle(x, y, directionX, directionY, size, particleBaseColor, particleGlowColor));
+            }
+        }
+
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            ctxParticles.clearRect(0, 0, particleCanvas.width, particleCanvas.height); 
+            for (let i = 0; i < particlesArrayForAnimation.length; i++) {
+                particlesArrayForAnimation[i].update();
+            }
+        }
+
 
         // --- Mobile Menu Toggle ---
         if (mobileMenuButton && navLinksMobile) {
@@ -857,7 +945,6 @@
             }
             
             closeModal('authModal');
-            // onAuthStateChange will handle UI updates and profile fetching.
         }
 
         async function handleSupabaseSignup() {
@@ -902,7 +989,6 @@
         async function handleSupabaseLogout() {
             const { error } = await supabase.auth.signOut();
             if (error) return showStaticModal("خطأ", error.message);
-            // onAuthStateChange will set currentUser to null and update UI.
         }
 
         loginButton.addEventListener('click', handleSupabaseLogin);
@@ -914,19 +1000,13 @@
 
             if (!initialAuthCheckDone) {
                 initialAuthCheckDone = true; 
-                if (session && session.user) { // Check if there's an active session on initial load
+                if (session && session.user) { 
                     console.log("Initial session found on page load, forcing sign out as per request.");
                     await supabase.auth.signOut(); 
-                    // Important: signOut will trigger onAuthStateChange again.
-                    // The subsequent call will have session = null, and the UI will be set to logged-out state.
-                    return; // Exit this execution to let the signOut-triggered call handle the UI.
+                    return; 
                 }
-                // If no session on first check, proceed to set user as null (which will happen below if session is null)
             }
 
-            // This part runs if:
-            // 1. It's the first run AND there was NO initial session (initialAuthCheckDone is now true).
-            // 2. It's a subsequent run (e.g., after a forced signOut, or after user actively logs in/out).
             if (session && session.user) {
                 currentUser = session.user;
                 console.log("User is logged in (or has just logged in):", currentUser.email);
@@ -1062,33 +1142,78 @@
             }
         }
         
-        window.submitReferralCode = async function() { 
-            if (!currentUser) return;
-            const code = profileReferralCodeInput.value.trim();
-            profileUpdateStatus.style.display = 'block';
-            profileUpdateStatus.textContent = 'جاري التحقق...';
-            profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-yellow-500 bg-opacity-30 text-yellow-300';
+        window.submitReferralCode = async function() {
+            if (!window.currentUser || !window.supabaseClient) {
+                showStaticModal("خطأ", "يجب تسجيل الدخول أولاً لتطبيق كود الإحالة.");
+                openAuthModalHandler();
+                return;
+            }
+            const enteredCode = profileReferralCodeInput.value.trim();
+            const referralStatusDiv = profileUpdateStatus; 
 
-            if (code === 'MinaOmarMena') { 
-                 const { error } = await supabase
-                    .from('profiles')
-                    .update({ role: 'full_access_user', updated_at: new Date().toISOString() })
-                    .eq('id', currentUser.id);
-                if(error) {
-                    profileUpdateStatus.textContent = "خطأ في تطبيق الكود: " + error.message;
-                    profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-red-900 bg-opacity-30 text-red-400';
-                    return;
+            if (!enteredCode) {
+                if(referralStatusDiv) {
+                    referralStatusDiv.textContent = "الرجاء إدخال كود الإحالة.";
+                    referralStatusDiv.className = 'text-sm text-yellow-300 text-center mb-4'; // Adjusted color for light theme
+                    referralStatusDiv.style.display = 'block';
                 }
-                profileUpdateStatus.textContent = "تم تفعيل كود الإحالة بنجاح! تم ترقية صلاحياتك.";
-                profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-green-500 bg-opacity-30 text-green-300';
-                await fetchUserProfile(); 
-                loadProfileDataIntoModal(); 
-                updateAuthUI(); 
-            } else {
-                profileUpdateStatus.textContent = "كود الإحالة غير صحيح.";
-                profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-red-900 bg-opacity-30 text-red-400';
+                setTimeout(() => { if(referralStatusDiv) referralStatusDiv.style.display = 'none';}, 3000);
+                return;
+            }
+
+            if(referralStatusDiv) {
+                referralStatusDiv.textContent = 'جاري تطبيق الكود...';
+                referralStatusDiv.className = 'text-sm text-yellow-300 text-center mb-4';
+                referralStatusDiv.style.display = 'block';
+            }
+
+            try {
+                console.log("Attempting to invoke apply_referral_code Edge Function...");
+                const { data, error } = await window.supabaseClient.functions.invoke('apply_referral_code', {
+                    method: 'POST',
+                    body: { referral_code: enteredCode }, 
+                });
+
+                if (error) {
+                    console.error("Error calling apply_referral_code Edge Function:", error);
+                    let errorMessage = "حدث خطأ أثناء تطبيق كود الإحالة.";
+                    if (error.context && error.context.body && error.context.body.error) {
+                        errorMessage = error.context.body.error; 
+                    } else if (error.message) {
+                        errorMessage = error.message; 
+                    }
+                    if(referralStatusDiv) {
+                        referralStatusDiv.textContent = errorMessage;
+                        referralStatusDiv.className = 'text-sm text-red-500 text-center mb-4'; // Adjusted color
+                        referralStatusDiv.style.display = 'block';
+                    }
+                } else {
+                    console.log("apply_referral_code Edge Function invoked successfully. Response:", data);
+                    if(referralStatusDiv) {
+                        referralStatusDiv.textContent = data.message || "تم تطبيق كود الإحالة بنجاح!";
+                        referralStatusDiv.className = 'text-sm text-green-500 text-center mb-4'; // Adjusted color
+                        referralStatusDiv.style.display = 'block';
+                    }
+                    await fetchUserProfile(); 
+                    updateAuthUI(); 
+                    loadProfileDataIntoModal(); // This will hide the referral section if role changed
+                }
+            } catch (error) {
+                console.error("Unexpected error during Edge Function invoke (apply_referral_code):", error);
+                if(referralStatusDiv) {
+                    referralStatusDiv.textContent = `حدث خطأ غير متوقع: ${error.message}`;
+                    referralStatusDiv.className = 'text-sm text-red-500 text-center mb-4';
+                    referralStatusDiv.style.display = 'block';
+                }
+            } finally {
+                setTimeout(() => { 
+                    if(referralStatusDiv && !referralStatusDiv.className.includes('text-green-500')) { // Hide only if not success message
+                        referralStatusDiv.style.display = 'none';
+                    }
+                }, 4000);
             }
         }
+
 
         // --- Ideas CRUD ---
         const ideasTable = 'Flash'; 
@@ -1098,13 +1223,29 @@
             if (!currentUser) return showStaticModal("خطأ", "يجب تسجيل الدخول لإضافة فكرة.");
 
             saveIdeaButton.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> جاري...`; saveIdeaButton.disabled = true;
-            const { error } = await supabase.from(ideasTable).insert([{ text: ideaText, user_id: currentUser.id }]);
+            
+            // *** Invoke Edge Function 'create_idea' ***
+            console.log("Attempting to invoke create_idea Edge Function for saving idea...");
+            const { data, error } = await window.supabaseClient.functions.invoke('create_idea', {
+                method: 'POST',
+                body: { text: ideaText },
+            });
             saveIdeaButton.innerHTML = `<i class="fas fa-plus-circle mr-2"></i> حفظ الفكرة`; saveIdeaButton.disabled = false;
 
-            if (error) return showStaticModal("خطأ", "فشل حفظ الفكرة: " + error.message);
-
+            if (error) {
+                console.error("Error calling create_idea Edge Function for idea:", error);
+                let errorMessage = "حدث خطأ أثناء حفظ الفكرة.";
+                if (error.context && error.context.body && error.context.body.error) {
+                    errorMessage = error.context.body.error;
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                return showStaticModal("خطأ الحفظ", errorMessage);
+            }
+            
+            console.log("create_idea Edge Function for idea invoked. Response:", data);
             newIdeaInput.value = "";
-            showStaticModal("نجاح", "تم حفظ الفكرة!");
+            showStaticModal("نجاح", data.message || "تم حفظ الفكرة بنجاح!");
             loadIdeas();
         });
 
@@ -1156,6 +1297,9 @@
         }
         
         window.deleteIdea = async function(id) { 
+            // Note: For enhanced security, deletion should also ideally be handled by an Edge Function
+            // that verifies ownership or admin privileges on the server-side.
+            // The current client-side check (canDelete in loadIdeas) is for UI only.
             showStaticModal("تأكيد الحذف", `هل أنت متأكد أنك تريد حذف هذه الفكرة؟ <br><br> <button id="confirmDelIdea" class="btn btn-danger">نعم, احذف</button> <button onclick="closeModal('infoModal')" class="btn btn-outline ml-2">إلغاء</button>`);
             document.getElementById('confirmDelIdea').onclick = async () => {
                 closeModal('infoModal');
@@ -1172,6 +1316,9 @@
         const eventsTable = 'project_events'; 
         const eventsStorageBucket = 'events-images';
         saveEventButton.addEventListener('click', async () => {
+            // This function should also be refactored to use an Edge Function ('create_event')
+            // for security, especially for handling image uploads and verifying user permissions.
+            // The current implementation is client-side and less secure for these operations.
             if (!currentUser) return showStaticModal("خطأ", "يجب تسجيل الدخول لإضافة حدث.");
             
             const title = eventTitleInput.value.trim();
@@ -1204,6 +1351,12 @@
                 if (imageUploadProgressBar) { imageUploadProgressBar.style.width = '100%'; imageUploadProgressBar.textContent = 'اكتمل الرفع!';}
             }
 
+            // Replace with Edge Function call:
+            // const { data: eventData, error: insertError } = await supabaseClient.functions.invoke('create_event', {
+            //    method: 'POST',
+            //    body: { title, description, event_date, image_url: uploadedImageUrl }
+            // });
+            // For now, direct insert (less secure):
             const { error: insertError } = await supabase.from(eventsTable).insert([
                 { title, description, event_date, image_url: uploadedImageUrl, user_id: currentUser.id }
             ]);
@@ -1270,7 +1423,8 @@
         }
         
         window.deleteEvent = async function(eventId, imageUrl) { 
-             showStaticModal("تأكيد الحذف", `هل أنت متأكد أنك تريد حذف هذا الحدث؟ <br><br> <button id="confirmDelEvent" class="btn btn-danger">نعم, احذف</button> <button onclick="closeModal('infoModal')" class="btn btn-outline ml-2">إلغاء</button>`);
+            // Note: Deletion of events and associated images should also ideally be handled by an Edge Function.
+            showStaticModal("تأكيد الحذف", `هل أنت متأكد أنك تريد حذف هذا الحدث؟ <br><br> <button id="confirmDelEvent" class="btn btn-danger">نعم, احذف</button> <button onclick="closeModal('infoModal')" class="btn btn-outline ml-2">إلغاء</button>`);
             document.getElementById('confirmDelEvent').onclick = async () => {
                 closeModal('infoModal');
                 if (imageUrl) {
@@ -1352,8 +1506,10 @@
             loadTeamMembers(); 
             loadTechnologies(); 
             
-            // Set initial UI to "logged out" or "loading" state.
-            // onAuthStateChange will take over from here.
+            resizeParticleCanvas(); 
+            initParticles();      
+            animateParticles();   
+
             if(authContainerDesktop) {
                 authContainerDesktop.innerHTML = `<button id="loginBtnNavDesktop" class="btn btn-outline">تسجيل الدخول</button>`;
                 const btnDesktop = document.getElementById('loginBtnNavDesktop');
@@ -1368,7 +1524,10 @@
             ideasContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأفكار...</p></div>`;
             eventsContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأحداث...</p></div>`;
             
-            // onAuthStateChange is the single source of truth for auth-dependent UI and data loading.
+        });
+        window.addEventListener('resize', () => { 
+            resizeParticleCanvas();
+            initParticles();
         });
     </script>
 </body>
