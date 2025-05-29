@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشروع Flash - أنظمة التوزيع الكهربي الذكية (فرض تسجيل الخروج عند التحديث)</title>
+    <title>مشروع Flash - أنظمة التوزيع الكهربي الذكية (مراجعة المصادقة 2)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
@@ -670,7 +670,7 @@
 
         // --- Global State ---
         let currentUser = null; 
-        let initialAuthCheckDone = false; 
+        // let initialAuthCheckDone = false; // Reverted: No longer forcing logout on refresh. Session persistence is desired.
 
 
         // --- DOM Elements ---
@@ -888,6 +888,7 @@
                 addEventFormContainer.style.display = 'none';
                 if(userIdDisplayContainer) userIdDisplayContainer.style.display = 'none';
             }
+            // Call data loading functions AFTER UI has been updated based on auth state
             loadIdeas(); 
             loadEvents(); 
         }
@@ -939,6 +940,8 @@
                 const { data, error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error; 
                 
+                // onAuthStateChange will be triggered by successful login
+                // It will then call fetchUserProfile and updateAuthUI
                 closeModal('authModal');
             } catch (error) {
                 console.error("Login error:", error);
@@ -993,6 +996,7 @@
         async function handleSupabaseLogout() {
             const { error } = await supabase.auth.signOut();
             if (error) return showStaticModal("خطأ", error.message);
+            // onAuthStateChange will set currentUser to null and update UI.
         }
 
         loginButton.addEventListener('click', handleSupabaseLogin);
@@ -1010,8 +1014,9 @@
                 currentUser = null;
                 console.log("User is logged out.");
             }
+            // updateAuthUI will handle UI changes and trigger data loads (ideas, events)
             updateAuthUI(); 
-            loadProfileDataIntoModal(); 
+            loadProfileDataIntoModal(); // Update profile modal based on new auth state
         });
         
         async function fetchUserProfile() {
@@ -1491,6 +1496,8 @@
             initParticles();      
             animateParticles();   
 
+            // Set initial UI to "logged out" or "loading" state.
+            // onAuthStateChange will take over from here.
             if(authContainerDesktop) {
                 authContainerDesktop.innerHTML = `<button id="loginBtnNavDesktop" class="btn btn-outline">تسجيل الدخول</button>`;
                 const btnDesktop = document.getElementById('loginBtnNavDesktop');
@@ -1505,6 +1512,7 @@
             ideasContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأفكار...</p></div>`;
             eventsContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأحداث...</p></div>`;
             
+            // onAuthStateChange is the single source of truth for auth-dependent UI and data loading.
         });
         window.addEventListener('resize', () => { 
             resizeParticleCanvas();
