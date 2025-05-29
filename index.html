@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروع Flash - أنظمة التوزيع الكهربي الذكية (مستجيب للهاتف)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --primary-color: #00f0ff;
+            --secondary-color: #1a1a1a;
+            --accent-color: #ff3c00;
+            --text-color: #ffffff;
+            --background-color: #0a1020;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 800 800"><g fill="none" stroke="rgba(50, 100, 150, 0.1)" stroke-width="1"><path d="M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63"/><path d="M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764"/><path d="M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880"/><path d="M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382"/><path d="M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5"/><path d="M578 842L295 764M40-201L127 80M102 382L-31 229"/></g><g fill="rgba(0, 240, 255, 0.05)"><circle cx="769" cy="229" r="5"/><circle cx="539" cy="269" r="5"/><circle cx="603" cy="493" r="5"/><circle cx="731" cy="737" r="5"/><circle cx="520" cy="660" r="5"/><circle cx="309" cy="538" r="5"/><circle cx="295" cy="764" r="5"/><circle cx="40" cy="599" r="5"/><circle cx="102" cy="382" r="5"/><circle cx="127" cy="80" r="5"/><circle cx="370" cy="105" r="5"/><circle cx="578" cy="42" r="5"/><circle cx="237" cy="261" r="5"/><circle cx="390" cy="382" r="5"/></g></svg>');
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            padding-top: 64px; /* Navbar height */
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem; 
+        }
+        
+        .section {
+            margin-bottom: 3rem; 
+            padding: 1.5rem; 
+            background-color: rgba(26, 26, 26, 0.85); 
+            border-radius: 0.75rem; 
+            border-right: 4px solid var(--primary-color);
+            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.2);
+            animation: fadeIn 0.5s ease-out;
+        }
+         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .section h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.75rem; 
+            margin-bottom: 1.5rem; 
+            font-weight: 700;
+            font-size: 1.75rem; 
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h2 i {
+            margin-left: 0.5rem; 
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 0.625rem 1.25rem; 
+            border: none;
+            border-radius: 0.375rem; 
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            text-align: center; 
+        }
+        
+        .btn:hover {
+            background-color: #00c0cc;
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            background-color: #555;
+            color: #888;
+            cursor: not-allowed;
+            transform: translateY(0);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+
+        .btn-danger { background-color: #f44336; color: white; border: 2px solid #f44336 !important; }
+        .btn-danger:hover { background-color: #d32f2f; border-color: #d32f2f !important; }
+        
+        .header-logo {
+            font-size: 1.5rem; 
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem; 
+        }
+        
+        .form-control, .form-textarea, .form-input {
+            width: 100%;
+            padding: 0.75rem; 
+            border: 1px solid #444; 
+            border-radius: 0.375rem; 
+            background-color: rgba(255, 255, 255, 0.05); 
+            color: var(--text-color);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .form-control:focus, .form-textarea:focus, .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.2);
+        }
+        
+        .card {
+            background-color: rgba(40, 40, 40, 0.8); 
+            border-radius: 0.5rem; 
+            padding: 1.25rem; 
+            margin-bottom: 1.25rem; 
+            border-right: 3px solid var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); 
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
+        }
+        
+        .navbar {
+            position: fixed; 
+            top: 0;
+            right: 0; 
+            left: 0;
+            background-color: rgba(10, 16, 32, 0.95); 
+            backdrop-filter: blur(10px);
+            z-index: 1030; 
+            padding: 0.75rem 1rem; 
+            border-bottom: 1px solid var(--primary-color);
+        }
+        
+        .navbar-items {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-links-desktop { 
+            display: none; 
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .nav-links-desktop {
+                display: flex;
+                gap: 0.75rem; 
+                align-items: center;
+            }
+        }
+
+        .nav-links-mobile { 
+            display: none; 
+            position: absolute;
+            top: 100%; 
+            left: 0;
+            right: 0;
+            background-color: rgba(10, 16, 32, 0.98);
+            padding: 1rem;
+            border-top: 1px solid var(--primary-color); 
+            z-index: 1020;
+            max-height: calc(100vh - 64px); 
+            overflow-y: auto; 
+        }
+        .nav-links-mobile a {
+            display: block;
+            padding: 0.75rem 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+        }
+        .nav-links-mobile a:last-child {
+            border-bottom: none;
+        }
+        
+        .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 0.75rem; 
+            border-radius: 0.375rem; 
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(0, 240, 255, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .flash-logo {
+            max-width: 120px; 
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 1rem; 
+            margin-top: 1.25rem; 
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 0.75rem; 
+            background-color: rgba(255,255,255,0.03);
+            border-radius: 0.5rem; 
+            transition: transform 0.2s ease-in-out;
+        }
+        .team-member:hover {
+            transform: scale(1.05);
+        }
+        .team-member img.member-avatar { 
+            width: 80px; 
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-color); 
+            object-fit: cover;
+            margin: 0 auto 0.5rem auto; 
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+            gap: 1rem; 
+            margin-top: 1.25rem;
+        }
+        
+        .tech-item {
+            text-align: center;
+            padding: 1.25rem; 
+            background-color: rgba(40, 40, 40, 0.7); 
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .tech-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
+            border-bottom-color: var(--primary-color);
+        }
+        .tech-item i {
+            font-size: 2.25rem; 
+            color: var(--primary-color);
+            margin-bottom: 0.75rem; 
+        }
+        .tech-item h3 {
+            color: var(--text-color);
+            font-size: 1.125rem; 
+            margin-bottom: 0.5rem; 
+            font-weight: 600;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100px; 
+            padding: 1.25rem;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 1050; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.8); 
+            align-items: center;
+            justify-content: center;
+            padding: 1rem; 
+        }
+        
+        .modal-content { 
+            background-color: #1e1e1e; 
+            color: #e0e0e0; 
+            border: 1px solid #333;
+            margin: auto; 
+            padding: 1.5rem; 
+            border-radius: 0.5rem; 
+            width: 100%; 
+            max-width: 500px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        
+        .modal-header { 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--primary-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+        .modal-header h2 { 
+            color: var(--primary-color);
+            font-size: 1.5rem; 
+            font-weight: 700;
+        }
+        
+        .close { 
+            color: #aaa;
+            float: left; 
+            font-size: 2rem; 
+            font-weight: bold;
+            position: absolute;
+            top: 0.5rem; 
+            left: 1rem; 
+            cursor: pointer;
+        }
+        .close:hover, .close:focus { color: var(--primary-color); text-decoration: none; }
+        
+        .tab-container { margin-top: 1.25rem; }
+        .tab-buttons { display: flex; border-bottom: 2px solid var(--primary-color); margin-bottom: 1rem; }
+        .tab-button { padding: 0.625rem 1.25rem; background-color: transparent; border: none; color: var(--text-color); cursor: pointer; font-weight: 600; transition: all 0.3s ease; font-size: 0.875rem; }
+        .tab-button.active { background-color: var(--primary-color); color: var(--secondary-color); border-radius: 5px 5px 0 0; }
+        .tab-content { padding: 1.25rem 0; }
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+        
+        .reaction-buttons { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; padding-bottom: 0.5rem; border-bottom: 1px solid #33333330; }
+        .reaction-btn { background-color: #333; color: #ccc; border: 1px solid #444; padding: 0.2rem 0.6rem; border-radius: 15px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s ease; display: inline-flex; align-items: center; }
+        .reaction-btn:hover { background-color: #444; border-color: #555; color: #fff; }
+        .reaction-btn.active { background-color: var(--primary-color); color: var(--secondary-color); border-color: var(--primary-color); }
+        .reaction-btn .emoji { margin-right: 0.3rem; font-size: 0.9rem; }
+        .reaction-btn .count { font-size: 0.7rem; }
+        
+        .hero-section { text-align: center; padding: 3rem 0; } 
+        .hero-section h1 { font-size: 2.25rem; font-weight: 900; margin-bottom: 1rem; color: var(--primary-color); }
+        @media (min-width: 768px) {
+            .hero-section h1 { font-size: 2.5rem; }
+        }
+        .hero-section p { font-size: 1rem; max-width: 700px; margin: 0 auto 1.5rem auto; line-height: 1.7; }
+         @media (min-width: 768px) {
+            .hero-section p { font-size: 1.125rem; }
+        }
+        
+        .user-avatar { 
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: var(--secondary-color);
+            cursor: pointer;
+            font-size: 1rem; 
+            transition: transform 0.2s;
+        }
+        .user-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        #profileModal .profile-avatar-container { position: relative; width: 100px; height: 100px; margin: 0 auto 1rem auto; } 
+        #profileModal .profile-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color); }
+        #profileModal .avatar-upload-label { position: absolute; bottom: 0; right: 0; background-color: rgba(0, 240, 255, 0.8); color: white; padding: 0.25rem 0.4rem; border-radius: 50%; cursor: pointer; font-size: 0.8rem; transition: background-color 0.2s; }
+        #profileModal .avatar-upload-label:hover { background-color: rgba(0, 192, 204, 0.9); }
+        #profileAvatarInput { display: none; }
+
+        .comments-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #333; }
+        .comment { background-color: #282828; padding: 0.5rem 0.75rem; border-radius: 0.375rem; margin-bottom: 0.5rem; border-left: 3px solid var(--primary-color); }
+        .comment p { margin-bottom: 0.25rem; font-size: 0.875rem; }
+        .comment .commenter-name { font-weight: 600; color: var(--primary-color); }
+        .comment .comment-date { font-size: 0.625rem; color: #888; }
+        .comment-form input, .comment-form textarea { margin-bottom: 0.5rem; }
+        .form-file-input { 
+            background-color: #2a2a2a; border: 1px solid #3a3a3a; color: #e0e0e0;
+            border-radius: 0.25rem; padding: 0.75rem; width: 100%; margin-bottom: 1rem;
+        }
+        .form-file-input::-webkit-file-upload-button { 
+            background-color: var(--primary-color); color: var(--secondary-color); border: none;
+            padding: 0.5rem 1rem; border-radius: 0.25rem; margin-inline-end: 1rem; 
+            font-weight: 600; cursor: pointer; transition: background-color 0.3s ease;
+        }
+        .form-file-input::-webkit-file-upload-button:hover { background-color: #00c0cc; }
+        .form-file-input::file-selector-button { 
+            background-color: var(--primary-color); color: var(--secondary-color); border: none;
+            padding: 0.5rem 1rem; border-radius: 0.25rem; margin-inline-end: 1rem;
+            font-weight: 600; cursor: pointer; transition: background-color 0.3s ease;
+        }
+        .form-file-input::file-selector-button:hover { background-color: #00c0cc; }
+
+        #imageUploadProgress {
+            width: 100%; background-color: #2a2a2a; border-radius: 0.25rem;
+            margin-top: 0.5rem; overflow: hidden; display: none; 
+        }
+        #imageUploadProgressBar {
+            width: 0%; background-color: var(--primary-color); color: var(--secondary-color);
+            text-align: center; line-height: 1.25rem; height: 1.25rem;
+            transition: width 0.4s ease;
+        }
+        .event-image-display {
+            max-width: 100%; height: auto; max-height: 200px; 
+            object-fit: cover; border-radius: 0.25rem; margin-bottom: 0.75rem; border: 1px solid #333;
+        }
+        .user-id-display { 
+            background-color: rgba(0,0,0,0.8); color: var(--primary-color); border: 1px solid var(--primary-color); 
+            padding: 0.25rem 0.5rem; border-radius:0.25rem; font-size: 0.75rem; 
+            position:fixed; bottom:0.5rem; left: 0.5rem; z-index: 1000;
+        }
+        .navbar-toggler {
+            color: var(--primary-color);
+            font-size: 1.75rem; 
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        @media (min-width: 768px) { 
+            .navbar-toggler {
+                display: none;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container mx-auto navbar-items">
+            <div class="header-logo">
+                <span>⚡ فريق Flash</span>
+            </div>
+            <div class="nav-links-desktop">
+                <a href="#about" class="nav-link">عن المشروع</a>
+                <a href="#ideas" class="nav-link">بنك الأفكار</a>
+                <a href="#events" class="nav-link">الأحداث</a>
+                <a href="#team" class="nav-link">الفريق</a>
+                <a href="#technologies" class="nav-link">التقنيات</a>
+                <a href="#contact" class="nav-link">تواصل معنا</a>
+                <div id="authContainerDesktop" class="flex items-center gap-3">
+                    </div>
+            </div>
+            <button class="navbar-toggler md:hidden" id="mobileMenuButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div id="navLinksMobile" class="nav-links-mobile">
+            <a href="#about" class="nav-link">عن المشروع</a>
+            <a href="#ideas" class="nav-link">بنك الأفكار</a>
+            <a href="#events" class="nav-link">الأحداث</a>
+            <a href="#team" class="nav-link">الفريق</a>
+            <a href="#technologies" class="nav-link">التقنيات</a>
+            <a href="#contact" class="nav-link">تواصل معنا</a>
+            <div id="authContainerMobile" class="flex flex-col items-center gap-3 mt-3">
+                 </div>
+        </div>
+    </nav>
+    
+    <div class="container mt-8">
+        <div class="hero-section">
+            <img src="https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/494309535_122098633448856506_897280692111650141_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=111&ccb=1-7&_nc_sid=e99d92&_nc_ohc=Bz25boy6AoEQ7kNvwHvK5Bt&_nc_oc=Adm74NanuwpouikJmdMAKYTsNw1FZ5VopC-V0U5DmSU9_MZ6V9idT_3hXk4N3SNDeRQ&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=5AL02Pb_UfveNX4KWmkw5g&oh=00_AfLNC_zZRQ_f07_aq7akNrfeK96dZl0CYNG8W5XIK5utPQ&oe=68393267" alt="شعار فريق Flash" class="flash-logo rounded-full w-32 h-32 md:w-40 md:h-40 object-cover shadow-lg border-2 border-[var(--primary-color)]" onerror="this.onerror=null; this.src='https://placehold.co/150x150/0a1020/00f0ff?text=FLASH&font=cairo'">
+            <h1>فريق Flash: نحو مستقبل كهربي ذكي</h1>
+            <p>نبتكر حلولاً متقدمة في التوزيع الكهربي، دمج التيار الخفيف، الأتمتة المتقدمة، وتطبيقات الذكاء الاصطناعي.</p>
+        </div>
+        
+        <div id="about" class="section">
+            <h2><i class="fas fa-bolt"></i> نبذة عن المشروع</h2>
+            <p>يهدف مشروعنا إلى إحداث ثورة في أنظمة التوزيع الكهربي التقليدية من خلال دمج أحدث التقنيات في مجالات التيار الخفيف، الأتمتة المتقدمة، وتطبيقات الذكاء الاصطناعي. نسعى لتصميم وتنفيذ نظام توزيع كهربي فائق الكفاءة، يتميز بالاستدامة، القدرة على التكيف، وتوفير حلول مبتكرة لإدارة الشبكات الكهربية الذكية لمستقبل أكثر إشراقًا.</p>
+        </div>
+
+        <div id="ideas" class="section">
+            <h2><i class="fas fa-lightbulb"></i> بنك أفكار المشروع</h2>
+            <div id="addIdeaSection" class="mb-6 md:mb-8 max-w-2xl mx-auto" style="display: none;">
+                <div class="flex flex-col sm:flex-row items-center gap-3">
+                    <input type="text" id="newIdeaInput" placeholder="شارك بفكرة جديدة لتطوير المشروع..." class="form-input flex-grow p-3 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent outline-none text-base w-full sm:w-auto">
+                    <button id="saveIdeaButton" class="btn py-3 px-6 text-base w-full sm:w-auto"> <i class="fas fa-plus-circle mr-2"></i> حفظ الفكرة</button>
+                </div>
+            </div>
+            <div id="ideasContainer">
+                <div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأفكار...</p></div>
+            </div>
+        </div>
+
+        <div id="team" class="section">
+            <h2><i class="fas fa-users"></i> فريق العمل (15 عضوًا)</h2>
+            <img src="https://placehold.co/800x450/1a1a1a/00f0ff?text=%D8%B5%D9%88%D8%B1%D8%A9+%D8%A7%D9%84%D9%81%D8%B1%D9%8A%D9%82+%D9%87%D9%86%D8%A7&font=cairo" alt="صورة فريق Flash" class="w-full rounded-lg mb-6 shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/800x450/0a1020/cccccc?text=Team+Photo'">
+            <p class="text-center mb-6 text-gray-400">سيتم تحديث هذه الصورة بصورة الفريق الفعلية.</p>
+            <div id="teamGrid" class="team-grid">
+                </div>
+        </div>
+
+        <div id="events" class="section">
+            <h2><i class="fas fa-calendar-alt"></i> الأحداث والمنشورات</h2>
+            <div id="addEventFormContainer" class="mb-6 md:mb-8 max-w-2xl mx-auto card" style="display: none;">
+                <h3 class="text-xl font-semibold text-[var(--primary-color)] mb-4">إضافة حدث أو منشور جديد</h3>
+                <input type="text" id="eventTitleInput" placeholder="عنوان الحدث/المنشور" class="form-input mb-3">
+                <textarea id="eventDescriptionInput" placeholder="وصف الحدث/المنشور..." rows="4" class="form-textarea mb-3"></textarea>
+                <input type="date" id="eventDateInput" class="form-input mb-3">
+                <label for="eventImageFileInput" class="block mb-2 text-sm font-medium text-gray-300">رفع صورة للحدث (اختياري):</label>
+                <input type="file" id="eventImageFileInput" accept="image/*" class="form-file-input mb-3">
+                <div id="imageUploadProgress" class="mb-3"><div id="imageUploadProgressBar">0%</div></div>
+                <button id="saveEventButton" class="btn w-full mt-4"> <i class="fas fa-calendar-plus mr-2"></i> إضافة الحدث</button>
+            </div>
+            <div id="eventsContainer">
+                <div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأحداث...</p></div>
+            </div>
+        </div>
+
+        <div id="technologies" class="section">
+            <h2><i class="fas fa-microchip"></i> التقنيات الأساسية</h2>
+            <div id="technologiesList" class="tech-grid">
+                </div>
+        </div>
+
+        <div id="contact" class="section">
+            <h2><i class="fas fa-envelope"></i> تواصل مع فريق Flash</h2>
+            <p class="mb-6 text-lg">نحن متحمسون لسماع آرائكم واقتراحاتكم! إذا كان لديكم أي استفسارات أو كنتم ترغبون في معرفة المزيد عن مشروعنا الطموح، فلا تترددوا في التواصل معنا.</p>
+            <a href="mailto:minahanna@ieee.org?subject=استفسار%20بخصوص%20مشروع%20Flash" class="btn text-lg"><i class="fas fa-paper-plane mr-2"></i> أرسل بريد إلكتروني</a>
+        </div>
+        
+        <footer class="text-center py-8 border-t border-gray-700 mt-12">
+            <p class="text-lg">&copy; 2025 فريق Flash - جميع الحقوق محفوظة.</p>
+            <p class="mt-2 text-gray-400">كلية الهندسة - قسم الهندسة الكهربية (مشروع تخرج)</p>
+        </footer>
+    </div>
+    
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="authModalTitle">تسجيل الدخول</h2>
+                <span class="close" onclick="closeModal('authModal')">&times;</span>
+            </div>
+            <div id="authError" class="text-red-400 mb-4 text-center p-2 bg-red-900 bg-opacity-30 rounded" style="display: none;"></div>
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="loginPaneAuth">تسجيل الدخول</button>
+                    <button class="tab-button" data-tab="signupPaneAuth">إنشاء حساب</button>
+                </div>
+                <div class="tab-content">
+                    <div id="loginPaneAuth" class="tab-pane active">
+                        <div class="form-group"><input type="email" id="emailInputLogin" placeholder="البريد الإلكتروني" class="form-input"></div>
+                        <div class="form-group"><input type="password" id="passwordInputLogin" placeholder="كلمة المرور" class="form-input"></div>
+                        <button id="loginButton" class="btn mt-3 w-full">دخول</button>
+                    </div>
+                    <div id="signupPaneAuth" class="tab-pane">
+                        <div class="form-group"><input type="email" id="emailInputSignup" placeholder="البريد الإلكتروني" class="form-input"></div>
+                        <div class="form-group"><input type="password" id="passwordInputSignup" placeholder="كلمة المرور (6+ أحرف)" class="form-input"></div>
+                        <div class="form-group"><input type="text" id="academicIdInputSignup" placeholder="الرقم الأكاديمي" class="form-input"></div>
+                        <div class="form-group"><input type="text" id="referralCodeInputSignup" placeholder="كود الإحالة (اختياري)" class="form-input"></div>
+                        <button id="signupButton" class="btn mt-3 w-full">إنشاء حساب جديد</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إدارة الملف الشخصي</h2>
+                <span class="close" onclick="closeModal('profileModal')">&times;</span>
+            </div>
+            <div class="profile-avatar-container">
+                <img id="profileAvatarPreview" src="https://placehold.co/120x120/1e1e1e/00f0ff?text=👤" alt="الصورة الشخصية" class="profile-avatar">
+                <label for="profileAvatarInput" class="avatar-upload-label"><i class="fas fa-camera"></i></label>
+                <input type="file" id="profileAvatarInput" accept="image/*" onchange="previewProfileAvatar(event)">
+            </div>
+             <div id="profileAvatarUploadProgress" class="text-sm text-[var(--primary-color)] mt-1 mb-3 text-center" style="display:none;"></div>
+
+            <div class="form-group">
+                <label for="profileFullNameInput" class="block text-sm font-medium text-gray-300 mb-1">الاسم الكامل:</label>
+                <input type="text" id="profileFullNameInput" placeholder="اسمك الكامل" class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="profileAcademicIdInput" class="block text-sm font-medium text-gray-300 mb-1">الرقم الأكاديمي:</label>
+                <input type="text" id="profileAcademicIdInput" placeholder="الرقم الأكاديمي" class="form-input">
+            </div>
+            <div id="profileReferralCodeSection" style="display:none;" class="form-group">
+                <label for="profileReferralCodeInput" class="block text-sm font-medium text-gray-300 mb-1">إضافة كود إحالة لترقية الصلاحيات:</label>
+                <input type="text" id="profileReferralCodeInput" placeholder="أدخل كود الإحالة" class="form-input">
+                <button onclick="submitReferralCode()" class="btn btn-outline w-full mt-2 text-sm py-2">تطبيق كود الإحالة</button>
+            </div>
+            <div id="profileUpdateStatus" class="text-sm text-center my-4 p-2 rounded" style="display:none;"></div>
+            <button onclick="updateUserProfile()" class="btn w-full">حفظ التغييرات</button>
+        </div>
+    </div>
+    
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitleInfo"></h2>
+                <span class="close" onclick="closeModal('infoModal')">&times;</span>
+            </div>
+            <div id="modalLoadingInfo" class="loading" style="display: none;"><div class="spinner"></div></div>
+            <div id="modalTextInfo" class="text-lg leading-relaxed my-4"></div>
+        </div>
+    </div>
+
+    <div id="userIdDisplay" class="user-id-display" style="display: none;">
+        المستخدم: <span id="currentUserDisplay"></span> (<span id="currentUserRole"></span>)
+    </div>
+
+
+    <script type="module">
+        // --- Supabase Setup ---
+        const SUPABASE_URL = 'https://uzcrjhhvwgllsdsvftuj.supabase.co'; 
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6Y3JqaGh2d2dsbHNkc3ZmdHVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgyMTcxNzcsImV4cCI6MjA2Mzc5MzE3N30.wy_ei_ZVJoMGbXMVqrW8NVUEgk2-EvPQYpgb9gWMW18';
+        const { createClient } = window.supabase; 
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY); 
+        window.supabaseClient = supabase; 
+
+        // --- Global State ---
+        let currentUser = null; 
+        let initialAuthCheckDone = false; 
+
+
+        // --- DOM Elements ---
+        const authContainerDesktop = document.getElementById('authContainerDesktop');
+        const authContainerMobile = document.getElementById('authContainerMobile');
+        const authModalElement = document.getElementById('authModal');
+        const profileModalElement = document.getElementById('profileModal');
+        const infoModalElement = document.getElementById('infoModal');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const navLinksMobile = document.getElementById('navLinksMobile');
+        
+        const authModalTitle = document.getElementById('authModalTitle');
+        const authErrorElement = document.getElementById('authError');
+        const emailInputLogin = document.getElementById('emailInputLogin');
+        const passwordInputLogin = document.getElementById('passwordInputLogin');
+        const emailInputSignup = document.getElementById('emailInputSignup');
+        const passwordInputSignup = document.getElementById('passwordInputSignup');
+        const academicIdInputSignup = document.getElementById('academicIdInputSignup'); 
+        const referralCodeInputSignup = document.getElementById('referralCodeInputSignup'); 
+        const loginButton = document.getElementById('loginButton');
+        const signupButton = document.getElementById('signupButton');
+
+        const ideasContainer = document.getElementById('ideasContainer');
+        const eventsContainer = document.getElementById('eventsContainer');
+        const addIdeaSection = document.getElementById('addIdeaSection'); 
+        const newIdeaInput = document.getElementById('newIdeaInput');
+        const saveIdeaButton = document.getElementById('saveIdeaButton');
+        
+        const addEventFormContainer = document.getElementById('addEventFormContainer'); 
+        const eventTitleInput = document.getElementById('eventTitleInput');
+        const eventDescriptionInput = document.getElementById('eventDescriptionInput');
+        const eventDateInput = document.getElementById('eventDateInput');
+        const eventImageFileInput = document.getElementById('eventImageFileInput');
+        const saveEventButton = document.getElementById('saveEventButton');
+        const imageUploadProgress = document.getElementById('imageUploadProgress');
+        const imageUploadProgressBar = document.getElementById('imageUploadProgressBar');
+
+        const profileAvatarPreview = document.getElementById('profileAvatarPreview');
+        const profileAvatarInput = document.getElementById('profileAvatarInput');
+        const profileFullNameInput = document.getElementById('profileFullNameInput');
+        const profileAcademicIdInput = document.getElementById('profileAcademicIdInput');
+        const profileReferralCodeSection = document.getElementById('profileReferralCodeSection');
+        const profileReferralCodeInput = document.getElementById('profileReferralCodeInput');
+        const profileUpdateStatus = document.getElementById('profileUpdateStatus');
+        const profileAvatarUploadProgress = document.getElementById('profileAvatarUploadProgress');
+
+        const userIdDisplayContainer = document.getElementById('userIdDisplay');
+        const currentUserDisplaySpan = document.getElementById('currentUserDisplay');
+        const currentUserRoleSpan = document.getElementById('currentUserRole');
+
+        // --- Mobile Menu Toggle ---
+        if (mobileMenuButton && navLinksMobile) {
+            mobileMenuButton.addEventListener('click', () => {
+                const isHidden = navLinksMobile.style.display === 'none' || navLinksMobile.style.display === '';
+                navLinksMobile.style.display = isHidden ? 'block' : 'none';
+                mobileMenuButton.innerHTML = isHidden ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+        }
+        
+        // --- Modal & UI Helpers ---
+        function openModal(modalElement) { 
+            if (modalElement) modalElement.style.display = 'flex'; 
+        }
+        window.closeModal = function(modalId) { 
+            const modalToClose = document.getElementById(modalId);
+            if (modalToClose) {
+                modalToClose.style.display = 'none';
+                if (modalId === 'authModal' && authErrorElement) { 
+                    authErrorElement.style.display = 'none';
+                    authErrorElement.textContent = '';
+                }
+                if (modalId === 'profileModal' && profileUpdateStatus) {
+                    profileUpdateStatus.style.display = 'none';
+                    profileUpdateStatus.textContent = '';
+                    if(profileAvatarUploadProgress) profileAvatarUploadProgress.style.display = 'none';
+                }
+            }
+        }
+        
+        window.addEventListener('click', (event) => {
+            if (event.target.classList.contains('modal')) {
+                closeModal(event.target.id);
+            }
+        });
+
+        document.querySelectorAll('#authModal .tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.dataset.tab;
+                document.querySelectorAll('#authModal .tab-pane').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('#authModal .tab-button').forEach(b => b.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                button.classList.add('active');
+                authModalTitle.textContent = tabId === 'loginPaneAuth' ? 'تسجيل الدخول' : 'إنشاء حساب جديد';
+                authErrorElement.style.display = 'none'; 
+            });
+        });
+        
+        function showStaticModal(title, text) {  
+            document.getElementById("modalTitleInfo").textContent = title; 
+            document.getElementById("modalTextInfo").innerHTML = text.replace(/\n/g, '<br>');
+            document.getElementById("modalLoadingInfo").style.display = "none"; 
+            document.getElementById("modalTextInfo").style.display = "block"; 
+            openModal(infoModalElement);
+        }
+        window.showStaticModal = showStaticModal; 
+
+        // --- Auth UI & Logic ---
+        function updateAuthUI() {
+            const userRole = currentUser?.role || 'limited_user';
+            const authHtmlDesktop = currentUser && currentUser.email ? `
+                <div id="userAvatarDesktop" class="user-avatar" title="ملفي الشخصي">${getInitials(currentUser)}</div>
+                <button id="logoutBtnDesktop" class="btn btn-outline">الخروج</button>` :
+                `<button id="loginBtnNavDesktop" class="btn btn-outline">تسجيل الدخول</button>`;
+
+            const authHtmlMobile = currentUser && currentUser.email ? `
+                <div id="userAvatarMobile" class="user-avatar mx-auto mb-2" title="ملفي الشخصي">${getInitials(currentUser)}</div>
+                <button id="logoutBtnMobile" class="btn btn-outline w-full">الخروج</button>` :
+                `<button id="loginBtnNavMobile" class="btn btn-outline w-full">تسجيل الدخول</button>`;
+
+            if (authContainerDesktop) authContainerDesktop.innerHTML = authHtmlDesktop;
+            if (authContainerMobile) authContainerMobile.innerHTML = authHtmlMobile;
+            
+            if (currentUser && currentUser.email) { 
+                const userAvatarDesktop = document.getElementById('userAvatarDesktop');
+                const logoutBtnDesktop = document.getElementById('logoutBtnDesktop');
+                const userAvatarMobile = document.getElementById('userAvatarMobile');
+                const logoutBtnMobile = document.getElementById('logoutBtnMobile');
+
+                if(userAvatarDesktop) userAvatarDesktop.addEventListener('click', openProfileModalHandler);
+                if(logoutBtnDesktop) logoutBtnDesktop.addEventListener('click', handleSupabaseLogout);
+                if(userAvatarMobile) userAvatarMobile.addEventListener('click', openProfileModalHandler);
+                if(logoutBtnMobile) logoutBtnMobile.addEventListener('click', handleSupabaseLogout);
+
+                const canPost = userRole === 'full_access_user' || userRole === 'admin';
+                addIdeaSection.style.display = canPost ? 'block' : 'none';
+                addEventFormContainer.style.display = canPost ? 'block' : 'none';
+
+                if(userIdDisplayContainer) userIdDisplayContainer.style.display = 'inline-block';
+                if(currentUserDisplaySpan) currentUserDisplaySpan.textContent = `${currentUser.email} (ID: ${currentUser.id.substring(0,6)}...)`;
+                if(currentUserRoleSpan) currentUserRoleSpan.textContent = `${userRole}`;
+
+            } else {
+                const loginBtnNavDesktop = document.getElementById('loginBtnNavDesktop');
+                const loginBtnNavMobile = document.getElementById('loginBtnNavMobile');
+
+                if(loginBtnNavDesktop) loginBtnNavDesktop.addEventListener('click', openAuthModalHandler);
+                if(loginBtnNavMobile) loginBtnNavMobile.addEventListener('click', openAuthModalHandler);
+                
+                addIdeaSection.style.display = 'none';
+                addEventFormContainer.style.display = 'none';
+                if(userIdDisplayContainer) userIdDisplayContainer.style.display = 'none';
+            }
+            loadIdeas(); 
+            loadEvents(); 
+        }
+        
+        function getInitials(user) {
+            if (!user) return '👤';
+            if (user.full_name_profile) {
+                return user.full_name_profile.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+            } else if (user.user_metadata?.full_name) {
+                return user.user_metadata.full_name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+            } else if (user.email) {
+                const emailPrefix = user.email.split('@')[0];
+                return emailPrefix.substring(0, Math.min(2, emailPrefix.length)).toUpperCase();
+            }
+            return '👤';
+        }
+
+        function openAuthModalHandler() {
+            document.querySelector('#authModal .tab-button[data-tab="loginPaneAuth"]').click();
+            openModal(authModalElement);
+            if (navLinksMobile.style.display === 'block') { 
+                navLinksMobile.style.display = 'none';
+                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        }
+        function openProfileModalHandler() {
+            loadProfileDataIntoModal(); 
+            openModal(profileModalElement);
+            if (navLinksMobile.style.display === 'block') { 
+                navLinksMobile.style.display = 'none';
+                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        }
+        
+        async function handleSupabaseLogin() {
+            authErrorElement.style.display = 'none';
+            loginButton.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> جاري...`; loginButton.disabled = true;
+
+            const email = emailInputLogin.value;
+            const password = passwordInputLogin.value;
+            if (!email || !password) {
+                authErrorElement.textContent = "الرجاء إدخال البريد الإلكتروني وكلمة المرور.";
+                authErrorElement.style.display = 'block';
+                loginButton.innerHTML = `دخول`; loginButton.disabled = false;
+                return;
+            }
+            
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            loginButton.innerHTML = `دخول`; loginButton.disabled = false;
+
+            if (error) {
+                authErrorElement.textContent = "خطأ في الدخول: " + (error.message.includes("Invalid login credentials") ? "البيانات غير صحيحة." : error.message.includes("Email not confirmed") ? "لم يتم تأكيد البريد الإلكتروني." : error.message);
+                authErrorElement.style.display = 'block';
+                return;
+            }
+            
+            closeModal('authModal');
+            // onAuthStateChange will handle UI updates and profile fetching.
+        }
+
+        async function handleSupabaseSignup() {
+            authErrorElement.style.display = 'none';
+            signupButton.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> جاري...`; signupButton.disabled = true;
+
+            const email = emailInputSignup.value;
+            const password = passwordInputSignup.value;
+            const academicId = academicIdInputSignup.value; 
+            const referralCode = referralCodeInputSignup.value; 
+
+            if (!email || !password || !academicId) {
+                authErrorElement.textContent = "الرجاء ملء حقول البريد، كلمة المرور، والرقم الأكاديمي.";
+                authErrorElement.style.display = 'block';
+                signupButton.innerHTML = `إنشاء حساب`; signupButton.disabled = false;
+                return;
+            }
+            if (password.length < 6) {
+                authErrorElement.textContent = "كلمة المرور يجب أن تكون 6 أحرف على الأقل.";
+                authErrorElement.style.display = 'block';
+                signupButton.innerHTML = `إنشاء حساب`; signupButton.disabled = false;
+                return;
+            }
+            
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: { data: { academic_id: academicId, referral_code: referralCode, full_name: email.split('@')[0] } } 
+            });
+            signupButton.innerHTML = `إنشاء حساب`; signupButton.disabled = false;
+
+            if (error) {
+                authErrorElement.textContent = "خطأ في التسجيل: " + error.message;
+                authErrorElement.style.display = 'block';
+                return;
+            }
+            
+            closeModal('authModal');
+            showStaticModal("نجاح", "تم إنشاء الحساب. الرجاء التحقق من بريدك الإلكتروني للتفعيل. قد يستغرق ظهور دورك الجديد بضع لحظات إذا استخدمت كود إحالة.");
+        }
+
+        async function handleSupabaseLogout() {
+            const { error } = await supabase.auth.signOut();
+            if (error) return showStaticModal("خطأ", error.message);
+            // onAuthStateChange will set currentUser to null and update UI.
+        }
+
+        loginButton.addEventListener('click', handleSupabaseLogin);
+        signupButton.addEventListener('click', handleSupabaseSignup);
+
+        // --- Auth State Listener ---
+        supabase.auth.onAuthStateChange(async (_event, session) => {
+            console.log("Auth state changed. Event:", _event, "InitialCheckDone:", initialAuthCheckDone);
+
+            if (!initialAuthCheckDone) {
+                initialAuthCheckDone = true; 
+                if (session && session.user) { // Check if there's an active session on initial load
+                    console.log("Initial session found on page load, forcing sign out as per request.");
+                    await supabase.auth.signOut(); 
+                    // Important: signOut will trigger onAuthStateChange again.
+                    // The subsequent call will have session = null, and the UI will be set to logged-out state.
+                    return; // Exit this execution to let the signOut-triggered call handle the UI.
+                }
+                // If no session on first check, proceed to set user as null (which will happen below if session is null)
+            }
+
+            // This part runs if:
+            // 1. It's the first run AND there was NO initial session (initialAuthCheckDone is now true).
+            // 2. It's a subsequent run (e.g., after a forced signOut, or after user actively logs in/out).
+            if (session && session.user) {
+                currentUser = session.user;
+                console.log("User is logged in (or has just logged in):", currentUser.email);
+                await fetchUserProfile(); 
+            } else {
+                currentUser = null;
+                console.log("User is logged out (or was forced out on refresh).");
+            }
+            updateAuthUI(); 
+            loadProfileDataIntoModal(); 
+        });
+        
+        async function fetchUserProfile() {
+            if (!currentUser || !currentUser.id) {
+                console.log("fetchUserProfile: No current user or user ID to fetch profile for.");
+                if(currentUser) currentUser.role = 'limited_user';
+                return;
+            }
+            
+            currentUser.role = 'limited_user'; 
+            console.log("Fetching profile for user ID:", currentUser.id);
+
+            try {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('role, full_name, academic_id, avatar_url')
+                    .eq('id', currentUser.id)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') { 
+                    console.error("Error fetching profile:", error.message);
+                } else if (data) {
+                    console.log("Profile data fetched successfully:", data);
+                    currentUser.role = data.role || 'limited_user'; 
+                    currentUser.full_name_profile = data.full_name;
+                    currentUser.academic_id_profile = data.academic_id;
+                    currentUser.avatar_url = data.avatar_url;
+                } else {
+                    console.log("No profile found for user or PGRST116. Role remains 'limited_user'.");
+                }
+            } catch (e) {
+                console.error("Exception during profile fetch:", e);
+            }
+            console.log("fetchUserProfile completed. User role is now:", currentUser.role);
+        }
+        
+        // --- Profile Management ---
+        function loadProfileDataIntoModal() {
+            if (!currentUser) {
+                profileFullNameInput.value = '';
+                profileAcademicIdInput.value = '';
+                profileAvatarPreview.src = 'https://placehold.co/120x120/1e1e1e/00f0ff?text=👤';
+                profileReferralCodeSection.style.display = 'none';
+                return;
+            }
+            profileFullNameInput.value = currentUser.full_name_profile || currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || '';
+            profileAcademicIdInput.value = currentUser.academic_id_profile || currentUser.user_metadata?.academic_id || '';
+            profileAvatarPreview.src = currentUser.avatar_url || `https://placehold.co/120x120/1e1e1e/00f0ff?text=${(getInitials(currentUser))}`;
+            
+            if (currentUser.role === 'limited_user' || !currentUser.role) { 
+                profileReferralCodeSection.style.display = 'block';
+            } else {
+                profileReferralCodeSection.style.display = 'none';
+            }
+        }
+        
+        window.previewProfileAvatar = function(event) { 
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { profileAvatarPreview.src = e.target.result; }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        window.updateUserProfile = async function() { 
+            if (!currentUser) return;
+            const fullName = profileFullNameInput.value.trim();
+            const academicId = profileAcademicIdInput.value.trim();
+            const avatarFile = profileAvatarInput.files[0];
+            
+            const updateButton = profileModalElement.querySelector('button[onclick="updateUserProfile()"]');
+            updateButton.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> جاري الحفظ...`; updateButton.disabled = true;
+            
+            profileUpdateStatus.style.display = 'block';
+            profileUpdateStatus.textContent = 'جاري الحفظ...';
+            profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-yellow-500 bg-opacity-30 text-yellow-300';
+
+            let avatarPublicUrl = currentUser.avatar_url; 
+            if (avatarFile) {
+                if(profileAvatarUploadProgress) {
+                    profileAvatarUploadProgress.style.display = 'block';
+                    profileAvatarUploadProgress.textContent = 'جاري رفع الصورة...';
+                }
+                const filePath = `public/${currentUser.id}/${Date.now()}_${avatarFile.name.replace(/\s+/g, '_')}`;
+                const avatarBucket = 'personal-image'; 
+                const { data: uploadData, error: uploadError } = await supabase.storage
+                    .from(avatarBucket) 
+                    .upload(filePath, avatarFile, { cacheControl: '3600', upsert: true });
+
+                if (uploadError) {
+                    profileUpdateStatus.textContent = "فشل رفع الصورة: " + uploadError.message;
+                    profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-red-900 bg-opacity-30 text-red-400';
+                    if(profileAvatarUploadProgress) profileAvatarUploadProgress.textContent = 'فشل الرفع.';
+                    updateButton.innerHTML = `حفظ التغييرات`; updateButton.disabled = false;
+                    return;
+                }
+                const { data: urlData } = supabase.storage.from(avatarBucket).getPublicUrl(uploadData.path);
+                avatarPublicUrl = urlData.publicUrl;
+                if(profileAvatarUploadProgress) profileAvatarUploadProgress.textContent = 'اكتمل رفع الصورة!';
+            }
+
+            const updates = {
+                id: currentUser.id, 
+                full_name: fullName,
+                academic_id: academicId,
+                avatar_url: avatarPublicUrl,
+                updated_at: new Date().toISOString(),
+            };
+
+            const { error: profileError } = await supabase.from('profiles').upsert(updates, { onConflict: 'id' });
+            updateButton.innerHTML = `حفظ التغييرات`; updateButton.disabled = false;
+
+            if (profileError) {
+                profileUpdateStatus.textContent = "فشل تحديث الملف الشخصي: " + profileError.message;
+                profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-red-900 bg-opacity-30 text-red-400';
+            } else {
+                profileUpdateStatus.textContent = 'تم حفظ التغييرات بنجاح!';
+                profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-green-500 bg-opacity-30 text-green-300';
+                await fetchUserProfile(); 
+                loadProfileDataIntoModal();
+                updateAuthUI(); 
+            }
+        }
+        
+        window.submitReferralCode = async function() { 
+            if (!currentUser) return;
+            const code = profileReferralCodeInput.value.trim();
+            profileUpdateStatus.style.display = 'block';
+            profileUpdateStatus.textContent = 'جاري التحقق...';
+            profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-yellow-500 bg-opacity-30 text-yellow-300';
+
+            if (code === 'MinaOmarMena') { 
+                 const { error } = await supabase
+                    .from('profiles')
+                    .update({ role: 'full_access_user', updated_at: new Date().toISOString() })
+                    .eq('id', currentUser.id);
+                if(error) {
+                    profileUpdateStatus.textContent = "خطأ في تطبيق الكود: " + error.message;
+                    profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-red-900 bg-opacity-30 text-red-400';
+                    return;
+                }
+                profileUpdateStatus.textContent = "تم تفعيل كود الإحالة بنجاح! تم ترقية صلاحياتك.";
+                profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-green-500 bg-opacity-30 text-green-300';
+                await fetchUserProfile(); 
+                loadProfileDataIntoModal(); 
+                updateAuthUI(); 
+            } else {
+                profileUpdateStatus.textContent = "كود الإحالة غير صحيح.";
+                profileUpdateStatus.className = 'text-sm text-center my-4 p-2 rounded bg-red-900 bg-opacity-30 text-red-400';
+            }
+        }
+
+        // --- Ideas CRUD ---
+        const ideasTable = 'Flash'; 
+        saveIdeaButton.addEventListener('click', async () => {
+            const ideaText = newIdeaInput.value.trim();
+            if (ideaText === "") return showStaticModal("خطأ", "الرجاء إدخال نص للفكرة.");
+            if (!currentUser) return showStaticModal("خطأ", "يجب تسجيل الدخول لإضافة فكرة.");
+
+            saveIdeaButton.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> جاري...`; saveIdeaButton.disabled = true;
+            const { error } = await supabase.from(ideasTable).insert([{ text: ideaText, user_id: currentUser.id }]);
+            saveIdeaButton.innerHTML = `<i class="fas fa-plus-circle mr-2"></i> حفظ الفكرة`; saveIdeaButton.disabled = false;
+
+            if (error) return showStaticModal("خطأ", "فشل حفظ الفكرة: " + error.message);
+
+            newIdeaInput.value = "";
+            showStaticModal("نجاح", "تم حفظ الفكرة!");
+            loadIdeas();
+        });
+
+        async function loadIdeas() {
+            ideasContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأفكار...</p></div>`;
+            
+            const { data: ideas, error } = await supabase
+                .from(ideasTable)
+                .select(`id, created_at, text, user_id`) 
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                ideasContainer.innerHTML = `<p class="text-red-500 text-center p-4">خطأ في تحميل الأفكار: ${error.message}</p>`;
+                return;
+            }
+            if (ideas.length === 0) {
+                ideasContainer.innerHTML = `<p class="text-center p-4 text-gray-400">لا توجد أفكار محفوظة حالياً. كن أول من يضيف فكرة!</p>`;
+                return;
+            }
+            
+            let content = '';
+            for (const idea of ideas) {
+                let authorName = 'مستخدم غير معروف';
+                if (idea.user_id) {
+                    const { data: profile, error: profileError } = await supabase
+                        .from('profiles')
+                        .select('full_name, email')
+                        .eq('id', idea.user_id)
+                        .single();
+                    if (profile) {
+                        authorName = profile.full_name || profile.email?.split('@')[0] || 'مستخدم';
+                    } else if (profileError && profileError.code !== 'PGRST116') {
+                        console.warn(`Error fetching profile for idea ${idea.id}:`, profileError.message);
+                    }
+                }
+
+                const canDelete = currentUser && (currentUser.id === idea.user_id || currentUser.role === 'admin' || currentUser.role === 'full_access_user');
+                const ideaDate = idea.created_at ? new Date(idea.created_at).toLocaleDateString('ar-EG', { day: 'numeric', month: 'short', year: 'numeric'}) : '';
+                content += `
+                <div class="card idea-card mb-4">
+                    <p class="my-3 text-lg">${idea.text}</p>
+                    <div class="flex justify-between items-center text-sm text-gray-400 mt-4">
+                        <span><i class="fas fa-user mr-1"></i> ${authorName} <span class="text-xs text-gray-500">(${ideaDate})</span></span>
+                        ${canDelete ? `<button onclick="deleteIdea('${idea.id}')" class="btn btn-danger py-1 px-2 text-xs"><i class="fas fa-trash-alt mr-1"></i>حذف</button>` : ''}
+                    </div>
+                </div>`;
+            }
+            ideasContainer.innerHTML = content;
+        }
+        
+        window.deleteIdea = async function(id) { 
+            showStaticModal("تأكيد الحذف", `هل أنت متأكد أنك تريد حذف هذه الفكرة؟ <br><br> <button id="confirmDelIdea" class="btn btn-danger">نعم, احذف</button> <button onclick="closeModal('infoModal')" class="btn btn-outline ml-2">إلغاء</button>`);
+            document.getElementById('confirmDelIdea').onclick = async () => {
+                closeModal('infoModal');
+                const { error } = await supabase.from(ideasTable).delete().match({ id });
+                if (error) showStaticModal("خطأ", "فشل الحذف: " + error.message);
+                else {
+                    showStaticModal("نجاح", "تم حذف الفكرة.");
+                    loadIdeas();
+                }
+            };
+        }
+        
+        // --- Events CRUD ---
+        const eventsTable = 'project_events'; 
+        const eventsStorageBucket = 'events-images';
+        saveEventButton.addEventListener('click', async () => {
+            if (!currentUser) return showStaticModal("خطأ", "يجب تسجيل الدخول لإضافة حدث.");
+            
+            const title = eventTitleInput.value.trim();
+            const description = eventDescriptionInput.value.trim();
+            const event_date = eventDateInput.value;
+            const imageFile = eventImageFileInput.files[0];
+            
+            if (!title || !description || !event_date) return showStaticModal("خطأ", "الرجاء ملء حقول العنوان، الوصف، والتاريخ للحدث.");
+
+            saveEventButton.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> جاري...`; saveEventButton.disabled = true;
+            let uploadedImageUrl = null;
+            if (imageUploadProgress) imageUploadProgress.style.display = 'none';
+            if (imageUploadProgressBar) { imageUploadProgressBar.style.width = '0%'; imageUploadProgressBar.textContent = '0%';}
+
+            if (imageFile) {
+                if (imageUploadProgress) imageUploadProgress.style.display = 'block';
+                const filePath = `public/${currentUser.id}/${Date.now()}_${imageFile.name.replace(/\s+/g, '_')}`;
+                const { data, error: uploadError } = await supabase.storage
+                    .from(eventsStorageBucket)
+                    .upload(filePath, imageFile, { cacheControl: '3600', upsert: false });
+                
+                if (imageUploadProgressBar) { imageUploadProgressBar.style.width = '50%'; imageUploadProgressBar.textContent = '50% (جاري الرفع)';}
+
+                if (uploadError) {
+                    saveEventButton.innerHTML = `<i class="fas fa-calendar-plus mr-2"></i> إضافة الحدث`; saveEventButton.disabled = false;
+                    return showStaticModal("خطأ في رفع الصورة", uploadError.message);
+                }
+                const { data: urlData } = supabase.storage.from(eventsStorageBucket).getPublicUrl(data.path);
+                uploadedImageUrl = urlData.publicUrl;
+                if (imageUploadProgressBar) { imageUploadProgressBar.style.width = '100%'; imageUploadProgressBar.textContent = 'اكتمل الرفع!';}
+            }
+
+            const { error: insertError } = await supabase.from(eventsTable).insert([
+                { title, description, event_date, image_url: uploadedImageUrl, user_id: currentUser.id }
+            ]);
+            saveEventButton.innerHTML = `<i class="fas fa-calendar-plus mr-2"></i> إضافة الحدث`; saveEventButton.disabled = false;
+
+            if (insertError) return showStaticModal("خطأ", "فشل إضافة الحدث: " + insertError.message);
+            
+            eventTitleInput.value = '';
+            eventDescriptionInput.value = '';
+            eventDateInput.value = '';
+            eventImageFileInput.value = '';
+            if (imageUploadProgress) setTimeout(() => { imageUploadProgress.style.display = 'none';}, 2000);
+            showStaticModal("نجاح", "تم إضافة الحدث بنجاح!");
+            loadEvents();
+        });
+
+        async function loadEvents() {
+            eventsContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأحداث...</p></div>`;
+            const { data: events, error } = await supabase
+                .from(eventsTable)
+                .select(`id, title, description, event_date, image_url, user_id`) 
+                .order('event_date', { ascending: false });
+
+            if (error) {
+                eventsContainer.innerHTML = `<p class="text-red-500 text-center p-4">خطأ في تحميل الأحداث: ${error.message}</p>`;
+                return;
+            }
+            if (events.length === 0) {
+                eventsContainer.innerHTML = `<p class="text-center p-4 text-gray-400">لا توجد أحداث أو منشورات حالياً.</p>`;
+                return;
+            }
+            let content = '';
+            for (const event of events) {
+                 let authorName = 'مستخدم غير معروف';
+                 if (event.user_id) {
+                    const { data: profile, error: profileError } = await supabase
+                        .from('profiles')
+                        .select('full_name, email')
+                        .eq('id', event.user_id)
+                        .single();
+                    if (profile) {
+                        authorName = profile.full_name || profile.email?.split('@')[0] || 'مستخدم';
+                    } else if (profileError && profileError.code !== 'PGRST116') {
+                        console.warn(`Error fetching profile for event ${event.id}:`, profileError.message);
+                    }
+                 }
+                 const canDelete = currentUser && (currentUser.id === event.user_id || currentUser.role === 'admin' || currentUser.role === 'full_access_user');
+                 const eventDateFormatted = new Date(event.event_date).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+                 const imageHtml = event.image_url ? `<img src="${event.image_url}" alt="${event.title}" class="event-image-display w-full h-auto max-h-60 object-cover rounded mb-3" onerror="this.style.display='none';">` : '';
+
+                content += `
+                <div class="card event-card mb-6" data-event-id="${event.id}">
+                    ${imageHtml}
+                    <h3 class="text-xl font-bold text-[var(--primary-color)] mb-2">${event.title}</h3>
+                    <p class="text-sm text-gray-400 mb-1">تاريخ الحدث: ${eventDateFormatted}</p>
+                    <p class="text-gray-300 mb-3 leading-relaxed">${event.description.replace(/\n/g, '<br>')}</p>
+                    <div class="flex justify-between items-center mt-auto pt-3 border-t border-gray-700">
+                        <p class="text-xs text-gray-500">أضيف بواسطة: ${authorName}</p>
+                        ${canDelete ? `<button onclick="deleteEvent('${event.id}', ${event.image_url ? `'${event.image_url}'` : null})" class="btn btn-danger btn-sm text-xs py-1 px-2"><i class="fas fa-trash-alt mr-1"></i>حذف</button>` : ''}
+                    </div>
+                    </div>`;
+            }
+            eventsContainer.innerHTML = content;
+        }
+        
+        window.deleteEvent = async function(eventId, imageUrl) { 
+             showStaticModal("تأكيد الحذف", `هل أنت متأكد أنك تريد حذف هذا الحدث؟ <br><br> <button id="confirmDelEvent" class="btn btn-danger">نعم, احذف</button> <button onclick="closeModal('infoModal')" class="btn btn-outline ml-2">إلغاء</button>`);
+            document.getElementById('confirmDelEvent').onclick = async () => {
+                closeModal('infoModal');
+                if (imageUrl) {
+                    const bucketName = eventsStorageBucket; 
+                    const urlParts = imageUrl.split('/');
+                    let filePath = '';
+                    const bucketNameIndex = urlParts.indexOf(bucketName);
+                    if (bucketNameIndex !== -1 && bucketNameIndex < urlParts.length -1) {
+                        filePath = urlParts.slice(bucketNameIndex + 1).join('/');
+                    }
+                    if (filePath) {
+                        const { error: storageError } = await supabase.storage.from(bucketName).remove([filePath]);
+                        if (storageError) console.warn("Could not delete image from storage:", storageError.message);
+                    }
+                }
+                const { error } = await supabase.from(eventsTable).delete().match({ id: eventId });
+                if (error) showStaticModal("خطأ", "فشل الحذف: " + error.message);
+                else {
+                    showStaticModal("نجاح", "تم حذف الحدث.");
+                    loadEvents();
+                }
+            };
+        }
+
+        // --- Static Data Loaders ---
+        function loadTeamMembers() {
+            const teamMembers = [ 
+                { name: "مينا حنا فهيم", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/275961489_2101578886686838_1186952474551148362_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=1d2534&_nc_ohc=Y7kffxkrcj4Q7kNvwGQ2c9J&_nc_oc=Adl1TKie-OM8LRAySw9Kpt56l5ENvuaQK3cxAmtB1tP_roES4P-V6x_HR0CBjm1-14Y&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=pHJP0egHAyTKWUvPObSo6w&oh=00_AfKwnHCpmkNWhAOUhw7lc6KneShAyz4OxEp2QI_R776plA&oe=683C0047" }, 
+                { name: "مينا فليب لبيب", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mena%20Philip.jpg" },
+                { name: "عمر عبد الهادي رمادي", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/468183044_2437537159925313_2222471100263851883_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=1d2534&_nc_ohc=_NE04TfgaSAQ7kNvwHlZOqE&_nc_oc=AdmEuKE-xDi72E7DMn2VlhE86dGz6QPhuaGX-cF6VYCRO5LgviwplYy7YPHMV_cA54I&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=V_nxds_h945QJcca_5A0mg&oh=00_AfIUPqCVD1VlNI29y9JngIgC_nn2Val78Tog_2ksytAX3g&oe=683BF6C3" }, 
+                { name: "محمد سيد محمد حسان", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-6/468897498_956460742997297_4252898402209943443_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=110&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=6VYrD6NRkhQQ7kNvwEoWVsa&_nc_oc=Adkzd3txaXg7ZdnhdedeJ84u6-2RVg9xqzzBJ6_3Ejt554ZyypETAVlMzBhFHtVog5w&_nc_zt=23&_nc_ht=scontent.fcai2-2.fna&_nc_gid=LBGu68vI2kUFSxu_qnDw8A&oh=00_AfKYo5L-jDzHgXJcW0dufezUmquW9YMFs7eD7Nb7XNNw7w&oe=683BEE8B" },
+                { name: "محمد محمود بربري", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-6/470165541_4094575017436722_4593658555281273385_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=VJQgz6RpGeoQ7kNvwEx496C&_nc_oc=AdkF6Cy3nZgJQO6yCEtJBEwsgi5tgoopzrxjgBcugYfq5bwJoggbEp7WGh3mw_eF5QU&_nc_zt=23&_nc_ht=scontent.fcai2-2.fna&_nc_gid=u0NjoM5BSF6XuW5o5ZfQYA&oh=00_AfJlJ55AuNqroATBFoS7HT6x3TpFkV8VR4WXUaBlpz7DTQ&oe=683BE7E3" }, 
+                { name: "احمد طارق احمد محمد", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-1.fna.fbcdn.net/v/t39.30808-1/353852201_1923806154628741_2807269224716755389_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=104&ccb=1-7&_nc_sid=e99d92&_nc_ohc=_p81SIRjRvQQ7kNvwGKpFIM&_nc_oc=Adkj_fnYuMhOzZamx0NWLaN6ru5j62Fa6-dO2zf4GBPNnNT4HeW_K1q6mhCEbIyfNJU&_nc_zt=24&_nc_ht=scontent.fcai2-1.fna&_nc_gid=OauDqwAwI9X3_yqSF9lPzA&oh=00_AfLrx3KYndYl9bx69zg_GofswJugj8K82hQHaT-ex5sggA&oe=683C0E6A" },
+                { name: "شروق محمد فتحي", role: "مهندس كهرباء" }, 
+                { name: "فرحه محمد صلاح", role: "مهندس كهرباء" },
+                { name: "حسن السيد فواز", role: "مهندس كهرباء" }, 
+                { name: "احمد اشرف سليمان", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/434145069_1816733895407191_5553289515299517712_n.jpg?stp=c0.0.960.960a_dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=e99d92&_nc_ohc=jzAXyr42rJMQ7kNvwH6ZYjY&_nc_oc=AdnuHAhDs36kdx83KUdpVNnNArJmw73cb0c6nC8BkaUw-9L1m_Iy8JcsoPH57mL4AHs&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=SYk55mlBXjwqw5QrzTtjeQ&oh=00_AfKvO4MqzZlEbGjM-P0uR03dm0GfNDXNYxr6-aq_Su7hRw&oe=683C00F8" },
+                { name: "كريم احمد نور الدين", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-1.fna.fbcdn.net/v/t39.30808-6/480593048_1175410563998992_2144503893709080693_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=9XnCUadAXZkQ7kNvwFumUC6&_nc_oc=AdleDMcz_uhUxDcfTERzjbeX_TzvzUJPMtGZ2qmlQ1qigXyovD7Ry5o7zAaTgnQrfsY&_nc_zt=23&_nc_ht=scontent.fcai2-1.fna&_nc_gid=2vxcBeiOL_eBs2BFIXY_mg&oh=00_AfL_DB8FW1hQIuZ1W1opaL3Z-C1Cu0_gKJPHBMedp2aNdQ&oe=683C09B8" },
+                { name: "مكان شاغر 1", role: "انضم إلينا!" }, { name: "مكان شاغر 2", role: "انضم إلينا!" },
+                { name: "مكان شاغر 3", role: "انضم إلينا!" }, { name: "مكان شاغر 4", role: "انضم إلينا!" }
+            ];
+            const teamGrid = document.getElementById('teamGrid');
+            teamGrid.innerHTML = teamMembers.map(member => {
+                const initials = member.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+                const imgSrc = member.imgUrl ? member.imgUrl : `https://placehold.co/100x100/1e1e1e/00f0ff?text=${initials}&font=cairo`;
+                const placeholderSrc = `https://placehold.co/100x100/1e1e1e/cccccc?text=${initials}&font=cairo`;
+                return `
+                <div class="team-member">
+                    <img src="${imgSrc}" alt="${member.name}" class="member-avatar" onerror="this.onerror=null; this.src='${placeholderSrc}';">
+                    <h3 class="mt-2 font-bold text-md">${member.name}</h3>
+                    <p class="text-sm text-gray-400">${member.role}</p>
+                </div>`;
+            }).join('');
+        }
+        
+        function loadTechnologies() {
+            const technologies = [
+                { icon: "fa-network-wired", title: "شبكات ذكية", description: "بنية تحتية متطورة للشبكات الكهربية." },
+                { icon: "fa-database", title: "تحليل البيانات الضخمة", description: "معالجة وتحليل بيانات الاستهلاك." },
+                { icon: "fa-robot", title: "أنظمة الأتمتة", description: "أتمتة عمليات المراقبة والتوزيع." },
+                { icon: "fa-solar-panel", title: "تكامل الطاقة المتجددة", description: "دمج مصادر الطاقة المتجددة بكفاءة." },
+                { icon: "fa-shield-alt", title: "أمن سيبراني", description: "حماية البنية التحتية من التهديدات." },
+                { icon: "fa-mobile-alt", title: "تطبيقات المستخدم", description: "واجهات سهلة للتحكم والمراقبة." },
+            ];
+            const techList = document.getElementById('technologiesList');
+            techList.innerHTML = technologies.map(tech => `
+                <div class="tech-item">
+                    <i class="fas ${tech.icon}"></i>
+                    <h3>${tech.title}</h3>
+                    <p class="text-gray-400 text-sm">${tech.description}</p>
+                </div>
+            `).join('');
+        }
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM Content Loaded. Initializing static content. Auth will be handled by onAuthStateChange.");
+            
+            loadTeamMembers(); 
+            loadTechnologies(); 
+            
+            // Set initial UI to "logged out" or "loading" state.
+            // onAuthStateChange will take over from here.
+            if(authContainerDesktop) {
+                authContainerDesktop.innerHTML = `<button id="loginBtnNavDesktop" class="btn btn-outline">تسجيل الدخول</button>`;
+                const btnDesktop = document.getElementById('loginBtnNavDesktop');
+                if(btnDesktop) btnDesktop.addEventListener('click', openAuthModalHandler);
+            }
+            if(authContainerMobile) {
+                 authContainerMobile.innerHTML = `<button id="loginBtnNavMobile" class="btn btn-outline w-full">تسجيل الدخول</button>`;
+                 const btnMobile = document.getElementById('loginBtnNavMobile');
+                 if(btnMobile) btnMobile.addEventListener('click', openAuthModalHandler);
+            }
+            
+            ideasContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأفكار...</p></div>`;
+            eventsContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأحداث...</p></div>`;
+            
+            // onAuthStateChange is the single source of truth for auth-dependent UI and data loading.
+        });
+    </script>
+</body>
+</html>
