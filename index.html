@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشروع Flash - أنظمة التوزيع الكهربي الذكية (مؤمن بـ Edge Functions)</title>
+    <title>مشروع Flash - أنظمة التوزيع الكهربي الذكية (مراجعة المصادقة)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
@@ -670,7 +670,7 @@
 
         // --- Global State ---
         let currentUser = null; 
-        let initialAuthCheckDone = false; 
+        // let initialAuthCheckDone = false; // No longer needed for forced logout
 
 
         // --- DOM Elements ---
@@ -935,16 +935,21 @@
                 return;
             }
             
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            loginButton.innerHTML = `دخول`; loginButton.disabled = false;
-
-            if (error) {
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error; // Throw error to be caught by catch block
+                
+                // onAuthStateChange will be triggered by successful login
+                // It will then call fetchUserProfile and updateAuthUI
+                closeModal('authModal');
+                // No direct UI update here, let onAuthStateChange handle it
+            } catch (error) {
+                console.error("Login error:", error);
                 authErrorElement.textContent = "خطأ في الدخول: " + (error.message.includes("Invalid login credentials") ? "البيانات غير صحيحة." : error.message.includes("Email not confirmed") ? "لم يتم تأكيد البريد الإلكتروني." : error.message);
                 authErrorElement.style.display = 'block';
-                return;
+            } finally {
+                loginButton.innerHTML = `دخول`; loginButton.disabled = false;
             }
-            
-            closeModal('authModal');
         }
 
         async function handleSupabaseSignup() {
@@ -969,26 +974,29 @@
                 return;
             }
             
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password,
-                options: { data: { academic_id: academicId, referral_code: referralCode, full_name: email.split('@')[0] } } 
-            });
-            signupButton.innerHTML = `إنشاء حساب`; signupButton.disabled = false;
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: { data: { academic_id: academicId, referral_code: referralCode, full_name: email.split('@')[0] } } 
+                });
+                 if (error) throw error;
 
-            if (error) {
+                closeModal('authModal');
+                showStaticModal("نجاح", "تم إنشاء الحساب. الرجاء التحقق من بريدك الإلكتروني للتفعيل. قد يستغرق ظهور دورك الجديد بضع لحظات إذا استخدمت كود إحالة.");
+            } catch (error) {
+                 console.error("Signup error:", error);
                 authErrorElement.textContent = "خطأ في التسجيل: " + error.message;
                 authErrorElement.style.display = 'block';
-                return;
+            } finally {
+                signupButton.innerHTML = `إنشاء حساب`; signupButton.disabled = false;
             }
-            
-            closeModal('authModal');
-            showStaticModal("نجاح", "تم إنشاء الحساب. الرجاء التحقق من بريدك الإلكتروني للتفعيل. قد يستغرق ظهور دورك الجديد بضع لحظات إذا استخدمت كود إحالة.");
         }
 
         async function handleSupabaseLogout() {
             const { error } = await supabase.auth.signOut();
             if (error) return showStaticModal("خطأ", error.message);
+            // onAuthStateChange will set currentUser to null and update UI.
         }
 
         loginButton.addEventListener('click', handleSupabaseLogin);
@@ -996,24 +1004,15 @@
 
         // --- Auth State Listener ---
         supabase.auth.onAuthStateChange(async (_event, session) => {
-            console.log("Auth state changed. Event:", _event, "InitialCheckDone:", initialAuthCheckDone);
-
-            if (!initialAuthCheckDone) {
-                initialAuthCheckDone = true; 
-                if (session && session.user) { 
-                    console.log("Initial session found on page load, forcing sign out as per request.");
-                    await supabase.auth.signOut(); 
-                    return; 
-                }
-            }
-
+            console.log("Auth state changed. Event:", _event, "Session:", session);
+            // Removed the forced logout on initial load to allow session persistence
             if (session && session.user) {
                 currentUser = session.user;
-                console.log("User is logged in (or has just logged in):", currentUser.email);
+                console.log("User is logged in:", currentUser.email);
                 await fetchUserProfile(); 
             } else {
                 currentUser = null;
-                console.log("User is logged out (or was forced out on refresh).");
+                console.log("User is logged out.");
             }
             updateAuthUI(); 
             loadProfileDataIntoModal(); 
@@ -1154,7 +1153,7 @@
             if (!enteredCode) {
                 if(referralStatusDiv) {
                     referralStatusDiv.textContent = "الرجاء إدخال كود الإحالة.";
-                    referralStatusDiv.className = 'text-sm text-yellow-300 text-center mb-4'; // Adjusted color for light theme
+                    referralStatusDiv.className = 'text-sm text-yellow-300 text-center mb-4'; 
                     referralStatusDiv.style.display = 'block';
                 }
                 setTimeout(() => { if(referralStatusDiv) referralStatusDiv.style.display = 'none';}, 3000);
@@ -1184,19 +1183,19 @@
                     }
                     if(referralStatusDiv) {
                         referralStatusDiv.textContent = errorMessage;
-                        referralStatusDiv.className = 'text-sm text-red-500 text-center mb-4'; // Adjusted color
+                        referralStatusDiv.className = 'text-sm text-red-500 text-center mb-4'; 
                         referralStatusDiv.style.display = 'block';
                     }
                 } else {
                     console.log("apply_referral_code Edge Function invoked successfully. Response:", data);
                     if(referralStatusDiv) {
                         referralStatusDiv.textContent = data.message || "تم تطبيق كود الإحالة بنجاح!";
-                        referralStatusDiv.className = 'text-sm text-green-500 text-center mb-4'; // Adjusted color
+                        referralStatusDiv.className = 'text-sm text-green-500 text-center mb-4'; 
                         referralStatusDiv.style.display = 'block';
                     }
                     await fetchUserProfile(); 
                     updateAuthUI(); 
-                    loadProfileDataIntoModal(); // This will hide the referral section if role changed
+                    loadProfileDataIntoModal(); 
                 }
             } catch (error) {
                 console.error("Unexpected error during Edge Function invoke (apply_referral_code):", error);
@@ -1207,7 +1206,7 @@
                 }
             } finally {
                 setTimeout(() => { 
-                    if(referralStatusDiv && !referralStatusDiv.className.includes('text-green-500')) { // Hide only if not success message
+                    if(referralStatusDiv && !referralStatusDiv.className.includes('text-green-500')) { 
                         referralStatusDiv.style.display = 'none';
                     }
                 }, 4000);
@@ -1224,7 +1223,6 @@
 
             saveIdeaButton.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> جاري...`; saveIdeaButton.disabled = true;
             
-            // *** Invoke Edge Function 'create_idea' ***
             console.log("Attempting to invoke create_idea Edge Function for saving idea...");
             const { data, error } = await window.supabaseClient.functions.invoke('create_idea', {
                 method: 'POST',
@@ -1297,9 +1295,6 @@
         }
         
         window.deleteIdea = async function(id) { 
-            // Note: For enhanced security, deletion should also ideally be handled by an Edge Function
-            // that verifies ownership or admin privileges on the server-side.
-            // The current client-side check (canDelete in loadIdeas) is for UI only.
             showStaticModal("تأكيد الحذف", `هل أنت متأكد أنك تريد حذف هذه الفكرة؟ <br><br> <button id="confirmDelIdea" class="btn btn-danger">نعم, احذف</button> <button onclick="closeModal('infoModal')" class="btn btn-outline ml-2">إلغاء</button>`);
             document.getElementById('confirmDelIdea').onclick = async () => {
                 closeModal('infoModal');
@@ -1316,9 +1311,6 @@
         const eventsTable = 'project_events'; 
         const eventsStorageBucket = 'events-images';
         saveEventButton.addEventListener('click', async () => {
-            // This function should also be refactored to use an Edge Function ('create_event')
-            // for security, especially for handling image uploads and verifying user permissions.
-            // The current implementation is client-side and less secure for these operations.
             if (!currentUser) return showStaticModal("خطأ", "يجب تسجيل الدخول لإضافة حدث.");
             
             const title = eventTitleInput.value.trim();
@@ -1351,12 +1343,6 @@
                 if (imageUploadProgressBar) { imageUploadProgressBar.style.width = '100%'; imageUploadProgressBar.textContent = 'اكتمل الرفع!';}
             }
 
-            // Replace with Edge Function call:
-            // const { data: eventData, error: insertError } = await supabaseClient.functions.invoke('create_event', {
-            //    method: 'POST',
-            //    body: { title, description, event_date, image_url: uploadedImageUrl }
-            // });
-            // For now, direct insert (less secure):
             const { error: insertError } = await supabase.from(eventsTable).insert([
                 { title, description, event_date, image_url: uploadedImageUrl, user_id: currentUser.id }
             ]);
@@ -1423,8 +1409,7 @@
         }
         
         window.deleteEvent = async function(eventId, imageUrl) { 
-            // Note: Deletion of events and associated images should also ideally be handled by an Edge Function.
-            showStaticModal("تأكيد الحذف", `هل أنت متأكد أنك تريد حذف هذا الحدث؟ <br><br> <button id="confirmDelEvent" class="btn btn-danger">نعم, احذف</button> <button onclick="closeModal('infoModal')" class="btn btn-outline ml-2">إلغاء</button>`);
+             showStaticModal("تأكيد الحذف", `هل أنت متأكد أنك تريد حذف هذا الحدث؟ <br><br> <button id="confirmDelEvent" class="btn btn-danger">نعم, احذف</button> <button onclick="closeModal('infoModal')" class="btn btn-outline ml-2">إلغاء</button>`);
             document.getElementById('confirmDelEvent').onclick = async () => {
                 closeModal('infoModal');
                 if (imageUrl) {
@@ -1510,6 +1495,8 @@
             initParticles();      
             animateParticles();   
 
+            // Set initial UI to "logged out" or "loading" state.
+            // onAuthStateChange will take over from here.
             if(authContainerDesktop) {
                 authContainerDesktop.innerHTML = `<button id="loginBtnNavDesktop" class="btn btn-outline">تسجيل الدخول</button>`;
                 const btnDesktop = document.getElementById('loginBtnNavDesktop');
@@ -1524,6 +1511,7 @@
             ideasContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأفكار...</p></div>`;
             eventsContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأحداث...</p></div>`;
             
+            // onAuthStateChange is the single source of truth for auth-dependent UI and data loading.
         });
         window.addEventListener('resize', () => { 
             resizeParticleCanvas();
