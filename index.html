@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشروع Flash - أنظمة التوزيع الكهربي الذكية (مراجعة المصادقة)</title>
+    <title>مشروع Flash - أنظمة التوزيع الكهربي الذكية (فرض تسجيل الخروج عند التحديث)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
@@ -670,7 +670,7 @@
 
         // --- Global State ---
         let currentUser = null; 
-        // let initialAuthCheckDone = false; // No longer needed for forced logout
+        let initialAuthCheckDone = false; 
 
 
         // --- DOM Elements ---
@@ -937,12 +937,9 @@
             
             try {
                 const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-                if (error) throw error; // Throw error to be caught by catch block
+                if (error) throw error; 
                 
-                // onAuthStateChange will be triggered by successful login
-                // It will then call fetchUserProfile and updateAuthUI
                 closeModal('authModal');
-                // No direct UI update here, let onAuthStateChange handle it
             } catch (error) {
                 console.error("Login error:", error);
                 authErrorElement.textContent = "خطأ في الدخول: " + (error.message.includes("Invalid login credentials") ? "البيانات غير صحيحة." : error.message.includes("Email not confirmed") ? "لم يتم تأكيد البريد الإلكتروني." : error.message);
@@ -996,7 +993,6 @@
         async function handleSupabaseLogout() {
             const { error } = await supabase.auth.signOut();
             if (error) return showStaticModal("خطأ", error.message);
-            // onAuthStateChange will set currentUser to null and update UI.
         }
 
         loginButton.addEventListener('click', handleSupabaseLogin);
@@ -1005,7 +1001,7 @@
         // --- Auth State Listener ---
         supabase.auth.onAuthStateChange(async (_event, session) => {
             console.log("Auth state changed. Event:", _event, "Session:", session);
-            // Removed the forced logout on initial load to allow session persistence
+            
             if (session && session.user) {
                 currentUser = session.user;
                 console.log("User is logged in:", currentUser.email);
@@ -1495,8 +1491,6 @@
             initParticles();      
             animateParticles();   
 
-            // Set initial UI to "logged out" or "loading" state.
-            // onAuthStateChange will take over from here.
             if(authContainerDesktop) {
                 authContainerDesktop.innerHTML = `<button id="loginBtnNavDesktop" class="btn btn-outline">تسجيل الدخول</button>`;
                 const btnDesktop = document.getElementById('loginBtnNavDesktop');
@@ -1511,7 +1505,6 @@
             ideasContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأفكار...</p></div>`;
             eventsContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p class="mr-3">جاري تحميل الأحداث...</p></div>`;
             
-            // onAuthStateChange is the single source of truth for auth-dependent UI and data loading.
         });
         window.addEventListener('resize', () => { 
             resizeParticleCanvas();
