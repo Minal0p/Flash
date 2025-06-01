@@ -12,7 +12,80 @@
     <style>
         body {
             font-family: "Noto Sans Arabic", "Be Vietnam Pro", sans-serif;
+            transition: background-color 0.3s, color 0.3s;
         }
+        .dark body {
+            background-color: #1f2937; /* Tailwind gray-800 */
+            color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        .dark header, .dark footer, .dark .modal-content, .dark #mobile-menu {
+            background-color: #374151; /* Tailwind gray-700 */
+            border-color: #4b5563; /* Tailwind gray-600 */
+        }
+        .dark .content-section, .dark .layout-content-container, .dark #create-event-form-container, 
+        .dark #event-details-content, .dark #event-comments-list, .dark #add-comment-form-container,
+        .dark #create-flash-form-container, .dark #current-user-profile-form-container {
+            background-color: #374151; /* Tailwind gray-700 for sections */
+        }
+         .dark .team-member-card, .dark .bg-white { /* For cards and other white backgrounds */
+            background-color: #4b5563; /* Tailwind gray-600 */
+            border-color: #6b7280; /* Tailwind gray-500 */
+        }
+
+        .dark .text-\[\#0e141b\], .dark .text-\[\#101418\], .dark .text-black, .dark .text-gray-800, .dark .text-gray-700 {
+            color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        .dark .text-\[\#5c718a\], .dark .text-slate-600, .dark .text-gray-600, .dark .text-gray-500, .dark .text-gray-400, .dark .text-\[\#4e7097\] {
+            color: #d1d5db; /* Tailwind gray-300 */
+        }
+        .dark .border-\[\#d4dbe2\], .dark .border-gray-300, .dark .border-gray-200 {
+            border-color: #6b7280; /* Tailwind gray-500 */
+        }
+        .dark .bg-gray-50, .dark .bg-slate-50 {
+            background-color: #1f2937; /* Tailwind gray-800 */
+        }
+         .dark .bg-gray-100 {
+            background-color: #374151; /* Tailwind gray-700 */
+         }
+        .dark .placeholder\:text-\[\#5c718a\]::placeholder {
+            color: #9ca3af; /* Tailwind gray-400 */
+        }
+        .dark .form-input {
+            background-color: #374151; /* Tailwind gray-700 */
+            border-color: #6b7280; /* Tailwind gray-500 */
+            color: #f3f4f6;
+        }
+        .dark .form-input:focus {
+            border-color: #1978e5;
+        }
+        .dark .nav-link.text-\[\#0e141b\] {
+            color: #f3f4f6;
+        }
+        .dark .nav-link.text-\[\#0e141b\]:hover {
+            color: #3b82f6; /* Tailwind blue-500 for hover in dark mode */
+        }
+        .dark .nav-link.text-\[\#4e7097\] {
+            color: #d1d5db;
+        }
+         .dark .nav-link.text-\[\#4e7097\]:hover {
+            color: #3b82f6;
+         }
+        .dark #create-event-btn, .dark #create-flash-btn {
+            background-color: #4b5563; /* Tailwind gray-600 */
+            color: #f3f4f6;
+        }
+        .dark #create-event-btn:hover, .dark #create-flash-btn:hover {
+            background-color: #6b7280; /* Tailwind gray-500 */
+        }
+        .dark .form-button.bg-gray-300 {
+            background-color: #6b7280; /* Tailwind gray-500 */
+            color: #f3f4f6;
+        }
+        .dark .form-button.bg-gray-300:hover {
+            background-color: #4b5563; /* Tailwind gray-600 */
+        }
+
+
         /* Helper class to hide sections */
         .hidden-section {
             display: none !important;
@@ -21,6 +94,9 @@
         .nav-active {
             font-weight: bold;
             color: #1978e5; /* Tailwind blue-600 */
+        }
+        .dark .nav-active {
+            color: #60a5fa; /* Lighter blue for dark mode active */
         }
         /* Custom modal styles */
         .modal {
@@ -92,9 +168,12 @@
             width: 100%;
         }
         .team-member-card {
-            /* Basic styling for team member cards, can be enhanced */
-            background-color: #f9fafb; /* Tailwind gray-50 */
-             border: 1px solid #e5e7eb; /* Tailwind gray-200 */
+            background-color: #f9fafb; 
+             border: 1px solid #e5e7eb; 
+        }
+        .dark .team-member-card {
+            background-color: #4b5563; /* Tailwind gray-600 */
+            border-color: #6b7280; /* Tailwind gray-500 */
         }
          /* Animation for cards */
         @keyframes slideInUp {
@@ -154,6 +233,10 @@
                 </nav>
 
                 <div class="flex items-center gap-2 sm:gap-4">
+                     <button id="theme-toggle-button" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden-section" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden-section" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm-.464 4.076a1 1 0 011.414 0l.707.707a1 1 0 11-1.414 1.414l-.707-.707a1 1 0 010-1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    </button>
                     <div id="auth-links" class="flex items-center gap-2 sm:gap-4">
                         <button id="nav-login-btn" data-target="login" class="nav-link flex min-w-[70px] sm:min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 sm:h-10 px-3 sm:px-4 bg-[#1978e5] text-slate-50 text-xs sm:text-sm font-bold leading-normal tracking-[0.015em]">
                             <span class="truncate">تسجيل الدخول</span>
@@ -169,7 +252,7 @@
                             <span class="truncate">تسجيل الخروج</span>
                         </button>
                     </div>
-                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                         </svg>
@@ -177,12 +260,12 @@
                 </div>
             </header>
             <div id="mobile-menu" class="md:hidden bg-white shadow-lg py-2 hidden-section">
-                <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="home">الرئيسية</a>
-                <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="events">الفعاليات</a>
-                <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="profiles">الأعضاء</a>
-                <a id="my-profile-nav-link-mobile" class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] hidden-section" href="#" data-target="my-profile-section">ملفي الشخصي</a>
-                <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="flash-feed">منشورات فلاش</a>
-                <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="contact">اتصل بنا</a>
+                <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] dark:text-gray-200 dark:hover:text-blue-400" href="#" data-target="home">الرئيسية</a>
+                <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] dark:text-gray-200 dark:hover:text-blue-400" href="#" data-target="events">الفعاليات</a>
+                <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] dark:text-gray-200 dark:hover:text-blue-400" href="#" data-target="profiles">الأعضاء</a>
+                <a id="my-profile-nav-link-mobile" class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] hidden-section dark:text-gray-200 dark:hover:text-blue-400" href="#" data-target="my-profile-section">ملفي الشخصي</a>
+                <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] dark:text-gray-200 dark:hover:text-blue-400" href="#" data-target="flash-feed">منشورات فلاش</a>
+                <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] dark:text-gray-200 dark:hover:text-blue-400" href="#" data-target="contact">اتصل بنا</a>
             </div>
 
 
@@ -956,24 +1039,25 @@
 
         function createProfileCard(profile, isSpecial = false) { 
             const cardClasses = isSpecial 
-                ? "flex flex-col gap-3 text-center pb-3 bg-white p-4 rounded-lg shadow-md border-2 border-yellow-400" 
-                : "flex flex-col gap-3 text-center pb-3 bg-white p-4 rounded-lg shadow-md";
+                ? "team-member-card special-member-card" 
+                : "team-member-card";
 
             return `
-                <div class="${cardClasses}">
+                <div class="${cardClasses} p-2 sm:p-3 rounded-lg text-center">
                     <div class="px-4">
-                        <img src="${profile.avatar_url || 'https://placehold.co/150x150/E0E0E0/B0B0B0?text=?'}" alt="${profile.full_name || 'Profile'}" class="w-full aspect-square bg-cover rounded-full object-cover mx-auto max-w-[150px]">
+                        <img src="${profile.avatar_url || `https://placehold.co/70x70/1a1a1a/00f0ff?text=${encodeURIComponent(profile.imgInitial || '؟')}&font=cairo`}" 
+                             alt="صورة ${profile.full_name || 'عضو'}" 
+                             class="w-14 h-14 sm:w-16 sm:h-16 rounded-full mx-auto mb-1 border-2 shadow-md object-cover" 
+                             onerror="this.onerror=null; this.src='https://placehold.co/70x70/1a1a1a/cccccc?text=${encodeURIComponent(profile.imgInitial || '؟')}&font=cairo';">
                     </div>
                     <div>
-                        <p class="text-[#101418] text-base font-medium leading-normal">
+                        <p class="text-[#101418] text-xs font-bold mb-0.5 leading-tight">
                             ${profile.full_name || 'غير متوفر'}
                             ${isSpecial ? '<span class="ml-1 text-yellow-500">⭐</span>' : ''}
                         </p>
-                        <p class="text-[#5c718a] text-sm font-normal leading-normal">
-                            الرقم الأكاديمي: ${profile.academic_id || 'N/A'}<br>
-                            الدور: ${profile.role || 'N/A'}<br>
-                            اسم المستخدم: ${profile.User_Name || 'N/A'}
-                        </p>
+                        <p class="font-semibold text-xxs text-blue-500" style="font-size: 0.6rem;">${profile.role || 'عضو'}</p>
+                         ${profile.academic_id && profile.academic_id !== 'N/A' ? `<p class="text-gray-500 dark:text-gray-400 text-xxs" style="font-size: 0.55rem;">ID: ${profile.academic_id}</p>` : ''}
+                         ${profile.User_Name ? `<p class="text-gray-500 dark:text-gray-400 text-xxs" style="font-size: 0.55rem;">@${profile.User_Name}</p>` : ''}
                     </div>
                 </div>
             `;
@@ -987,7 +1071,6 @@
             }
             teamMembersContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل ملفات الفريق...</div>';
             
-            const currentAuthUserId = currentUser?.id; 
             const teamMembersData = [ 
                 { name: "مينا حنا فهيم", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/275961489_2101578886686838_1186952474551148362_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=1d2534&_nc_ohc=Y7kffxkrcj4Q7kNvwGQ2c9J&_nc_oc=Adl1TKie-OM8LRAySw9Kpt56l5ENvuaQK3cxAmtB1tP_roES4P-V6x_HR0CBjm1-14Y&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=pHJP0egHAyTKWUvPObSo6w&oh=00_AfKwnHCpmkNWhAOUhw7lc6KneShAyz4OxEp2QI_R776plA&oe=683C0047", imgInitial: "م.ح" },
                 { name: "مينا فليب لبيب", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mena%20Philip.jpg", imgInitial: "م.ف" },
@@ -1005,12 +1088,13 @@
             let memberHtml = '';
 
             teamMembersData.forEach((member, index) => {
-                const profileData = {
+                 const profileData = { // Construct a profile-like object for createProfileCard
                     full_name: member.name,
                     role: member.role,
                     avatar_url: member.imgUrl,
-                    academic_id: 'N/A', 
-                    User_Name: member.name.toLowerCase().replace(/\s+/g, '_') 
+                    academic_id: 'N/A', // Or fetch if available
+                    User_Name: member.name.toLowerCase().replace(/\s+/g, '_'), // Simple username generation
+                    imgInitial: member.imgInitial // Make sure imgInitial is passed
                 };
                 memberHtml += createProfileCard(profileData, false); 
             });
@@ -1741,17 +1825,17 @@
             const authorAvatarUrl = post.profiles?.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=?';
             
             return `
-                <div class="bg-white p-5 rounded-lg shadow-md">
+                <div class="bg-white dark:bg-gray-700 p-5 rounded-lg shadow-md">
                     <div class="flex items-center mb-3">
                         <img src="${authorAvatarUrl}" alt="${authorName}" class="w-10 h-10 rounded-full mr-3 object-cover">
                         <div>
-                            <p class="font-semibold text-gray-800">${authorName}</p>
-                            <p class="text-xs text-gray-500">${postDate}</p>
+                            <p class="font-semibold text-gray-800 dark:text-gray-100">${authorName}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">${postDate}</p>
                         </div>
                     </div>
-                    <p class="text-gray-700 whitespace-pre-wrap">${post.text}</p>
+                    <p class="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">${post.text}</p>
                     ${post.Password ? '<p class="text-xs text-red-500 mt-2">هذا المنشور محمي بكلمة مرور (للعرض فقط).</p>' : ''}
-                    <p class="text-xs text-gray-400 mt-2">الرقم الأكاديمي للكاتب: ${post["Academic - id"] || 'N/A'}</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">الرقم الأكاديمي للكاتب: ${post["Academic - id"] || 'N/A'}</p>
                 </div>
             `;
         }
@@ -1759,7 +1843,7 @@
         async function loadFlashPosts() {
             const flashPostsListContainer = document.getElementById('flash-posts-list'); 
              if (!flashPostsListContainer) { console.error("Flash posts list container not found"); return; }
-            flashPostsListContainer.innerHTML = '<div class="text-center p-4 text-gray-500">جاري تحميل منشورات فلاش...</div>';
+            flashPostsListContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل منشورات فلاش...</div>';
             
             try {
                 const { data: posts, error: postsError } = await _supabase
@@ -1790,7 +1874,7 @@
                     );
                     flashPostsListContainer.innerHTML = postsWithProfileInfo.map(createFlashPostCard).join('');
                 } else {
-                    flashPostsListContainer.innerHTML = '<p class="text-gray-500 p-4 text-center">لا توجد منشورات فلاش حتى الآن.</p>';
+                    flashPostsListContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400 p-4 text-center">لا توجد منشورات فلاش حتى الآن.</p>';
                 }
             } catch (error) {
                  console.error('Error in loadFlashPosts:', error);
@@ -1978,9 +2062,41 @@
             });
         }
 
+        // --- Theme Toggle ---
+        const themeToggleButton = document.getElementById('theme-toggle-button');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        // Function to apply the saved theme or default to light
+        function applyTheme() {
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                darkIcon.classList.remove('hidden-section');
+                lightIcon.classList.add('hidden-section');
+            } else {
+                document.documentElement.classList.remove('dark');
+                lightIcon.classList.remove('hidden-section');
+                darkIcon.classList.add('hidden-section');
+            }
+        }
+        
+        if (themeToggleButton && darkIcon && lightIcon) {
+            themeToggleButton.addEventListener('click', () => {
+                // Toggle theme
+                if (localStorage.getItem('theme') === 'dark') {
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    localStorage.setItem('theme', 'dark');
+                }
+                applyTheme();
+            });
+        }
+
 
         // --- Initial Load ---
         async function initializeApp() {
+            applyTheme(); // Apply theme on initial load
             const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
             
             if (sessionError) {
