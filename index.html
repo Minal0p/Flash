@@ -24,35 +24,35 @@
         }
         .dark .content-section, .dark .layout-content-container, .dark #create-event-form-container, 
         .dark #event-details-content, .dark #event-comments-list, .dark #add-comment-form-container,
-        .dark #current-user-profile-form-container { /* Removed .dark #create-flash-form-container */
-            background-color: #374151; /* Tailwind gray-700 for sections */
+        .dark #current-user-profile-form-container { 
+            background-color: #374151; 
         }
-         .dark .team-member-card, .dark .bg-white { /* For cards and other white backgrounds */
-            background-color: #4b5563; /* Tailwind gray-600 */
-            border-color: #6b7280; /* Tailwind gray-500 */
+         .dark .team-member-card, .dark .bg-white { 
+            background-color: #4b5563; 
+            border-color: #6b7280; 
         }
 
         .dark .text-\[\#0e141b\], .dark .text-\[\#101418\], .dark .text-black, .dark .text-gray-800, .dark .text-gray-700 {
-            color: #f3f4f6; /* Tailwind gray-100 */
+            color: #f3f4f6; 
         }
         .dark .text-\[\#5c718a\], .dark .text-slate-600, .dark .text-gray-600, .dark .text-gray-500, .dark .text-gray-400, .dark .text-\[\#4e7097\] {
-            color: #d1d5db; /* Tailwind gray-300 */
+            color: #d1d5db; 
         }
         .dark .border-\[\#d4dbe2\], .dark .border-gray-300, .dark .border-gray-200 {
-            border-color: #6b7280; /* Tailwind gray-500 */
+            border-color: #6b7280; 
         }
         .dark .bg-gray-50, .dark .bg-slate-50 {
-            background-color: #1f2937; /* Tailwind gray-800 */
+            background-color: #1f2937; 
         }
          .dark .bg-gray-100 {
-            background-color: #374151; /* Tailwind gray-700 */
+            background-color: #374151; 
          }
         .dark .placeholder\:text-\[\#5c718a\]::placeholder {
-            color: #9ca3af; /* Tailwind gray-400 */
+            color: #9ca3af; 
         }
         .dark .form-input {
-            background-color: #374151; /* Tailwind gray-700 */
-            border-color: #6b7280; /* Tailwind gray-500 */
+            background-color: #374151; 
+            border-color: #6b7280; 
             color: #f3f4f6;
         }
         .dark .form-input:focus {
@@ -62,7 +62,7 @@
             color: #f3f4f6;
         }
         .dark .nav-link.text-\[\#0e141b\]:hover {
-            color: #3b82f6; /* Tailwind blue-500 for hover in dark mode */
+            color: #3b82f6; 
         }
         .dark .nav-link.text-\[\#4e7097\] {
             color: #d1d5db;
@@ -70,19 +70,19 @@
          .dark .nav-link.text-\[\#4e7097\]:hover {
             color: #3b82f6;
          }
-        .dark #create-event-btn { /* Removed .dark #create-flash-btn */
-            background-color: #4b5563; /* Tailwind gray-600 */
+        .dark #create-event-btn { 
+            background-color: #4b5563; 
             color: #f3f4f6;
         }
-        .dark #create-event-btn:hover { /* Removed .dark #create-flash-btn:hover */
-            background-color: #6b7280; /* Tailwind gray-500 */
+        .dark #create-event-btn:hover { 
+            background-color: #6b7280; 
         }
         .dark .form-button.bg-gray-300 {
-            background-color: #6b7280; /* Tailwind gray-500 */
+            background-color: #6b7280; 
             color: #f3f4f6;
         }
         .dark .form-button.bg-gray-300:hover {
-            background-color: #4b5563; /* Tailwind gray-600 */
+            background-color: #4b5563; 
         }
 
 
@@ -210,6 +210,20 @@
             #mobile-menu-button-container {
                 display: flex; 
             }
+        }
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        .dark .social-icon {
+            color: #9ca3af; /* Tailwind gray-400 for dark mode icons */
+        }
+        .dark .social-icon:hover {
+            color: #60a5fa; /* Lighter blue for hover in dark mode */
+        }
+        .social-icon:hover {
+            color: #1978e5; /* Tailwind blue-600 for light mode hover */
         }
     </style>
 </head>
@@ -1014,30 +1028,36 @@
         });
 
 
-        function createProfileCard(profile, isSpecial = false) { 
-            const cardClasses = isSpecial 
-                ? "team-member-card special-member-card" 
-                : "team-member-card";
+        function createProfileCard(member) { 
+            const imgSrc = member.imgUrl ? member.imgUrl : `https://placehold.co/70x70/1a1a1a/00f0ff?text=${encodeURIComponent(member.imgInitial || '؟')}&font=cairo`;
+            const placeholderSrc = `https://placehold.co/70x70/1a1a1a/cccccc?text=${encodeURIComponent(member.imgInitial || '؟')}&font=cairo`;
+            
+            let socialLinksHTML = '<div class="flex justify-center space-x-2 mt-2">';
+            if (member.linkedinUrl) {
+                socialLinksHTML += `<a href="${member.linkedinUrl}" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">
+                                        <svg class="social-icon" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                                    </a>`;
+            }
+            if (member.facebookUrl) {
+                socialLinksHTML += `<a href="${member.facebookUrl}" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">
+                                        <svg class="social-icon" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                                    </a>`;
+            }
+            if (member.phone) {
+                 socialLinksHTML += `<a href="https://wa.me/${member.phone.replace(/\s+/g, '')}" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-green-500 dark:text-gray-400 dark:hover:text-green-400">
+                                        <svg class="social-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.712-.975z"/></svg>
+                                    </a>`;
+            }
+            socialLinksHTML += '</div>';
+
 
             return `
-                <div class="${cardClasses} p-2 sm:p-3 rounded-lg text-center">
-                    <div class="px-4">
-                        <img src="${profile.avatar_url || `https://placehold.co/70x70/1a1a1a/00f0ff?text=${encodeURIComponent(profile.imgInitial || '؟')}&font=cairo`}" 
-                             alt="صورة ${profile.full_name || 'عضو'}" 
-                             class="w-14 h-14 sm:w-16 sm:h-16 rounded-full mx-auto mb-1 border-2 shadow-md object-cover" 
-                             onerror="this.onerror=null; this.src='https://placehold.co/70x70/1a1a1a/cccccc?text=${encodeURIComponent(profile.imgInitial || '؟')}&font=cairo';">
-                    </div>
-                    <div>
-                        <p class="text-[#101418] text-xs font-bold mb-0.5 leading-tight">
-                            ${profile.full_name || 'غير متوفر'}
-                            ${isSpecial ? '<span class="ml-1 text-yellow-500">⭐</span>' : ''}
-                        </p>
-                        <p class="font-semibold text-xxs text-blue-500" style="font-size: 0.6rem;">${profile.role || 'عضو'}</p>
-                         ${profile.academic_id && profile.academic_id !== 'N/A' ? `<p class="text-gray-500 dark:text-gray-400 text-xxs" style="font-size: 0.55rem;">ID: ${profile.academic_id}</p>` : ''}
-                         ${profile.User_Name ? `<p class="text-gray-500 dark:text-gray-400 text-xxs" style="font-size: 0.55rem;">@${profile.User_Name}</p>` : ''}
-                    </div>
-                </div>
-            `;
+                <div class="team-member-card p-2 sm:p-3 rounded-lg text-center" style="--animation-delay: ${member.animationDelay || 0}s;">
+                    <img src="${imgSrc}" alt="صورة ${member.name || 'عضو'}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full mx-auto mb-1 border-2 shadow-md object-cover" onerror="this.onerror=null; this.src='${placeholderSrc}';">
+                    <h3 class="text-xs font-bold mb-0.5 leading-tight">${member.name || 'عضو غير معروف'}</h3>
+                    <p class="font-semibold text-xxs text-blue-500" style="font-size: 0.6rem;">${member.role || 'عضو'}</p>
+                    ${socialLinksHTML}
+                </div>`;
         }
 
         async function loadProfiles() {
@@ -1049,31 +1069,37 @@
             teamMembersContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل ملفات الفريق...</div>';
             
             const teamMembersData = [ 
-                { name: "مينا حنا فهيم", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/275961489_2101578886686838_1186952474551148362_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=1d2534&_nc_ohc=Y7kffxkrcj4Q7kNvwGQ2c9J&_nc_oc=Adl1TKie-OM8LRAySw9Kpt56l5ENvuaQK3cxAmtB1tP_roES4P-V6x_HR0CBjm1-14Y&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=pHJP0egHAyTKWUvPObSo6w&oh=00_AfKwnHCpmkNWhAOUhw7lc6KneShAyz4OxEp2QI_R776plA&oe=683C0047", imgInitial: "م.ح" },
-                { name: "مينا فليب لبيب", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mena%20Philip.jpg", imgInitial: "م.ف" },
-                { name: "عمر عبد الهادي رمادي", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/468183044_2437537159925313_2222471100263851883_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=1d2534&_nc_ohc=_NE04TfgaSAQ7kNvwHlZOqE&_nc_oc=AdmEuKE-xDi72E7DMn2VlhE86dGz6QPhuaGX-cF6VYCRO5LgviwplYy7YPHMV_cA54I&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=V_nxds_h945QJcca_5A0mg&oh=00_AfIUPqCVD1VlNI29y9JngIgC_nn2Val78Tog_2ksytAX3g&oe=683BF6C3", imgInitial: "ع.ع" },
-                { name: "محمد سيد محمد حسان", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-6/468897498_956460742997297_4252898402209943443_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=110&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=6VYrD6NRkhQQ7kNvwEoWVsa&_nc_oc=Adkzd3txaXg7ZdnhdedeJ84u6-2RVg9xqzzBJ6_3Ejt554ZyypETAVlMzBhFHtVog5w&_nc_zt=23&_nc_ht=scontent.fcai2-2.fna&_nc_gid=LBGu68vI2kUFSxu_qnDw8A&oh=00_AfKYo5L-jDzHgXJcW0dufezUmquW9YMFs7eD7Nb7XNNw7w&oe=683BEE8B", imgInitial: "م.س" },
-                { name: "محمد محمود بربري", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-6/470165541_4094575017436722_4593658555281273385_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=VJQgz6RpGeoQ7kNvwEx496C&_nc_oc=AdkF6Cy3nZgJQO6yCEtJBEwsgi5tgoopzrxjgBcugYfq5bwJoggbEp7WGh3mw_eF5QU&_nc_zt=23&_nc_ht=scontent.fcai2-2.fna&_nc_gid=u0NjoM5BSF6XuW5o5ZfQYA&oh=00_AfJlJ55AuNqroATBFoS7HT6x3TpFkV8VR4WXUaBlpz7DTQ&oe=683BE7E3", imgInitial: "م.م" },
-                { name: "احمد طارق احمد محمد", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-1.fna.fbcdn.net/v/t39.30808-1/353852201_1923806154628741_2807269224716755389_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=104&ccb=1-7&_nc_sid=e99d92&_nc_ohc=_p81SIRjRvQQ7kNvwGKpFIM&_nc_oc=Adkj_fnYuMhOzZamx0NWLaN6ru5j62Fa6-dO2zf4GBPNnNT4HeW_K1q6mhCEbIyfNJU&_nc_zt=24&_nc_ht=scontent.fcai2-1.fna&_nc_gid=OauDqwAwI9X3_yqSF9lPzA&oh=00_AfLrx3KYndYl9bx69zg_GofswJugj8K82hQHaT-ex5sggA&oe=683C0E6A", imgInitial: "أ.ط" },
+                { name: "مينا حنا فهيم", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mina%20Hanna.png", imgInitial: "م.ح", linkedinUrl: "https://www.linkedin.com/in/engminahanna", facebookUrl: "https://www.facebook.com/Eng.Mina.H.F", phone: "+201203006152" },
+                { name: "مينا فليب لبيب", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mena%20Philip.jpg", imgInitial: "م.ف", linkedinUrl: "https://www.linkedin.com/in/mena-philip-766454340", facebookUrl: "https://www.facebook.com/profile.php?id=100004623032980", phone: "+201228226064" },
+                { name: "عمر عبد الهادي رمادي", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Omar%20Ramady.png", imgInitial: "ع.ع", linkedinUrl: "https://www.linkedin.com/in/omar-al-ramady-3a2022206", facebookUrl: "https://www.facebook.com/omar.al.ramady.2025", phone: "+201118525778" },
+                { name: "محمد سيد محمد حسان", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Bakar.jpg", imgInitial: "م.س", linkedinUrl: "https://www.linkedin.com/in/mohammed-sayed-mohammed-1892382b8", facebookUrl: "https://www.facebook.com/share/15aNJqX3NS/", phone: "+201152216149" },
+                { name: "محمد محمود بربري", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Bakar.jpg", imgInitial: "م.م" },
+                { name: "احمد طارق احمد محمد", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Ahmed%20Tarek.jpg", imgInitial: "أ.ط", linkedinUrl: "https://www.linkedin.com/in/ahmed-tarek-a6b9061b6", facebookUrl: "https://www.facebook.com/share/1EGXAoeUcn/", phone: "+201023237803" },
                 { name: "شروق محمد فتحي", role: "مهندس كهرباء", imgInitial: "ش.م" },
                 { name: "فرحه محمد صلاح", role: "مهندس كهرباء", imgInitial: "ف.م" },
                 { name: "حسن السيد فواز", role: "مهندس كهرباء", imgInitial: "ح.ا" },
-                { name: "احمد اشرف سليمان", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/434145069_1816733895407191_5553289515299517712_n.jpg?stp=c0.0.960.960a_dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=e99d92&_nc_ohc=jzAXyr42rJMQ7kNvwH6ZYjY&_nc_oc=AdnuHAhDs36kdx83KUdpVNnNArJmw73cb0c6nC8BkaUw-9L1m_Iy8JcsoPH57mL4AHs&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=SYk55mlBXjwqw5QrzTtjeQ&oh=00_AfKvO4MqzZlEbGjM-P0uR03dm0GfNDXNYxr6-aq_Su7hRw&oe=683C00F8", imgInitial: "أ.أ" },
-                { name: "كريم احمد نور الدين", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-1.fna.fbcdn.net/v/t39.30808-6/480593048_1175410563998992_2144503893709080693_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=9XnCUadAXZkQ7kNvwFumUC6&_nc_oc=AdleDMcz_uhUxDcfTERzjbeX_TzvzUJPMtGZ2qmlQ1qigXyovD7Ry5o7zAaTgnQrfsY&_nc_zt=23&_nc_ht=scontent.fcai2-1.fna&_nc_gid=2vxcBeiOL_eBs2BFIXY_mg&oh=00_AfL_DB8FW1hQIuZ1W1opaL3Z-C1Cu0_gKJPHBMedp2aNdQ&oe=683C09B8", imgInitial: "ك.أ" }
+                { name: "احمد اشرف سليمان", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Ahmed%20Ashraf.jpg", imgInitial: "أ.أ", linkedinUrl: "https://www.linkedin.com/in/ahmed-ashraf-soliman-772038267", facebookUrl: "https://www.facebook.com/share/19boqUX4LV/", phone: "+201204800317" },
+                { name: "كريم احمد نور الدين", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Karim%20Ahmed.jpg", imgInitial: "ك.أ", linkedinUrl: "https://www.linkedin.com/in/karim-ahmed-b68877251", facebookUrl: "https://www.facebook.com/share/1Mu5LQo5sK/?mibextid=wwXIfr", phone: "+201006036359" },
+                { name: "محمد يوسف عمار", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mohamed%20Yousef.jpg", imgInitial: "م.ي", linkedinUrl: "https://www.linkedin.com/in/mohamed-yousef-bab471352", facebookUrl: "https://www.facebook.com/share/19JDJBVuch/", phone: "+201063815096" }
             ];
-            const vacantSpots = 4;
+            const vacantSpots = 3; // Adjusted to make total 15 (12 members + 3 vacant = 15)
             let memberHtml = '';
 
             teamMembersData.forEach((member, index) => {
                  const profileData = { 
-                    full_name: member.name,
+                    name: member.name, // Use 'name' directly as expected by createProfileCard
                     role: member.role,
-                    avatar_url: member.imgUrl,
-                    academic_id: 'N/A', 
-                    User_Name: member.name.toLowerCase().replace(/\s+/g, '_'), 
-                    imgInitial: member.imgInitial 
+                    imgUrl: member.imgUrl, // Pass imgUrl to be used by createProfileCard
+                    imgInitial: member.imgInitial,
+                    linkedinUrl: member.linkedinUrl,
+                    facebookUrl: member.facebookUrl,
+                    phone: member.phone,
+                    animationDelay: `${index * 0.05}s`,
+                    // These are not strictly needed for static display but good for consistency
+                    academic_id: 'N/A', // Assuming this is not in the static data
+                    User_Name: member.name ? member.name.toLowerCase().replace(/\s+/g, '_') : `user_${index}` // Simple username generation
                 };
-                memberHtml += createProfileCard(profileData, false); 
+                memberHtml += createProfileCard(profileData); 
             });
 
             for (let i = 0; i < vacantSpots; i++) {
@@ -1756,7 +1782,6 @@
         });
 
         // --- Flash Posts (Removed) ---
-        // All functions and event listeners related to Flash Posts have been removed.
         
 
         function attachDynamicEventListeners() {
