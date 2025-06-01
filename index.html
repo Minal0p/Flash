@@ -91,10 +91,31 @@
         .edit-comment-area {
             width: 100%;
         }
-        .special-member-card { /* Style for special members */
-            border: 3px solid gold;
-            box-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
+        .team-member-card {
+            /* Basic styling for team member cards, can be enhanced */
+            background-color: #f9fafb; /* Tailwind gray-50 */
+             border: 1px solid #e5e7eb; /* Tailwind gray-200 */
         }
+         /* Animation for cards */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .team-member-card {
+            animation-name: slideInUp;
+            animation-duration: 0.5s; /* Control speed */
+            animation-fill-mode: forwards; /* Keep state after animation */
+            animation-timing-function: ease-out;
+            opacity: 0; /* Start hidden */
+            animation-delay: var(--animation-delay, 0s); /* Customizable delay */
+        }
+
         /* Mobile menu styles (basic) */
         #mobile-menu-button {
             display: none; /* Hidden by default, shown on small screens */
@@ -284,7 +305,7 @@
                 <section id="profiles" class="content-section hidden-section px-5 md:px-20 lg:px-40 py-5">
                     <div class="layout-content-container flex flex-col max-w-[960px] mx-auto">
                         <div class="flex flex-wrap justify-between items-center gap-3 p-4">
-                            <p class="text-[#101418] tracking-light text-2xl sm:text-[32px] font-bold leading-tight min-w-72">الأعضاء المميزون</p>
+                            <p class="text-[#101418] tracking-light text-2xl sm:text-[32px] font-bold leading-tight min-w-72">أعضاء فريق Flash</p>
                         </div>
                                                 
                         <div id="team-members-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
@@ -812,16 +833,15 @@
             currentUser = session?.user || null; 
             await updateAuthState(currentUser);
 
-            if (!initialAuthProcessed) {
-                initialAuthProcessed = true;
-                if (pendingNavigationTarget) {
-                    console.log("Navigating to pending target:", pendingNavigationTarget.targetId);
-                    navigateTo(pendingNavigationTarget.targetId, pendingNavigationTarget.eventData);
-                    pendingNavigationTarget = null;
-                } else {
-                    console.log("Navigating to home as default");
-                    navigateTo('home'); 
-                }
+            // Only navigate if initial auth processing is done and there's a pending target.
+            // This prevents onAuthStateChange from navigating before initializeApp has a chance to set the initial target.
+            if (initialAuthProcessed && pendingNavigationTarget) {
+                 console.log("onAuthStateChange: Navigating to pending target:", pendingNavigationTarget.targetId);
+                 navigateTo(pendingNavigationTarget.targetId, pendingNavigationTarget.eventData);
+                 pendingNavigationTarget = null;
+            } else if (initialAuthProcessed && !pendingNavigationTarget && event === 'SIGNED_IN') {
+                // If already processed and user signs in (e.g. from another tab), navigate to home or a default logged-in page.
+                // navigateTo('home'); // Or a dashboard page
             }
         });
 
@@ -960,31 +980,47 @@
             teamMembersContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل ملفات الفريق...</div>';
             
             const currentAuthUserId = currentUser?.id; 
-            const specialCode = "MimaOmarMena"; 
+            const teamMembersData = [ // Updated team data
+                { name: "مينا حنا فهيم", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/275961489_2101578886686838_1186952474551148362_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=1d2534&_nc_ohc=Y7kffxkrcj4Q7kNvwGQ2c9J&_nc_oc=Adl1TKie-OM8LRAySw9Kpt56l5ENvuaQK3cxAmtB1tP_roES4P-V6x_HR0CBjm1-14Y&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=pHJP0egHAyTKWUvPObSo6w&oh=00_AfKwnHCpmkNWhAOUhw7lc6KneShAyz4OxEp2QI_R776plA&oe=683C0047", imgInitial: "م.ح" },
+                { name: "مينا فليب لبيب", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mena%20Philip.jpg", imgInitial: "م.ف" },
+                { name: "عمر عبد الهادي رمادي", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/468183044_2437537159925313_2222471100263851883_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=1d2534&_nc_ohc=_NE04TfgaSAQ7kNvwHlZOqE&_nc_oc=AdmEuKE-xDi72E7DMn2VlhE86dGz6QPhuaGX-cF6VYCRO5LgviwplYy7YPHMV_cA54I&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=V_nxds_h945QJcca_5A0mg&oh=00_AfIUPqCVD1VlNI29y9JngIgC_nn2Val78Tog_2ksytAX3g&oe=683BF6C3", imgInitial: "ع.ع" },
+                { name: "محمد سيد محمد حسان", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-6/468897498_956460742997297_4252898402209943443_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=110&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=6VYrD6NRkhQQ7kNvwEoWVsa&_nc_oc=Adkzd3txaXg7ZdnhdedeJ84u6-2RVg9xqzzBJ6_3Ejt554ZyypETAVlMzBhFHtVog5w&_nc_zt=23&_nc_ht=scontent.fcai2-2.fna&_nc_gid=LBGu68vI2kUFSxu_qnDw8A&oh=00_AfKYo5L-jDzHgXJcW0dufezUmquW9YMFs7eD7Nb7XNNw7w&oe=683BEE8B", imgInitial: "م.س" },
+                { name: "محمد محمود بربري", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-6/470165541_4094575017436722_4593658555281273385_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=VJQgz6RpGeoQ7kNvwEx496C&_nc_oc=AdkF6Cy3nZgJQO6yCEtJBEwsgi5tgoopzrxjgBcugYfq5bwJoggbEp7WGh3mw_eF5QU&_nc_zt=23&_nc_ht=scontent.fcai2-2.fna&_nc_gid=u0NjoM5BSF6XuW5o5ZfQYA&oh=00_AfJlJ55AuNqroATBFoS7HT6x3TpFkV8VR4WXUaBlpz7DTQ&oe=683BE7E3", imgInitial: "م.م" },
+                { name: "احمد طارق احمد محمد", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-1.fna.fbcdn.net/v/t39.30808-1/353852201_1923806154628741_2807269224716755389_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=104&ccb=1-7&_nc_sid=e99d92&_nc_ohc=_p81SIRjRvQQ7kNvwGKpFIM&_nc_oc=Adkj_fnYuMhOzZamx0NWLaN6ru5j62Fa6-dO2zf4GBPNnNT4HeW_K1q6mhCEbIyfNJU&_nc_zt=24&_nc_ht=scontent.fcai2-1.fna&_nc_gid=OauDqwAwI9X3_yqSF9lPzA&oh=00_AfLrx3KYndYl9bx69zg_GofswJugj8K82hQHaT-ex5sggA&oe=683C0E6A", imgInitial: "أ.ط" },
+                { name: "شروق محمد فتحي", role: "مهندس كهرباء", imgInitial: "ش.م" },
+                { name: "فرحه محمد صلاح", role: "مهندس كهرباء", imgInitial: "ف.م" },
+                { name: "حسن السيد فواز", role: "مهندس كهرباء", imgInitial: "ح.ا" },
+                { name: "احمد اشرف سليمان", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/434145069_1816733895407191_5553289515299517712_n.jpg?stp=c0.0.960.960a_dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=e99d92&_nc_ohc=jzAXyr42rJMQ7kNvwH6ZYjY&_nc_oc=AdnuHAhDs36kdx83KUdpVNnNArJmw73cb0c6nC8BkaUw-9L1m_Iy8JcsoPH57mL4AHs&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=SYk55mlBXjwqw5QrzTtjeQ&oh=00_AfKvO4MqzZlEbGjM-P0uR03dm0GfNDXNYxr6-aq_Su7hRw&oe=683C00F8", imgInitial: "أ.أ" },
+                { name: "كريم احمد نور الدين", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-1.fna.fbcdn.net/v/t39.30808-6/480593048_1175410563998992_2144503893709080693_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=9XnCUadAXZkQ7kNvwFumUC6&_nc_oc=AdleDMcz_uhUxDcfTERzjbeX_TzvzUJPMtGZ2qmlQ1qigXyovD7Ry5o7zAaTgnQrfsY&_nc_zt=23&_nc_ht=scontent.fcai2-1.fna&_nc_gid=2vxcBeiOL_eBs2BFIXY_mg&oh=00_AfL_DB8FW1hQIuZ1W1opaL3Z-C1Cu0_gKJPHBMedp2aNdQ&oe=683C09B8", imgInitial: "ك.أ" }
+            ];
+            const vacantSpots = 4;
+            let memberHtml = '';
 
-            const { data: allProfiles, error } = await _supabase
-                .from('profiles')
-                .select('*');
-
-
-            if (error) {
-                console.error('Error fetching profiles:', error);
-                teamMembersContainer.innerHTML = '<p class="text-red-500 col-span-full">فشل تحميل الملفات.</p>';
-                return;
-            }
-            
-            const profilesToDisplay = allProfiles.filter(profile => {
-                return profile.email && typeof profile.email === 'string' && profile.email.toLowerCase().includes(specialCode.toLowerCase());
+            teamMembersData.forEach((member, index) => {
+                const imgSrc = member.imgUrl ? member.imgUrl : `https://placehold.co/70x70/1a1a1a/00f0ff?text=${encodeURIComponent(member.imgInitial)}&font=cairo`;
+                const placeholderSrc = `https://placehold.co/70x70/1a1a1a/cccccc?text=${encodeURIComponent(member.imgInitial)}&font=cairo`;
+                memberHtml += `
+                <div class="team-member-card p-2 sm:p-3 rounded-lg text-center" style="--animation-delay: ${index * 0.05}s;">
+                    <img src="${imgSrc}" alt="صورة ${member.name}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full mx-auto mb-1 border-2 shadow-md object-cover" onerror="this.onerror=null; this.src='${placeholderSrc}';">
+                    <h3 class="text-xs font-bold mb-0.5 leading-tight">${member.name}</h3>
+                    <p class="font-semibold text-xxs text-blue-500" style="font-size: 0.6rem;">${member.role}</p>
+                </div>`;
             });
 
-
-            if (!profilesToDisplay || profilesToDisplay.length === 0) {
-                const noMembersMsg = `<p class="text-gray-500 col-span-full">لم يتم العثور على أعضاء مميزين بالرمز "${specialCode}" في البريد الإلكتروني.</p>`;
-                teamMembersContainer.innerHTML = noMembersMsg;
-                return;
+            for (let i = 0; i < vacantSpots; i++) {
+                memberHtml += `
+                <div class="team-member-card p-2 sm:p-3 rounded-lg text-center bg-gray-700 bg-opacity-20 border-gray-600" style="--animation-delay: ${(teamMembersData.length + i) * 0.05}s;">
+                    <div>
+                        <img src="https://placehold.co/70x70/333333/888888?text=؟${i+1}&font=cairo" alt="مكان شاغر ${i+1}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full mx-auto mb-1 border-2 border-gray-500 shadow-md">
+                        <h3 class="text-xs font-bold text-gray-300 mb-0.5 leading-tight">مكان شاغر ${i+1}</h3>
+                        <p class="text-gray-400 mb-1 text-xxs" style="font-size: 0.6rem;">انضم إلينا!</p>
+                    </div>
+                    <button onclick="showModalMessage('اقتراح مهام', 'ميزة اقتراح المهام غير متاحة حاليًا.')" class="btn btn-secondary text-xxs py-1 px-2 w-full mt-auto bg-gray-500 hover:bg-gray-600 text-white rounded" style="font-size: 0.55rem; padding: 0.2rem 0.4rem;">
+                        <i class="fas fa-info-circle mr-1"></i> تفاصيل
+                    </button>
+                </div>`;
             }
-
-            teamMembersContainer.innerHTML = profilesToDisplay.map(p => createProfileCard(p, true)).join(''); 
+            teamMembersContainer.innerHTML = memberHtml;
         }
         
 
