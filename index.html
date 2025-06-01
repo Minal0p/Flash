@@ -24,7 +24,7 @@
         }
         .dark .content-section, .dark .layout-content-container, .dark #create-event-form-container, 
         .dark #event-details-content, .dark #event-comments-list, .dark #add-comment-form-container,
-        .dark #create-flash-form-container, .dark #current-user-profile-form-container {
+        .dark #current-user-profile-form-container { /* Removed .dark #create-flash-form-container */
             background-color: #374151; /* Tailwind gray-700 for sections */
         }
          .dark .team-member-card, .dark .bg-white { /* For cards and other white backgrounds */
@@ -70,11 +70,11 @@
          .dark .nav-link.text-\[\#4e7097\]:hover {
             color: #3b82f6;
          }
-        .dark #create-event-btn, .dark #create-flash-btn {
+        .dark #create-event-btn { /* Removed .dark #create-flash-btn */
             background-color: #4b5563; /* Tailwind gray-600 */
             color: #f3f4f6;
         }
-        .dark #create-event-btn:hover, .dark #create-flash-btn:hover {
+        .dark #create-event-btn:hover { /* Removed .dark #create-flash-btn:hover */
             background-color: #6b7280; /* Tailwind gray-500 */
         }
         .dark .form-button.bg-gray-300 {
@@ -229,7 +229,6 @@
                     <a class="nav-link text-[#0e141b] text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="events">الفعاليات</a>
                     <a class="nav-link text-[#0e141b] text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="profiles">الأعضاء</a>
                     <a id="my-profile-nav-link" class="nav-link text-[#0e141b] text-sm font-medium leading-normal hover:text-[#1978e5] hidden-section" href="#" data-target="my-profile-section">ملفي الشخصي</a>
-                    <a class="nav-link text-[#0e141b] text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="flash-feed">منشورات فلاش</a>
                     <a class="nav-link text-[#0e141b] text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="contact">اتصل بنا</a>
                 </nav>
 
@@ -266,7 +265,6 @@
                 <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] dark:text-gray-200 dark:hover:text-blue-400" href="#" data-target="events">الفعاليات</a>
                 <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] dark:text-gray-200 dark:hover:text-blue-400" href="#" data-target="profiles">الأعضاء</a>
                 <a id="my-profile-nav-link-mobile" class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] hidden-section dark:text-gray-200 dark:hover:text-blue-400" href="#" data-target="my-profile-section">ملفي الشخصي</a>
-                <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] dark:text-gray-200 dark:hover:text-blue-400" href="#" data-target="flash-feed">منشورات فلاش</a>
                 <a class="block nav-link text-center text-[#0e141b] py-2 text-sm font-medium leading-normal hover:text-[#1978e5] dark:text-gray-200 dark:hover:text-blue-400" href="#" data-target="contact">اتصل بنا</a>
             </div>
 
@@ -511,37 +509,7 @@
                 </section>
 
                 <section id="flash-feed" class="content-section hidden-section px-5 md:px-20 lg:px-40 py-5">
-                    <div class="layout-content-container flex flex-col max-w-[960px] mx-auto">
-                        <div class="flex flex-wrap justify-between items-center gap-3 p-4">
-                            <p class="text-[#101418] tracking-light text-2xl sm:text-[32px] font-bold leading-tight min-w-72">منشورات فلاش</p>
-                            <button id="create-flash-btn" class="form-button bg-[#eaedf1] text-[#101418] hover:bg-gray-300">
-                                <span class="truncate">إنشاء منشور فلاش</span>
-                            </button>
-                        </div>
-
-                        <div id="create-flash-form-container" class="hidden-section p-6 bg-white rounded-lg shadow mb-8">
-                            <h2 class="text-[#101418] text-2xl font-bold mb-4">إنشاء منشور فلاش جديد</h2>
-                            <form id="create-flash-form" class="space-y-4">
-                                <div>
-                                    <label for="flash-text" class="block text-sm font-medium text-gray-700">نص المنشور</label>
-                                    <textarea id="flash-text" name="text" rows="4" required class="input-field mt-1 block w-full"></textarea>
-                                </div>
-                                <div>
-                                    <label for="flash-password" class="block text-sm font-medium text-gray-700">كلمة مرور للمنشور (اختياري - <span class="text-red-500 font-bold">تحذير أمني!</span>)</label>
-                                    <input type="password" id="flash-password" name="password" class="input-field mt-1 block w-full">
-                                    <p class="text-xs text-red-600 mt-1">تحذير: حفظ كلمات المرور كنص عادي غير آمن. هذا الحقل لأغراض العرض فقط بناءً على الطلب.</p>
-                                </div>
-                                <div class="flex gap-4">
-                                    <button type="submit" class="form-button flex-1 bg-[#1978e5] text-slate-50 hover:bg-blue-700">نشر</button>
-                                    <button type="button" id="cancel-create-flash-btn" class="form-button flex-1 bg-gray-300 text-gray-700 hover:bg-gray-400">إلغاء</button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <div id="flash-posts-list" class="space-y-6 p-4">
-                            <div class="text-center p-4 text-gray-500">جاري تحميل منشورات فلاش...</div>
-                        </div>
-                    </div>
+                   
                 </section>
 
                 <section id="contact" class="content-section hidden-section px-5 md:px-20 lg:px-40 py-10 text-center">
@@ -722,7 +690,8 @@
                     currentEventId = eventData.id; 
                     await loadEventDetails(eventData);
                 }
-                if (targetId === 'flash-feed') await loadFlashPosts();
+                // Removed Flash Feed related navigation
+                // if (targetId === 'flash-feed') await loadFlashPosts();
 
             } else {
                 console.error(`Section with id "${targetId}" not found.`);
@@ -1764,131 +1733,9 @@
             }
         });
 
-        // --- Flash Posts ---
-        const flashPostsList = document.getElementById('flash-posts-list');
-        const createFlashBtn = document.getElementById('create-flash-btn');
-        const createFlashFormContainer = document.getElementById('create-flash-form-container');
-        const createFlashForm = document.getElementById('create-flash-form');
-        const cancelCreateFlashBtn = document.getElementById('cancel-create-flash-btn');
-
-        createFlashBtn.addEventListener('click', () => {
-            createFlashFormContainer.classList.remove('hidden-section');
-            createFlashBtn.classList.add('hidden-section');
-        });
-        cancelCreateFlashBtn.addEventListener('click', () => {
-            createFlashFormContainer.classList.add('hidden-section');
-            createFlashBtn.classList.remove('hidden-section');
-            createFlashForm.reset();
-        });
-
-        createFlashForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!currentUser) { 
-                showModalMessage('يجب تسجيل الدخول لإنشاء منشور فلاش.', true);
-                navigateTo('login');
-                return;
-            }
-
-            const text = document.getElementById('flash-text').value;
-            const password = document.getElementById('flash-password').value; 
-
-            const { data: profile, error: profileError } = await _supabase
-                .from('profiles')
-                .select('full_name, academic_id')
-                .eq('id', currentUser.id)
-                .single();
-
-            if (profileError || !profile) {
-                showModalMessage('فشل في جلب معلومات كاتب المنشور.', true);
-                console.error("Error fetching author profile for flash post:", profileError);
-                return;
-            }
-
-            const flashPostData = {
-                text,
-                user_id: currentUser.id,
-                authar_name: profile.full_name, 
-                "Academic - id": profile.academic_id 
-            };
-            if (password) {
-                flashPostData.Password = password;
-            }
-
-            const { error } = await _supabase.from('Flash').insert(flashPostData);
-
-            if (error) {
-                showModalMessage(`فشل إنشاء منشور فلاش: ${error.message}`, true);
-            } else {
-                showModalMessage('تم إنشاء منشور فلاش بنجاح!');
-                createFlashForm.reset();
-                createFlashFormContainer.classList.add('hidden-section');
-                createFlashBtn.classList.remove('hidden-section');
-                loadFlashPosts(); 
-            }
-        });
+        // --- Flash Posts (Removed) ---
+        // All functions and event listeners related to Flash Posts have been removed.
         
-       function createFlashPostCard(post) { 
-            const postDate = new Date(post.created_at).toLocaleString('ar-EG', {dateStyle: 'medium', timeStyle: 'short'});
-            const authorName = post.profiles?.full_name || post.authar_name || 'مستخدم غير معروف';
-            const authorAvatarUrl = post.profiles?.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=?';
-            
-            return `
-                <div class="bg-white dark:bg-gray-700 p-5 rounded-lg shadow-md">
-                    <div class="flex items-center mb-3">
-                        <img src="${authorAvatarUrl}" alt="${authorName}" class="w-10 h-10 rounded-full mr-3 object-cover">
-                        <div>
-                            <p class="font-semibold text-gray-800 dark:text-gray-100">${authorName}</p>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">${postDate}</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">${post.text}</p>
-                    ${post.Password ? '<p class="text-xs text-red-500 mt-2">هذا المنشور محمي بكلمة مرور (للعرض فقط).</p>' : ''}
-                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">الرقم الأكاديمي للكاتب: ${post["Academic - id"] || 'N/A'}</p>
-                </div>
-            `;
-        }
-
-        async function loadFlashPosts() {
-            const flashPostsListContainer = document.getElementById('flash-posts-list'); 
-             if (!flashPostsListContainer) { console.error("Flash posts list container not found"); return; }
-            flashPostsListContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل منشورات فلاش...</div>';
-            
-            try {
-                const { data: posts, error: postsError } = await _supabase
-                    .from('Flash')
-                    .select('*') 
-                    .order('created_at', { ascending: false });
-
-                if (postsError) throw postsError;
-
-                if (posts && posts.length > 0) {
-                    const postsWithProfileInfo = await Promise.all(
-                        posts.map(async (post) => {
-                            let profileData = null;
-                            if (post.user_id) {
-                                const { data: profile, error: profileError } = await _supabase
-                                    .from('profiles')
-                                    .select('avatar_url, full_name')
-                                    .eq('id', post.user_id)
-                                    .single();
-                                if (profileError) {
-                                    console.warn(`Could not fetch profile for user_id ${post.user_id} for flash post ${post.id}:`, profileError.message);
-                                } else {
-                                    profileData = profile;
-                                }
-                            }
-                            return { ...post, profiles: profileData }; 
-                        })
-                    );
-                    flashPostsListContainer.innerHTML = postsWithProfileInfo.map(createFlashPostCard).join('');
-                } else {
-                    flashPostsListContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400 p-4 text-center">لا توجد منشورات فلاش حتى الآن.</p>';
-                }
-            } catch (error) {
-                 console.error('Error in loadFlashPosts:', error);
-                flashPostsListContainer.innerHTML = '<p class="text-red-500 p-4 text-center">فشل تحميل المنشورات.</p>';
-            }
-        }
 
         function attachDynamicEventListeners() {
             document.querySelectorAll('.reaction-btn').forEach(button => {
@@ -1911,8 +1758,28 @@
                 button.removeEventListener('click', handleDeleteEventClick);
                 button.addEventListener('click', handleDeleteEventClick);
             });
+             document.querySelectorAll('.event-details-link').forEach(link => { // Ensure this is re-attached
+                link.removeEventListener('click', handleEventDetailsLinkClick);
+                link.addEventListener('click', handleEventDetailsLinkClick);
+            });
         }
         
+        async function handleEventDetailsLinkClick(e) {
+            e.preventDefault();
+            const eventId = e.currentTarget.dataset.eventid;
+            const { data: eventData, error: fetchError } = await _supabase
+                .from('project_events')
+                .select('*')
+                .eq('id', eventId)
+                .single();
+            if (fetchError) {
+                showModalMessage(`فشل تحميل تفاصيل الفعالية: ${fetchError.message}`, true);
+            } else if (eventData) {
+                navigateTo('event-details', eventData);
+            }
+        }
+
+
         function attachDynamicEventListenersForDetails(containerElement) {
             containerElement.querySelectorAll('.reaction-btn').forEach(button => {
                 button.removeEventListener('click', handleReactionEventFromDetails);
