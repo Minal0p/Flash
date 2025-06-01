@@ -58,13 +58,16 @@
             width: 100%;
             height: 100%;
         }
-        .avatar-preview {
+        .avatar-preview, #event-image-preview-edit {
             width: 100px;
             height: 100px;
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 10px;
         }
+         #event-image-preview-edit {
+            border-radius: 8px; /* Make it square for event image preview */
+         }
         .header-logo {
             height: 40px; /* Adjust as needed */
             width: auto;
@@ -86,7 +89,7 @@
         <div class="layout-container flex h-full grow flex-col">
             <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf3] px-10 py-3 bg-white shadow-sm">
                 <a href="#" class="nav-link flex items-center gap-4 text-[#0e141b]" data-target="home">
-                    <div class="size-10 flex items-center justify-center"> <img src="https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/drive//Flash.png" alt="شعار فريق فلاش" class="header-logo" onerror="this.onerror=null; this.src='https://placehold.co/40x40/768390/FFFFFF?text=F'; this.alt='شعار فريق فلاش الافتراضي'; console.error('Error loading team logo from Supabase. Ensure the URL is correct and the object is publicly accessible.')">
+                    <div class="size-10 flex items-center justify-center"> <img src="https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/drive/Flash.png" alt="شعار فريق Flash" class="header-logo" onerror="this.onerror=null; this.src='https://placehold.co/40x40/768390/FFFFFF?text=F'; this.alt='شعار فريق Flash الافتراضي'; console.error('Error loading team logo from Supabase. Ensure the URL is correct and the object is publicly accessible.')">
                     </div>
                     <h2 class="text-[#0e141b] text-xl font-bold leading-tight tracking-[-0.015em]">فريق Flash</h2>
                 </a>
@@ -123,10 +126,10 @@
                                 <div class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-lg items-center justify-center p-4" style='background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("https://placehold.co/1200x600/334155/E2E8F0?text=Flash+Team+Hero");'>
                                     <div class="flex flex-col gap-2 text-center">
                                         <h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]">
-                                            فريق فلاش
+                                            فريق Flash
                                         </h1>
                                         <h2 class="text-white text-sm font-normal leading-normal @[480px]:text-base @[480px]:font-normal @[480px]:leading-normal">
-                                            نحن فريق من المطورين الشغوفين نعمل على مشروع تخرجنا. هدفنا هو إنشاء حلول مبتكرة تحدث فرقاً.
+                                            نحن فريق نعمل على مشروع تخرجنا. هدفنا هو إنشاء حلول مبتكرة تحدث فرقاً .
                                         </h2>
                                     </div>
                                     <button data-target="events" class="nav-link flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#1978e5] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em]">
@@ -135,14 +138,12 @@
                                 </div>
                             </div>
                         </div>
-                        <h2 class="text-[#0e141b] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">عنا</h2>
+                        <h2 class="text-[#0e141b] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">من نحن</h2>
                         <p class="text-[#0e141b] text-base font-normal leading-normal pb-3 pt-1 px-4">
-                            يتألف فريق فلاش من أربعة أفراد موهوبين: قائد الفريق والمطور الرئيسي، مصمم واجهة المستخدم وتجربة المستخدم، مهندس الواجهة الخلفية، ومدير المشروع. معًا، نقدم مجموعة متنوعة من المهارات والخبرات، مما يمكننا من مواجهة التحديات المعقدة وتقديم نتائج عالية الجودة.
-                        </p>
+"شرارة الإبداع، وسرعة الإنجاز! هنا فريق Flash، حيث تجتمع 15 عقلية هندسية لامعة، يوحدهم شغف لا حدود له بالابتكار. مهمتنا؟ تحويل الأفكار الجريئة إلى واقع ملموس يضيء المستقبل. استكشفوا معنا جزء من عالمنا الهندسي الذي نفتخر بوجوده لكم هنا."                        </p>
                         <h2 class="text-[#0e141b] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">مشروعنا</h2>
                         <p class="text-[#0e141b] text-base font-normal leading-normal pb-3 pt-1 px-4">
-                            مشروع تخرجنا هو تطبيق ويب مصمم لتبسيط إدارة المشاريع للفرق الصغيرة. يتكامل مع قاعدة بيانات Supabase لتوفير حل قوي وقابل للتطوير. يتميز التطبيق بتتبع المهام وأدوات تعاون الفريق وتصور التقدم، كل ذلك ضمن واجهة سهلة الاستخدام.
-                        </p>
+انطلاقًا من شغف فريق Flash بالابتكار والتطوير، نقدم تصورًا لمشروع توزيع كهرباء لمبنى حديث (هنكتب المبني هنا ). يهدف هذا المشروع إلى تجاوز الطرق التقليدية في توزيع الطاقة، مع التركيز على دمج أحدث التقنيات لضمان الكفاءة، الاستدامة، الأمان، المرونة، وتقديم تجربة مستخدم لا مثيل لها.                        </p>
                         </div>
                 </section>
 
@@ -200,8 +201,9 @@
                                 <input id="signup-academic-id" type="text" placeholder="أدخل رقمك الأكاديمي" required class="form-input input-field"/>
                             </div>
                             <div class="mb-6">
-                                <label class="block text-[#101418] text-base font-medium leading-normal pb-2" for="signup-role">الدور (مثال: طالب، مطور)</label>
-                                <input id="signup-role" type="text" placeholder="أدخل دورك في الفريق" required class="form-input input-field"/>
+                                <label class="block text-[#101418] text-base font-medium leading-normal pb-2" for="signup-admin-code-input">رمز المسؤول (اختياري)</label>
+                                <input id="signup-admin-code-input" type="text" placeholder="أدخل رمز المسؤول إن وجد" class="form-input input-field"/>
+                                <p class="text-xs text-gray-500 mt-1">سيتم تحديد دورك (admin/user) بناءً على هذا الرمز.</p>
                             </div>
                             <button type="submit" class="form-button w-full bg-[#1978e5] text-slate-50 hover:bg-blue-700">
                                 <span class="truncate">إنشاء الحساب</span>
@@ -217,11 +219,11 @@
                 <section id="profiles" class="content-section hidden-section px-5 md:px-20 lg:px-40 py-5">
                     <div class="layout-content-container flex flex-col max-w-[960px] mx-auto">
                         <div class="flex flex-wrap justify-between items-center gap-3 p-4">
-                            <p class="text-[#101418] tracking-light text-[32px] font-bold leading-tight min-w-72">أعضاء الفريق (Full Access)</p>
+                            <p class="text-[#101418] tracking-light text-[32px] font-bold leading-tight min-w-72">أعضاء فريق Flash</p>
                         </div>
                                                 
-                        <h3 class="text-[#101418] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">الأعضاء المصرح لهم</h3>
-                        <div id="full-access-team-profiles" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+                        <h3 class="text-[#101418] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">الأعضاء</h3>
+                        <div id="team-members-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
                             <div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل ملفات الفريق...</div>
                         </div>
                     </div>
@@ -252,8 +254,8 @@
                                     <input type="text" id="update-academic-id" name="academicId" class="input-field mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                 </div>
                                 <div>
-                                    <label for="update-role" class="block text-sm font-medium text-gray-700">الدور</label>
-                                    <input type="text" id="update-role" name="role" class="input-field mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                    <label class="block text-sm font-medium text-gray-700">الدور</label>
+                                    <p id="update-profile-role-display" class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 text-gray-700"></p>
                                 </div>
                                 <button type="submit" class="form-button w-full bg-[#1978e5] text-slate-50 hover:bg-blue-700">تحديث الملف الشخصي</button>
                             </form>
@@ -272,7 +274,10 @@
                         </div>
 
                         <div id="create-event-form-container" class="hidden-section p-6 bg-white rounded-lg shadow mb-8">
-                            <h2 class="text-[#101418] text-2xl font-bold mb-4">إنشاء فعالية جديدة</h2>
+                            <h2 id="event-form-title" class="text-[#101418] text-2xl font-bold mb-4">إنشاء فعالية جديدة</h2>
+                             <div class="flex justify-center mb-2">
+                                <img id="event-image-preview-edit" src="https://placehold.co/100x100/E0E0E0/B0B0B0?text=Event" alt="Event Image Preview" class="hidden-section">
+                            </div>
                             <form id="create-event-form" class="space-y-4">
                                 <div>
                                     <label for="event-title" class="block text-sm font-medium text-gray-700">عنوان الفعالية</label>
@@ -287,11 +292,11 @@
                                     <input type="date" id="event-date" name="event_date" required class="input-field mt-1 block w-full">
                                 </div>
                                 <div>
-                                    <label for="event-image" class="block text-sm font-medium text-gray-700">صورة الفعالية</label>
+                                    <label for="event-image-file" class="block text-sm font-medium text-gray-700">صورة الفعالية (اختياري للتعديل)</label>
                                     <input type="file" id="event-image-file" name="imageFile" accept="image/*" class="input-field mt-1 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-[#1978e5] hover:file:bg-blue-100">
                                 </div>
                                 <div class="flex gap-4">
-                                    <button type="submit" class="form-button flex-1 bg-[#1978e5] text-slate-50 hover:bg-blue-700">إنشاء</button>
+                                    <button type="submit" id="submit-event-form-btn" class="form-button flex-1 bg-[#1978e5] text-slate-50 hover:bg-blue-700">إنشاء</button>
                                     <button type="button" id="cancel-create-event-btn" class="form-button flex-1 bg-gray-300 text-gray-700 hover:bg-gray-400">إلغاء</button>
                                 </div>
                             </form>
@@ -372,10 +377,15 @@
                 <section id="contact" class="content-section hidden-section px-5 md:px-20 lg:px-40 py-10 text-center">
                     <h2 class="text-[#0e141b] text-3xl font-bold mb-6">اتصل بنا</h2>
                     <p class="text-[#0e141b] text-lg mb-4">
-                        إذا كانت لديك أي أسئلة أو اقتراحات، فلا تتردد في التواصل معنا عبر البريد الإلكتروني:
-                        <a href="mailto:contact@flash-team.dev" class="text-[#1978e5] hover:underline">contact@flash-team.dev</a>
+                        إذا كانت لديك أي أسئلة أو اقتراحات، فلا تتردد في التواصل معنا.
                     </p>
-                    <p class="text-gray-600">أو تابعنا على وسائل التواصل الاجتماعي!</p>
+                     <a href="mailto:MinaHanna@IEEE.ORG" class="form-button bg-[#1978e5] text-slate-50 hover:bg-blue-700 inline-flex items-center justify-center px-6 py-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope-fill ml-2" viewBox="0 0 16 16">
+                          <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                        </svg>
+                        <span>اتصل بنا عبر البريد الإلكتروني</span>
+                    </a>
+                    <p class="text-gray-600 mt-4">أو تابعنا على وسائل التواصل الاجتماعي!</p>
                 </section>
 
 
@@ -406,16 +416,38 @@
             <button id="modalCloseBtn" class="modal-close-btn">إغلاق</button>
         </div>
     </div>
+    
+    <div id="confirmModal" class="modal hidden-section">
+        <div class="modal-content">
+            <p id="confirmModalMessage" class="mb-4"></p>
+            <div class="flex justify-center gap-4">
+                <button id="confirmModalConfirmBtn" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    تأكيد
+                </button>
+                <button id="confirmModalCancelBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         // Supabase Credentials
         const SUPABASE_URL = 'https://uzcrjhhvwgllsdsvftuj.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6Y3JqaGh2d2dsbHNkc3ZmdHVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgyMTcxNzcsImV4cCI6MjA2Mzc5MzE3N30.wy_ei_ZVJoMGbXMVqrW8NVUEgk2-EvPQYpgb9gWMW18';
+        const ADMIN_SECRET_CODE = "FLASH_ADMIN_2024"; 
+
 
         // --- Modal Elements (Declared early) ---
         const messageModal = document.getElementById('messageModal');
         const modalMessageText = document.getElementById('modalMessageText');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmModalMessage = document.getElementById('confirmModalMessage');
+        const confirmModalConfirmBtn = document.getElementById('confirmModalConfirmBtn');
+        const confirmModalCancelBtn = document.getElementById('confirmModalCancelBtn');
+        let confirmCallback = null;
         
         // Function to show modal messages
         function showModalMessage(message, isError = false) {
@@ -427,13 +459,33 @@
                 console.error("Modal elements not found. Message:", message);
             }
         }
-        
-        // Add event listener for modal close button
+         function showConfirmModal(message, callback) {
+            confirmModalMessage.textContent = message;
+            confirmCallback = callback;
+            confirmModal.classList.remove('hidden-section');
+        }
+
         if (modalCloseBtn) {
             modalCloseBtn.addEventListener('click', () => {
                 if (messageModal) messageModal.classList.add('hidden-section');
             });
         }
+        if (confirmModalConfirmBtn) {
+            confirmModalConfirmBtn.addEventListener('click', () => {
+                if (confirmCallback) {
+                    confirmCallback();
+                }
+                confirmModal.classList.add('hidden-section');
+                confirmCallback = null;
+            });
+        }
+        if (confirmModalCancelBtn) {
+            confirmModalCancelBtn.addEventListener('click', () => {
+                confirmModal.classList.add('hidden-section');
+                confirmCallback = null;
+            });
+        }
+
 
         if (!SUPABASE_URL || !SUPABASE_ANON_KEY || SUPABASE_URL === 'YOUR_SUPABASE_URL') { 
             console.warn('Supabase URL and Anon Key might still be placeholders or missing if the hardcoded values are incorrect.');
@@ -461,6 +513,8 @@
         let initialAuthProcessed = false;
         let pendingNavigationTarget = null;
         const myProfileNavLink = document.getElementById('my-profile-nav-link');
+        let editingEventId = null; 
+        let currentEditingEventImageUrl = null; 
 
 
         async function navigateTo(targetId, eventData = null) { 
@@ -525,7 +579,6 @@
         const navLoginBtn = document.getElementById('nav-login-btn');
         const navSignupBtn = document.getElementById('nav-signup-btn');
         const commenterAvatar = document.getElementById('commenter-avatar');
-        // const updateProfileFormContainer = document.getElementById('current-user-profile-form-container'); // Already declared for my-profile section
 
 
         loginForm.addEventListener('submit', async (e) => {
@@ -539,7 +592,6 @@
                 showModalMessage(`خطأ في تسجيل الدخول: ${error.message}`, true);
             } else if (data.user) {
                 showModalMessage('تم تسجيل الدخول بنجاح!');
-                // onAuthStateChange will handle updating currentUser and UI
                 navigateTo('home'); 
             } else {
                  showModalMessage('فشل تسجيل الدخول. الرجاء المحاولة مرة أخرى.', true);
@@ -553,7 +605,13 @@
             const fullName = document.getElementById('signup-fullname').value;
             const userName = document.getElementById('signup-username').value;
             const academicId = document.getElementById('signup-academic-id').value;
-            const role = document.getElementById('signup-role').value;
+            const enteredAdminCode = document.getElementById('signup-admin-code-input').value;
+            
+            let assignedRole = 'user';
+            if (enteredAdminCode === ADMIN_SECRET_CODE) {
+                assignedRole = 'admin';
+            }
+
 
             const { data: authData, error: authError } = await _supabase.auth.signUp({
                 email,
@@ -576,7 +634,7 @@
                         full_name: fullName,
                         User_Name: userName, 
                         academic_id: academicId,
-                        role: role,
+                        role: assignedRole, // Use the determined role
                         avatar_url: `https://placehold.co/100x100/E0E0E0/B0B0B0?text=${userName.substring(0,1).toUpperCase()}` 
                     });
 
@@ -584,7 +642,6 @@
                     showModalMessage(`تم إنشاء الحساب ولكن فشل إنشاء الملف الشخصي: ${profileError.message}`, true);
                 } else {
                     showModalMessage('تم إنشاء الحساب والملف الشخصي بنجاح! يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب.');
-                    // onAuthStateChange will handle updating currentUser and UI
                     navigateTo('home'); 
                 }
             }
@@ -596,7 +653,6 @@
                 showModalMessage(`خطأ في تسجيل الخروج: ${error.message}`, true);
             } else {
                 showModalMessage('تم تسجيل الخروج بنجاح.');
-                // onAuthStateChange will handle updating currentUser and UI
                 navigateTo('home');
             }
         });
@@ -670,7 +726,7 @@
         });
 
         // --- Profiles ---
-        const fullAccessTeamProfilesContainer = document.getElementById('full-access-team-profiles'); 
+        const teamMembersListContainer = document.getElementById('team-members-list'); 
         const updateProfileForm = document.getElementById('update-profile-form');
         const updateAvatarPreview = document.getElementById('update-avatar-preview');
         const updateAvatarFile = document.getElementById('update-avatar-file');
@@ -710,7 +766,7 @@
                 document.getElementById('update-full-name').value = profile.full_name || '';
                 document.getElementById('update-user-name').value = profile.User_Name || '';
                 document.getElementById('update-academic-id').value = profile.academic_id || '';
-                document.getElementById('update-role').value = profile.role || '';
+                document.getElementById('update-profile-role-display').textContent = profile.role || 'غير محدد';
                 updateAvatarPreview.src = profile.avatar_url || 'https://placehold.co/100x100/E0E0E0/B0B0B0?text=Avatar';
             }
         }
@@ -726,7 +782,7 @@
             const fullName = document.getElementById('update-full-name').value;
             const userName = document.getElementById('update-user-name').value;
             const academicId = document.getElementById('update-academic-id').value;
-            const role = document.getElementById('update-role').value;
+            // Role is not updated from this form
             const avatarFile = document.getElementById('update-avatar-file').files[0];
 
             let avatarUrl = updateAvatarPreview.src; 
@@ -749,11 +805,9 @@
             }
             
             const updates = {
-                id: currentUser.id, 
                 full_name: fullName,
                 User_Name: userName, 
                 academic_id: academicId,
-                role: role,
                 avatar_url: avatarUrl,
                 updated_at: new Date().toISOString()
             };
@@ -794,29 +848,42 @@
         }
 
         async function loadProfiles() {
-            fullAccessTeamProfilesContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل ملفات الفريق...</div>';
+            const teamMembersContainer = document.getElementById('team-members-list');
+            if (!teamMembersContainer) {
+                console.error("Profile container 'team-members-list' not found in DOM during loadProfiles.");
+                return; 
+            }
+            teamMembersContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل ملفات الفريق...</div>';
             
             const currentAuthUserId = currentUser?.id;
+            const teamMemberNames = [ 
+                "فرحه محمد صلاح", "شروق محمد فتحي", "احمد طارق احمد محمد", 
+                "محمد محمود بربري", "محمد سيد محمد حسان", "عمر عبد الهادي رمادي",
+                "مينا فليب لبيب", "مينا حنا فهيم", "كريم احمد نور الدين",
+                "احمد اشرف سليمان", "حسن السيد فواز"
+            ];
 
-            const { data: profiles, error } = await _supabase
+            const { data: allProfiles, error } = await _supabase
                 .from('profiles')
-                .select('*')
-                .ilike('role', '%Full access%'); 
+                .select('*');
 
 
             if (error) {
                 console.error('Error fetching profiles:', error);
-                fullAccessTeamProfilesContainer.innerHTML = '<p class="text-red-500 col-span-full">فشل تحميل الملفات.</p>';
+                teamMembersContainer.innerHTML = '<p class="text-red-500 col-span-full">فشل تحميل الملفات.</p>';
                 return;
             }
             
-            if (!profiles || profiles.length === 0) {
-                const noMembersMsg = '<p class="text-gray-500 col-span-full">لا يوجد أعضاء فريق لديهم "Full access".</p>';
-                fullAccessTeamProfilesContainer.innerHTML = noMembersMsg;
+            const profilesToDisplay = allProfiles.filter(profile => teamMemberNames.includes(profile.full_name));
+
+
+            if (!profilesToDisplay || profilesToDisplay.length === 0) {
+                const noMembersMsg = '<p class="text-gray-500 col-span-full">لم يتم العثور على أعضاء الفريق المحددين.</p>';
+                teamMembersContainer.innerHTML = noMembersMsg;
                 return;
             }
 
-            fullAccessTeamProfilesContainer.innerHTML = profiles.map(p => createProfileCard(p, currentAuthUserId)).join('');
+            teamMembersContainer.innerHTML = profilesToDisplay.map(p => createProfileCard(p, currentAuthUserId)).join('');
         }
         
 
@@ -830,21 +897,39 @@
         const createEventFormContainer = document.getElementById('create-event-form-container');
         const createEventForm = document.getElementById('create-event-form');
         const cancelCreateEventBtn = document.getElementById('cancel-create-event-btn');
+        const eventFormTitle = document.getElementById('event-form-title');
+        const submitEventFormBtn = document.getElementById('submit-event-form-btn');
+        const eventImagePreviewEdit = document.getElementById('event-image-preview-edit');
+
 
         createEventBtn.addEventListener('click', () => {
+            editingEventId = null; // Ensure we are in "create" mode
+            currentEditingEventImageUrl = null;
+            eventFormTitle.textContent = 'إنشاء فعالية جديدة';
+            submitEventFormBtn.textContent = 'إنشاء';
+            createEventForm.reset(); // Clear form fields
+            eventImagePreviewEdit.classList.add('hidden-section'); // Hide preview for new event
+            eventImagePreviewEdit.src = '';
             createEventFormContainer.classList.remove('hidden-section');
             createEventBtn.classList.add('hidden-section');
         });
+
         cancelCreateEventBtn.addEventListener('click', () => {
             createEventFormContainer.classList.add('hidden-section');
             createEventBtn.classList.remove('hidden-section');
             createEventForm.reset();
+            editingEventId = null;
+            currentEditingEventImageUrl = null;
+            eventFormTitle.textContent = 'إنشاء فعالية جديدة';
+            submitEventFormBtn.textContent = 'إنشاء';
+            eventImagePreviewEdit.classList.add('hidden-section');
+            eventImagePreviewEdit.src = '';
         });
 
         createEventForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) { 
-                showModalMessage('يجب تسجيل الدخول لإنشاء فعالية.', true);
+                showModalMessage('يجب تسجيل الدخول لإنشاء أو تعديل فعالية.', true);
                 navigateTo('login');
                 return;
             }
@@ -853,15 +938,27 @@
             const description = document.getElementById('event-description').value;
             const event_date = document.getElementById('event-date').value;
             const imageFile = document.getElementById('event-image-file').files[0];
-            let imageUrl = null;
+            let imageUrl = editingEventId ? currentEditingEventImageUrl : null; // Keep old image if not changed during edit
 
-            if (imageFile) {
+            if (imageFile) { // If a new image is selected
+                // If editing and there was an old image, delete it first
+                if (editingEventId && currentEditingEventImageUrl) {
+                    try {
+                        const oldFileName = currentEditingEventImageUrl.split('/').pop();
+                        if (oldFileName) {
+                             await _supabase.storage.from('events-images').remove([oldFileName]);
+                        }
+                    } catch (storageError) {
+                        console.warn("Could not delete old event image from storage:", storageError);
+                    }
+                }
+
                 const fileName = `event_${currentUser.id}_${Date.now()}_${imageFile.name.replace(/\s+/g, '_')}`;
                 const { data: uploadData, error: uploadError } = await _supabase.storage
                     .from('events-images') 
                     .upload(fileName, imageFile, {
                         cacheControl: '3600',
-                        upsert: false
+                        upsert: false 
                     });
                 
                 if (uploadError) {
@@ -872,28 +969,48 @@
                 imageUrl = urlData.publicUrl;
             }
 
-            const { error } = await _supabase.from('project_events').insert({
+            const eventDataPayload = {
                 title,
                 description,
                 event_date,
                 image_url: imageUrl,
-                user_id: currentUser.id
-            });
+                user_id: currentUser.id 
+            };
 
-            if (error) {
-                showModalMessage(`فشل إنشاء الفعالية: ${error.message}`, true);
+            let operationError = null;
+            if (editingEventId) {
+                const updatePayload = { title, description, event_date, image_url: imageUrl, updated_at: new Date().toISOString() };
+                const { error } = await _supabase
+                    .from('project_events')
+                    .update(updatePayload)
+                    .eq('id', editingEventId)
+                    .eq('user_id', currentUser.id); 
+                operationError = error;
             } else {
-                showModalMessage('تم إنشاء الفعالية بنجاح!');
+                const { error } = await _supabase.from('project_events').insert(eventDataPayload);
+                operationError = error;
+            }
+
+
+            if (operationError) {
+                showModalMessage(`فشل ${editingEventId ? 'تحديث' : 'إنشاء'} الفعالية: ${operationError.message}`, true);
+            } else {
+                showModalMessage(`تم ${editingEventId ? 'تحديث' : 'إنشاء'} الفعالية بنجاح!`);
                 createEventForm.reset();
+                eventFormTitle.textContent = 'إنشاء فعالية جديدة';
+                submitEventFormBtn.textContent = 'إنشاء';
+                eventImagePreviewEdit.classList.add('hidden-section');
+                eventImagePreviewEdit.src = '';
                 createEventFormContainer.classList.add('hidden-section');
                 createEventBtn.classList.remove('hidden-section');
+                editingEventId = null; 
+                currentEditingEventImageUrl = null;
                 loadEvents(); 
             }
         });
 
         function createEventCard(eventItem, isUpcoming = true) {
             const eventDate = new Date(eventItem.event_date).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
-            // Define reaction types and their emojis
             const reactionTypes = [
                 { type: 'like', emoji: '👍', label: 'أعجبني' },
                 { type: 'love', emoji: '❤️', label: 'أحببته' },
@@ -909,6 +1026,15 @@
                     <span id="${rt.type}-count-${eventItem.id}" class="text-xs text-slate-500 mr-1">0</span>
                 `;
             });
+            
+            let ownerControlsHTML = '';
+            if (currentUser && currentUser.id === eventItem.user_id) {
+                ownerControlsHTML = `
+                    <button class="edit-event-btn text-xs bg-yellow-400 hover:bg-yellow-500 text-black py-1 px-2 rounded mr-2" data-eventid="${eventItem.id}">تعديل</button>
+                    <button class="delete-event-btn text-xs bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded" data-eventid="${eventItem.id}" data-imageurl="${eventItem.image_url || ''}">حذف</button>
+                `;
+            }
+
 
             const cardHTML = `
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -921,6 +1047,9 @@
                                 <div class="uppercase tracking-wide text-sm text-[#1978e5] font-semibold">${eventDate}</div>
                                 <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline event-details-link" data-eventid="${eventItem.id}">${eventItem.title}</a>
                                 <p class="mt-2 text-slate-600 text-sm">${eventItem.description ? eventItem.description.substring(0, 150) + (eventItem.description.length > 150 ? '...' : '') : 'لا يوجد وصف متاح.'}</p>
+                            </div>
+                             <div class="mt-2">
+                                ${ownerControlsHTML}
                             </div>
                             <div class="mt-4 flex justify-between items-center">
                                 <button class="event-details-link text-sm font-medium text-[#1978e5] hover:text-blue-700 py-2 px-3 rounded-md bg-blue-50 hover:bg-blue-100 transition" data-eventid="${eventItem.id}">
@@ -1160,7 +1289,7 @@
                 button.addEventListener('click', (e) => {
                     const eventId = e.currentTarget.dataset.eventid;
                     const reactionType = e.currentTarget.dataset.reactiontype;
-                    handleReaction(eventId, reactionType, false); // false as it's from the list view
+                    handleReaction(eventId, reactionType, false); 
                 });
             });
             document.querySelectorAll('.toggle-comment-btn').forEach(button => {
@@ -1173,6 +1302,19 @@
                 button.addEventListener('click', (e) => {
                     const eventId = e.currentTarget.dataset.eventid;
                     postQuickComment(eventId);
+                });
+            });
+            document.querySelectorAll('.edit-event-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const eventId = e.currentTarget.dataset.eventid;
+                    handleEditEvent(eventId);
+                });
+            });
+            document.querySelectorAll('.delete-event-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const eventId = e.currentTarget.dataset.eventid;
+                    const imageUrl = e.currentTarget.dataset.imageurl;
+                    handleDeleteEvent(eventId, imageUrl);
                 });
             });
         }
@@ -1196,6 +1338,16 @@
                     <span id="${rt.type}-count-details-${eventData.id}" class="text-xs text-slate-500 mr-1">0</span>
                 `;
             });
+            
+            let ownerControlsHTML = '';
+            if (currentUser && currentUser.id === eventData.user_id) {
+                ownerControlsHTML = `
+                    <div class="mt-4 flex gap-2">
+                        <button class="edit-event-btn text-sm bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded" data-eventid="${eventData.id}">تعديل الفعالية</button>
+                        <button class="delete-event-btn text-sm bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded" data-eventid="${eventData.id}" data-imageurl="${eventData.image_url || ''}">حذف الفعالية</button>
+                    </div>
+                `;
+            }
 
 
             eventDetailsContent.innerHTML = `
@@ -1209,6 +1361,7 @@
                         ${reactionButtonsHTML}
                     </div>
                 </div>
+                ${ownerControlsHTML}
             `;
 
             await fetchEventCounts(eventData.id, true); 
@@ -1218,9 +1371,23 @@
                 button.addEventListener('click', (e) => {
                     const eventId = e.currentTarget.dataset.eventid;
                     const reactionType = e.currentTarget.dataset.reactiontype;
-                    handleReaction(eventId, reactionType, true); // true as it's from the details view
+                    handleReaction(eventId, reactionType, true); 
                 });
             });
+             eventDetailsContent.querySelectorAll('.edit-event-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const eventId = e.currentTarget.dataset.eventid;
+                    handleEditEvent(eventId);
+                });
+            });
+            eventDetailsContent.querySelectorAll('.delete-event-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const eventId = e.currentTarget.dataset.eventid;
+                    const imageUrl = e.currentTarget.dataset.imageurl;
+                    handleDeleteEvent(eventId, imageUrl);
+                });
+            });
+
 
             loadEventComments(eventData.id);
         }
@@ -1453,6 +1620,107 @@
             } else {
                 flashPostsList.innerHTML = '<p class="text-gray-500">لا توجد منشورات فلاش حتى الآن.</p>';
             }
+        }
+
+        async function handleEditEvent(eventId) {
+            if (!currentUser) {
+                showModalMessage('يجب تسجيل الدخول لتعديل الفعالية.', true);
+                navigateTo('login');
+                return;
+            }
+            editingEventId = eventId;
+            const { data: eventToEdit, error } = await _supabase
+                .from('project_events')
+                .select('*')
+                .eq('id', eventId)
+                .eq('user_id', currentUser.id) // Ensure only owner can fetch for edit
+                .single();
+
+            if (error || !eventToEdit) {
+                showModalMessage('فشل تحميل بيانات الفعالية للتعديل أو أنك لا تملك الصلاحية.', true);
+                editingEventId = null;
+                return;
+            }
+
+            document.getElementById('event-form-title').textContent = 'تعديل الفعالية';
+            document.getElementById('submit-event-form-btn').textContent = 'تحديث الفعالية';
+            document.getElementById('event-title').value = eventToEdit.title;
+            document.getElementById('event-description').value = eventToEdit.description;
+            document.getElementById('event-date').value = eventToEdit.event_date;
+            
+            currentEditingEventImageUrl = eventToEdit.image_url; // Store current image URL
+            const imagePreview = document.getElementById('event-image-preview-edit');
+            if (eventToEdit.image_url) {
+                imagePreview.src = eventToEdit.image_url;
+                imagePreview.classList.remove('hidden-section');
+            } else {
+                imagePreview.classList.add('hidden-section');
+                imagePreview.src = '';
+            }
+            document.getElementById('event-image-file').value = ''; // Clear file input
+
+
+            createEventFormContainer.classList.remove('hidden-section');
+            createEventBtn.classList.add('hidden-section');
+            navigateTo('events'); // Stay on events page, but show the form
+            createEventFormContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+
+        async function handleDeleteEvent(eventId, imageUrl) {
+            if (!currentUser) {
+                showModalMessage('يجب تسجيل الدخول لحذف الفعالية.', true);
+                navigateTo('login');
+                return;
+            }
+
+            showConfirmModal('هل أنت متأكد أنك تريد حذف هذه الفعالية؟ هذا الإجراء لا يمكن التراجع عنه.', async () => {
+                // First, delete dependent records
+                const { error: commentsError } = await _supabase.from('event_comments').delete().eq('event_id', eventId);
+                if (commentsError) {
+                    showModalMessage(`فشل حذف تعليقات الفعالية: ${commentsError.message}`, true);
+                    // Optionally, decide if you want to stop the whole delete process here
+                }
+
+                const { error: reactionsError } = await _supabase.from('event_reactions').delete().eq('event_id', eventId);
+                if (reactionsError) {
+                    showModalMessage(`فشل حذف تفاعلات الفعالية: ${reactionsError.message}`, true);
+                }
+
+                // Delete image from storage if URL exists
+                if (imageUrl) {
+                    try {
+                        const fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+                        if (fileName) {
+                            const { error: storageError } = await _supabase.storage.from('events-images').remove([fileName]);
+                            if (storageError) {
+                                console.warn("Could not delete event image from storage, it might not exist or RLS issue:", storageError.message);
+                                // Don't necessarily block event deletion for this, but log it.
+                            }
+                        }
+                    } catch (e) {
+                        console.warn("Error parsing image URL for deletion:", e);
+                    }
+                }
+
+                // Finally, delete the event itself
+                const { error: eventDeleteError } = await _supabase
+                    .from('project_events')
+                    .delete()
+                    .eq('id', eventId)
+                    .eq('user_id', currentUser.id); // Ensure only owner can delete
+
+                if (eventDeleteError) {
+                    showModalMessage(`فشل حذف الفعالية: ${eventDeleteError.message}`, true);
+                } else {
+                    showModalMessage('تم حذف الفعالية بنجاح.');
+                    loadEvents(); // Refresh the list
+                    // If on event details page for this event, navigate away
+                    if (document.getElementById('event-details').classList.contains('hidden-section') === false && currentEventId === eventId) {
+                        navigateTo('events');
+                    }
+                }
+            });
         }
 
 
