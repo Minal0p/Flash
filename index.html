@@ -808,15 +808,18 @@
         }
         
         _supabase.auth.onAuthStateChange(async (event, session) => { 
+            console.log("onAuthStateChange event:", event, "session:", session);
             currentUser = session?.user || null; 
             await updateAuthState(currentUser);
 
             if (!initialAuthProcessed) {
                 initialAuthProcessed = true;
                 if (pendingNavigationTarget) {
+                    console.log("Navigating to pending target:", pendingNavigationTarget.targetId);
                     navigateTo(pendingNavigationTarget.targetId, pendingNavigationTarget.eventData);
                     pendingNavigationTarget = null;
                 } else {
+                    console.log("Navigating to home as default");
                     navigateTo('home'); 
                 }
             }
@@ -1934,12 +1937,31 @@
 
         // --- Initial Load ---
         async function initializeApp() {
-            const hash = window.location.hash.substring(1);
-            const target = (hash && document.getElementById(hash)) ? hash : 'home';
-            pendingNavigationTarget = { targetId: target, eventData: null };
+            const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
+            
+            if (sessionError) {
+                console.error("Error getting initial session:", sessionError);
+                currentUser = null; // Assume no user if error
+            } else {
+                currentUser = session?.user || null;
+            }
+            
+            await updateAuthState(currentUser); // Update UI based on initial session or lack thereof
+            initialAuthProcessed = true; // Mark initial auth as processed
 
-            // onAuthStateChange will handle the first navigation once auth state is known
-            // and initialAuthProcessed is true.
+            const hash = window.location.hash.substring(1);
+            let targetPage = 'home'; // Default to home
+            if (hash && document.getElementById(hash)) {
+                 targetPage = hash;
+            }
+            
+            // If there was a pending navigation target from onAuthStateChange (e.g., from a redirect), prioritize it
+            if (pendingNavigationTarget && initialAuthProcessed) {
+                navigateTo(pendingNavigationTarget.targetId, pendingNavigationTarget.eventData);
+                pendingNavigationTarget = null;
+            } else {
+                 navigateTo(targetPage);
+            }
         }
 
         initializeApp();
