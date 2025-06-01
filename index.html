@@ -665,8 +665,8 @@
                         full_name: fullName,
                         User_Name: userName, 
                         academic_id: academicId,
-                        role: assignedRole, // Use the determined role
-                        email: authData.user.email, // Store email in profiles table
+                        role: assignedRole, 
+                        email: authData.user.email, 
                         avatar_url: `https://placehold.co/100x100/E0E0E0/B0B0B0?text=${userName.substring(0,1).toUpperCase()}` 
                     });
 
@@ -692,8 +692,6 @@
         forgotPasswordForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('forgot-password-email').value;
-            // The redirectTo URL should be where your app handles the password update after the user clicks the email link.
-            // This URL must be whitelisted in your Supabase project's email template settings and Site URL / Additional Redirect URLs.
             const redirectTo = 'https://minal0p.github.io/Flash-Team-Reset-Password/'; 
 
             const { error } = await _supabase.auth.resetPasswordForEmail(email, {
@@ -706,7 +704,7 @@
             } else {
                 console.log('تم إرسال طلب إعادة تعيين كلمة المرور بنجاح!');
                 showModalMessage('إذا كان البريد الإلكتروني موجودًا، فسيتم إرسال رابط إعادة تعيين كلمة المرور إليه. يرجى التحقق من صندوق الوارد الخاص بك.');
-                navigateTo('login'); // Navigate back to login page after request
+                navigateTo('login'); 
             }
         });
 
@@ -916,7 +914,7 @@
 
             const { data: allProfiles, error } = await _supabase
                 .from('profiles')
-                .select('*'); // Select all profiles
+                .select('*');
 
 
             if (error) {
@@ -925,15 +923,7 @@
                 return;
             }
             
-            // Filter profiles where their email (from the profiles table) contains the special code.
-            // This assumes you have an 'email' column in your 'profiles' table.
-            // If the email is only in auth.users, you'd need a join or a different approach.
             const profilesToDisplay = allProfiles.filter(profile => {
-                // It's crucial that your 'profiles' table has an 'email' column for this to work
-                // Or, if 'user_id' in 'profiles' is a foreign key to 'auth.users.id', you'd need to join.
-                // For now, assuming 'email' is directly in 'profiles' table.
-                // If not, you will need to adjust the schema or the query.
-                // A common pattern is to store the email in the profiles table when the user signs up.
                 return profile.email && typeof profile.email === 'string' && profile.email.toLowerCase().includes(specialCode.toLowerCase());
             });
 
