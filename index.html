@@ -980,7 +980,7 @@
             teamMembersContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل ملفات الفريق...</div>';
             
             const currentAuthUserId = currentUser?.id; 
-            const teamMembersData = [ // Updated team data
+            const teamMembersData = [ 
                 { name: "مينا حنا فهيم", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/275961489_2101578886686838_1186952474551148362_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=1d2534&_nc_ohc=Y7kffxkrcj4Q7kNvwGQ2c9J&_nc_oc=Adl1TKie-OM8LRAySw9Kpt56l5ENvuaQK3cxAmtB1tP_roES4P-V6x_HR0CBjm1-14Y&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=pHJP0egHAyTKWUvPObSo6w&oh=00_AfKwnHCpmkNWhAOUhw7lc6KneShAyz4OxEp2QI_R776plA&oe=683C0047", imgInitial: "م.ح" },
                 { name: "مينا فليب لبيب", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mena%20Philip.jpg", imgInitial: "م.ف" },
                 { name: "عمر عبد الهادي رمادي", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-1/468183044_2437537159925313_2222471100263851883_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=1d2534&_nc_ohc=_NE04TfgaSAQ7kNvwHlZOqE&_nc_oc=AdmEuKE-xDi72E7DMn2VlhE86dGz6QPhuaGX-cF6VYCRO5LgviwplYy7YPHMV_cA54I&_nc_zt=24&_nc_ht=scontent.fcai2-2.fna&_nc_gid=V_nxds_h945QJcca_5A0mg&oh=00_AfIUPqCVD1VlNI29y9JngIgC_nn2Val78Tog_2ksytAX3g&oe=683BF6C3", imgInitial: "ع.ع" },
@@ -997,14 +997,16 @@
             let memberHtml = '';
 
             teamMembersData.forEach((member, index) => {
-                const imgSrc = member.imgUrl ? member.imgUrl : `https://placehold.co/70x70/1a1a1a/00f0ff?text=${encodeURIComponent(member.imgInitial)}&font=cairo`;
-                const placeholderSrc = `https://placehold.co/70x70/1a1a1a/cccccc?text=${encodeURIComponent(member.imgInitial)}&font=cairo`;
-                memberHtml += `
-                <div class="team-member-card p-2 sm:p-3 rounded-lg text-center" style="--animation-delay: ${index * 0.05}s;">
-                    <img src="${imgSrc}" alt="صورة ${member.name}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full mx-auto mb-1 border-2 shadow-md object-cover" onerror="this.onerror=null; this.src='${placeholderSrc}';">
-                    <h3 class="text-xs font-bold mb-0.5 leading-tight">${member.name}</h3>
-                    <p class="font-semibold text-xxs text-blue-500" style="font-size: 0.6rem;">${member.role}</p>
-                </div>`;
+                // Simulate fetching profile data from Supabase based on name for this static list
+                // In a real scenario with dynamic profiles, you'd fetch from Supabase and then render
+                const profileData = {
+                    full_name: member.name,
+                    role: member.role,
+                    avatar_url: member.imgUrl,
+                    academic_id: 'N/A', // Assuming not available in this static list
+                    User_Name: member.name.toLowerCase().replace(/\s+/g, '_') // Create a simple username
+                };
+                memberHtml += createProfileCard(profileData, false); // isSpecial is false for general team members
             });
 
             for (let i = 0; i < vacantSpots; i++) {
