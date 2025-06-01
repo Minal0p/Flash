@@ -196,8 +196,8 @@
         }
 
         /* Mobile menu styles (basic) */
-        #mobile-menu-button {
-            display: none; /* Hidden by default, shown on small screens */
+        #mobile-menu-button-container { /* New container for centering */
+            display: none; 
         }
         #mobile-menu {
             display: none; /* Hidden by default, shown when toggled */
@@ -207,8 +207,8 @@
             #desktop-nav {
                 display: none;
             }
-            #mobile-menu-button {
-                display: block;
+            #mobile-menu-button-container {
+                display: flex; /* Show and center on small screens */
             }
         }
     </style>
@@ -217,13 +217,14 @@
     <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
         <div class="layout-container flex h-full grow flex-col">
             <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf3] px-4 sm:px-10 py-3 bg-white shadow-sm">
-                <a href="#" class="nav-link flex items-center gap-2 sm:gap-4 text-[#0e141b]" data-target="home">
-                    <div class="size-8 sm:size-10 flex items-center justify-center"> <img src="https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/drive/Flash.png" alt="شعار فريق Flash" class="header-logo" onerror="this.onerror=null; this.src='https://placehold.co/40x40/768390/FFFFFF?text=F'; this.alt='شعار فريق Flash الافتراضي'; console.error('Error loading team logo from Supabase. Ensure the URL is correct and the object is publicly accessible.')">
-                    </div>
-                    <h2 class="text-[#0e141b] text-lg sm:text-xl font-bold leading-tight tracking-[-0.015em]">فريق Flash</h2>
-                </a>
+                <div class="flex-1"> <a href="#" class="nav-link flex items-center gap-2 sm:gap-4 text-[#0e141b]" data-target="home">
+                        <div class="size-8 sm:size-10 flex items-center justify-center"> <img src="https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/drive/Flash.png" alt="شعار فريق Flash" class="header-logo" onerror="this.onerror=null; this.src='https://placehold.co/40x40/768390/FFFFFF?text=F'; this.alt='شعار فريق Flash الافتراضي'; console.error('Error loading team logo from Supabase. Ensure the URL is correct and the object is publicly accessible.')">
+                        </div>
+                        <h2 class="text-[#0e141b] text-lg sm:text-xl font-bold leading-tight tracking-[-0.015em]">فريق Flash</h2>
+                    </a>
+                </div>
                 
-                <nav id="desktop-nav" class="hidden md:flex flex-1 justify-center gap-4 lg:gap-8 items-center">
+                <nav id="desktop-nav" class="hidden md:flex md:flex-1 md:justify-center gap-4 lg:gap-8 items-center">
                     <a class="nav-link text-[#0e141b] text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="home">الرئيسية</a>
                     <a class="nav-link text-[#0e141b] text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="events">الفعاليات</a>
                     <a class="nav-link text-[#0e141b] text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="profiles">الأعضاء</a>
@@ -232,8 +233,14 @@
                     <a class="nav-link text-[#0e141b] text-sm font-medium leading-normal hover:text-[#1978e5]" href="#" data-target="contact">اتصل بنا</a>
                 </nav>
 
-                <div class="flex items-center gap-2 sm:gap-4">
-                     <button id="theme-toggle-button" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                <div id="mobile-menu-button-container" class="flex-1 justify-center md:hidden"> <button id="mobile-menu-button" class="p-2 rounded-md text-gray-600 hover:text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="flex flex-1 justify-end items-center gap-2 sm:gap-4"> <button id="theme-toggle-button" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
                         <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden-section" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
                         <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden-section" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm-.464 4.076a1 1 0 011.414 0l.707.707a1 1 0 11-1.414 1.414l-.707-.707a1 1 0 010-1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
                     </button>
@@ -252,11 +259,6 @@
                             <span class="truncate">تسجيل الخروج</span>
                         </button>
                     </div>
-                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
-                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                        </svg>
-                    </button>
                 </div>
             </header>
             <div id="mobile-menu" class="md:hidden bg-white shadow-lg py-2 hidden-section">
@@ -1088,13 +1090,13 @@
             let memberHtml = '';
 
             teamMembersData.forEach((member, index) => {
-                 const profileData = { // Construct a profile-like object for createProfileCard
+                 const profileData = { 
                     full_name: member.name,
                     role: member.role,
                     avatar_url: member.imgUrl,
-                    academic_id: 'N/A', // Or fetch if available
-                    User_Name: member.name.toLowerCase().replace(/\s+/g, '_'), // Simple username generation
-                    imgInitial: member.imgInitial // Make sure imgInitial is passed
+                    academic_id: 'N/A', 
+                    User_Name: member.name.toLowerCase().replace(/\s+/g, '_'), 
+                    imgInitial: member.imgInitial 
                 };
                 memberHtml += createProfileCard(profileData, false); 
             });
