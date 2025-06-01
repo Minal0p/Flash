@@ -577,6 +577,7 @@
         let initialAuthProcessed = false;
         let pendingNavigationTarget = null;
         const myProfileNavLink = document.getElementById('my-profile-nav-link');
+        const myProfileNavLinkMobile = document.getElementById('my-profile-nav-link-mobile');
         let editingEventId = null; 
         let currentEditingEventImageUrl = null; 
 
@@ -628,9 +629,22 @@
                 e.preventDefault();
                 const targetId = e.currentTarget.dataset.target;
                 navigateTo(targetId); 
+                // Close mobile menu if open
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenu && !mobileMenu.classList.contains('hidden-section')) {
+                    mobileMenu.classList.add('hidden-section');
+                }
             });
         });
         
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden-section');
+            });
+        }
 
         // --- Authentication ---
         const loginForm = document.getElementById('login-form');
@@ -745,15 +759,16 @@
 
         async function updateAuthState(user) {
             const myProfileNavLink = document.getElementById('my-profile-nav-link');
+            const myProfileNavLinkMobile = document.getElementById('my-profile-nav-link-mobile');
             const updateProfileFormContainer = document.getElementById('current-user-profile-form-container'); 
 
             if (user) {
-                authLinks.className = 'hidden-section items-center gap-4'; 
-                navSignupBtn.classList.add('hidden-section'); 
-                navLoginBtn.classList.add('hidden-section'); 
+                authLinks.className = 'hidden-section items-center gap-2 sm:gap-4'; 
                 myProfileNavLink.classList.remove('hidden-section');
+                if(myProfileNavLinkMobile) myProfileNavLinkMobile.classList.remove('hidden-section');
 
-                userInfoDisplay.className = 'flex items-center gap-3'; 
+
+                userInfoDisplay.className = 'flex items-center gap-2 sm:gap-3'; 
 
                 const { data: profile, error } = await _supabase
                     .from('profiles')
@@ -763,11 +778,11 @@
 
                 if (profile) {
                     userNameNav.textContent = profile.full_name || user.email;
-                    userAvatarNav.src = profile.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
+                    userAvatarNav.src = profile.avatar_url || 'https://placehold.co/32x32/E0E0E0/B0B0B0?text=U';
                     commenterAvatar.src = profile.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
                 } else {
                     userNameNav.textContent = user.email; 
-                    userAvatarNav.src = 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
+                    userAvatarNav.src = 'https://placehold.co/32x32/E0E0E0/B0B0B0?text=U';
                     commenterAvatar.src = 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
                 }
                 
@@ -779,15 +794,14 @@
 
 
             } else {
-                authLinks.className = 'flex items-center gap-4'; 
-                navSignupBtn.classList.remove('hidden-section'); 
-                navLoginBtn.classList.remove('hidden-section'); 
+                authLinks.className = 'flex items-center gap-2 sm:gap-4'; 
                 myProfileNavLink.classList.add('hidden-section');
+                if(myProfileNavLinkMobile) myProfileNavLinkMobile.classList.add('hidden-section');
 
 
-                userInfoDisplay.className = 'hidden-section items-center gap-3'; 
+                userInfoDisplay.className = 'hidden-section items-center gap-2 sm:gap-3'; 
                 userNameNav.textContent = '';
-                userAvatarNav.src = 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
+                userAvatarNav.src = 'https://placehold.co/32x32/E0E0E0/B0B0B0?text=U';
                 commenterAvatar.src = 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
                 if (updateProfileFormContainer) updateProfileFormContainer.classList.add('hidden-section');
             }
@@ -938,7 +952,6 @@
             const teamMembersContainer = document.getElementById('team-members-list');
             if (!teamMembersContainer) {
                 console.error("Profile container 'team-members-list' not found in DOM during loadProfiles.");
-                teamMembersContainer.innerHTML = '<p class="text-red-500 col-span-full">خطأ: لم يتم العثور على حاوية عرض الأعضاء.</p>';
                 return; 
             }
             teamMembersContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل ملفات الفريق...</div>';
@@ -1677,8 +1690,8 @@
         
        function createFlashPostCard(post) { 
             const postDate = new Date(post.created_at).toLocaleString('ar-EG', {dateStyle: 'medium', timeStyle: 'short'});
-            const authorAvatarUrl = post.profiles?.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=?';
             const authorName = post.profiles?.full_name || post.authar_name || 'مستخدم غير معروف';
+            const authorAvatarUrl = post.profiles?.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=?';
             
             return `
                 <div class="bg-white p-5 rounded-lg shadow-md">
@@ -1697,26 +1710,44 @@
         }
 
         async function loadFlashPosts() {
-            const flashPostsList = document.getElementById('flash-posts-list');
-             if (!flashPostsList) { console.error("Flash posts list container not found"); return; }
-            flashPostsList.innerHTML = '<div class="text-center p-4 text-gray-500">جاري تحميل منشورات فلاش...</div>';
+            const flashPostsListContainer = document.getElementById('flash-posts-list'); 
+             if (!flashPostsListContainer) { console.error("Flash posts list container not found"); return; }
+            flashPostsListContainer.innerHTML = '<div class="text-center p-4 text-gray-500">جاري تحميل منشورات فلاش...</div>';
             
             try {
-                const { data: postsData, error: postsError } = await _supabase
+                const { data: posts, error: postsError } = await _supabase
                     .from('Flash')
-                    .select('*, profiles(avatar_url, full_name)') 
+                    .select('*') 
                     .order('created_at', { ascending: false });
 
                 if (postsError) throw postsError;
 
-                if (postsData && postsData.length > 0) {
-                    flashPostsList.innerHTML = postsData.map(createFlashPostCard).join('');
+                if (posts && posts.length > 0) {
+                    const postsWithProfileInfo = await Promise.all(
+                        posts.map(async (post) => {
+                            let profileData = null;
+                            if (post.user_id) {
+                                const { data: profile, error: profileError } = await _supabase
+                                    .from('profiles')
+                                    .select('avatar_url, full_name')
+                                    .eq('id', post.user_id)
+                                    .single();
+                                if (profileError) {
+                                    console.warn(`Could not fetch profile for user_id ${post.user_id} for flash post ${post.id}:`, profileError.message);
+                                } else {
+                                    profileData = profile;
+                                }
+                            }
+                            return { ...post, profiles: profileData }; 
+                        })
+                    );
+                    flashPostsListContainer.innerHTML = postsWithProfileInfo.map(createFlashPostCard).join('');
                 } else {
-                    flashPostsList.innerHTML = '<p class="text-gray-500 p-4 text-center">لا توجد منشورات فلاش حتى الآن.</p>';
+                    flashPostsListContainer.innerHTML = '<p class="text-gray-500 p-4 text-center">لا توجد منشورات فلاش حتى الآن.</p>';
                 }
             } catch (error) {
                  console.error('Error in loadFlashPosts:', error);
-                flashPostsList.innerHTML = '<p class="text-red-500 p-4 text-center">فشل تحميل المنشورات.</p>';
+                flashPostsListContainer.innerHTML = '<p class="text-red-500 p-4 text-center">فشل تحميل المنشورات.</p>';
             }
         }
 
