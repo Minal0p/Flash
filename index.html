@@ -1559,16 +1559,38 @@
             eventCommentsList.innerHTML = '<div class="text-center p-4 text-gray-500">جاري تحميل التعليقات...</div>';
             
             try {
-                const { data: commentsData, error: commentsError } = await _supabase
+                 const { data: commentsData, error: commentsError } = await _supabase
                     .from('event_comments')
-                    .select('*, profiles(avatar_url, full_name)') 
+                    .select('*') // Select all from event_comments first
                     .eq('event_id', eventId)
                     .order('created_at', { ascending: false });
 
                 if (commentsError) throw commentsError;
 
                 if (commentsData && commentsData.length > 0) {
-                    eventCommentsList.innerHTML = commentsData.map(comment => {
+                     const commentsWithProfileInfo = await Promise.all(
+                        commentsData.map(async (comment) => {
+                            let profileInfo = { avatar_url: null, full_name: null };
+                            if (comment.user_id) { 
+                                const { data: profileData, error: profileError } = await _supabase
+                                    .from('profiles')
+                                    .select('avatar_url, full_name')
+                                    .eq('id', comment.user_id) 
+                                    .single();
+                                if (!profileError && profileData) {
+                                    profileInfo = profileData;
+                                } else if (profileError) {
+                                     console.warn(`Could not fetch profile for user_id ${comment.user_id} for comment ${comment.id}:`, profileError.message);
+                                }
+                            }
+                            return { 
+                                ...comment, 
+                                profiles: profileInfo 
+                            };
+                        })
+                    );
+
+                    eventCommentsList.innerHTML = commentsWithProfileInfo.map(comment => {
                         const commenterName = comment.profiles?.full_name || comment.commenter_name || 'مستخدم غير معروف';
                         const commenterAvatarUrl = comment.profiles?.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=?';
                         const commentDate = new Date(comment.created_at).toLocaleString('ar-EG', {dateStyle: 'medium', timeStyle: 'short'});
