@@ -833,15 +833,23 @@
             currentUser = session?.user || null; 
             await updateAuthState(currentUser);
 
-            // Only navigate if initial auth processing is done and there's a pending target.
-            // This prevents onAuthStateChange from navigating before initializeApp has a chance to set the initial target.
-            if (initialAuthProcessed && pendingNavigationTarget) {
-                 console.log("onAuthStateChange: Navigating to pending target:", pendingNavigationTarget.targetId);
-                 navigateTo(pendingNavigationTarget.targetId, pendingNavigationTarget.eventData);
-                 pendingNavigationTarget = null;
-            } else if (initialAuthProcessed && !pendingNavigationTarget && event === 'SIGNED_IN') {
-                // If already processed and user signs in (e.g. from another tab), navigate to home or a default logged-in page.
-                // navigateTo('home'); // Or a dashboard page
+            if (!initialAuthProcessed && (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED' || event === 'PASSWORD_RECOVERY')) {
+                initialAuthProcessed = true;
+                if (pendingNavigationTarget) {
+                    console.log("onAuthStateChange: Navigating to pending target:", pendingNavigationTarget.targetId);
+                    navigateTo(pendingNavigationTarget.targetId, pendingNavigationTarget.eventData);
+                    pendingNavigationTarget = null;
+                } else {
+                     // If no pending target, and it's the initial session or a sign-in, navigate to home.
+                    // This helps ensure the page loads correctly after a refresh.
+                    const hash = window.location.hash.substring(1);
+                    const targetPage = (hash && document.getElementById(hash)) ? hash : 'home';
+                    console.log("onAuthStateChange: Navigating to initial/default target:", targetPage);
+                    navigateTo(targetPage);
+                }
+            } else if (initialAuthProcessed && event === 'SIGNED_IN' && !pendingNavigationTarget) {
+                 // If already processed and user signs in (e.g. from another tab), navigate to home or a default logged-in page.
+                 // navigateTo('home'); // Or a dashboard page
             }
         });
 
@@ -997,16 +1005,14 @@
             let memberHtml = '';
 
             teamMembersData.forEach((member, index) => {
-                // Simulate fetching profile data from Supabase based on name for this static list
-                // In a real scenario with dynamic profiles, you'd fetch from Supabase and then render
                 const profileData = {
                     full_name: member.name,
                     role: member.role,
                     avatar_url: member.imgUrl,
-                    academic_id: 'N/A', // Assuming not available in this static list
-                    User_Name: member.name.toLowerCase().replace(/\s+/g, '_') // Create a simple username
+                    academic_id: 'N/A', 
+                    User_Name: member.name.toLowerCase().replace(/\s+/g, '_') 
                 };
-                memberHtml += createProfileCard(profileData, false); // isSpecial is false for general team members
+                memberHtml += createProfileCard(profileData, false); 
             });
 
             for (let i = 0; i < vacantSpots; i++) {
