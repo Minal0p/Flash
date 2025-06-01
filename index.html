@@ -288,7 +288,7 @@
                     <div class="layout-content-container flex flex-col max-w-[960px] mx-auto">
                         <div class="@container">
                             <div class="@[480px]:p-4">
-                                <div class="flex min-h-[300px] sm:min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-lg items-center justify-center p-4" style='background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("https://placehold.co/1200x600/334155/E2E8F0?text=Flash+Team+Hero");'>
+                                <div class="flex min-h-[300px] sm:min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-lg items-center justify-center p-4" style='background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//MinaOmarMenaBakar.jpg");'>
                                     <div class="flex flex-col gap-2 text-center">
                                         <h1 class="text-white text-3xl sm:text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]">
                                             فريق Flash
@@ -1068,7 +1068,7 @@
             }
             teamMembersContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل ملفات الفريق...</div>';
             
-            const teamMembersData = [ 
+           const teamMembersData = [ 
                 { name: "مينا حنا فهيم", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mina%20Hanna.png", imgInitial: "م.ح", linkedinUrl: "https://www.linkedin.com/in/engminahanna", facebookUrl: "https://www.facebook.com/Eng.Mina.H.F", phone: "+201203006152" },
                 { name: "مينا فليب لبيب", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mena%20Philip.jpg", imgInitial: "م.ف", linkedinUrl: "https://www.linkedin.com/in/mena-philip-766454340", facebookUrl: "https://www.facebook.com/profile.php?id=100004623032980", phone: "+201228226064" },
                 { name: "عمر عبد الهادي رمادي", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Omar%20Ramady.png", imgInitial: "ع.ع", linkedinUrl: "https://www.linkedin.com/in/omar-al-ramady-3a2022206", facebookUrl: "https://www.facebook.com/omar.al.ramady.2025", phone: "+201118525778" },
@@ -1085,11 +1085,12 @@
             const vacantSpots = 3; // Adjusted to make total 15 (12 members + 3 vacant = 15)
             let memberHtml = '';
 
+
             teamMembersData.forEach((member, index) => {
                  const profileData = { 
-                    name: member.name, // Use 'name' directly as expected by createProfileCard
+                    name: member.name, 
                     role: member.role,
-                    imgUrl: member.imgUrl, // Pass imgUrl to be used by createProfileCard
+                    imgUrl: member.imgUrl, 
                     imgInitial: member.imgInitial,
                     linkedinUrl: member.linkedinUrl,
                     facebookUrl: member.facebookUrl,
