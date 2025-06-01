@@ -1300,211 +1300,164 @@
 
 
         async function loadEvents() {
+            const upcomingEventsList = document.getElementById('upcoming-events-list');
+            const pastEventsList = document.getElementById('past-events-list');
+            if (!upcomingEventsList || !pastEventsList) {
+                console.error("Event list containers not found");
+                return;
+            }
             upcomingEventsList.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل الفعاليات القادمة...</div>';
             pastEventsList.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل الفعاليات السابقة...</div>';
 
-            const { data: events, error } = await _supabase.from('project_events').select('*').order('event_date', { ascending: false });
+            try {
+                const { data: events, error } = await _supabase.from('project_events').select('*').order('event_date', { ascending: false });
 
-            if (error) {
-                console.error('Error fetching events:', error);
-                upcomingEventsList.innerHTML = '<p class="text-red-500 col-span-full">فشل تحميل الفعاليات.</p>';
-                pastEventsList.innerHTML = '<p class="text-red-500 col-span-full">فشل تحميل الفعاليات.</p>';
-                return;
+                if (error) throw error;
+
+                const today = new Date().toISOString().split('T')[0]; 
+                const upcoming = events.filter(e => e.event_date >= today);
+                const past = events.filter(e => e.event_date < today);
+
+                upcomingEventsList.innerHTML = upcoming.length ? upcoming.map(e => createEventCard(e, true)).join('') : '<p class="text-gray-600 p-4 text-center col-span-full">لا توجد فعاليات قادمة حالياً.</p>';
+                pastEventsList.innerHTML = past.length ? past.map(e => createEventCard(e, false)).join('') : '<p class="text-gray-600 p-4 text-center col-span-full">لا توجد فعاليات سابقة.</p>';
+                
+                attachDynamicEventListeners();
+
+            } catch (error) {
+                console.error('Error in loadEvents:', error);
+                upcomingEventsList.innerHTML = '<p class="text-red-500 p-4 text-center col-span-full">فشل تحميل الفعاليات القادمة. الرجاء المحاولة مرة أخرى.</p>';
+                pastEventsList.innerHTML = '<p class="text-red-500 p-4 text-center col-span-full">فشل تحميل الفعاليات السابقة. الرجاء المحاولة مرة أخرى.</p>';
             }
-
-            const today = new Date().toISOString().split('T')[0]; 
-            const upcoming = events.filter(e => e.event_date >= today);
-            const past = events.filter(e => e.event_date < today);
-
-            upcomingEventsList.innerHTML = upcoming.length ? upcoming.map(e => createEventCard(e, true)).join('') : '<p class="text-gray-600">لا توجد فعاليات قادمة حالياً.</p>';
-            pastEventsList.innerHTML = past.length ? past.map(e => createEventCard(e, false)).join('') : '<p class="text-gray-600">لا توجد فعاليات سابقة.</p>';
-            
-            document.querySelectorAll('.event-details-link').forEach(link => {
-                link.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    const eventId = e.currentTarget.dataset.eventid;
-                    const { data: eventData, error: fetchError } = await _supabase
-                        .from('project_events')
-                        .select('*')
-                        .eq('id', eventId)
-                        .single();
-                    if (fetchError) {
-                        showModalMessage(`فشل تحميل تفاصيل الفعالية: ${fetchError.message}`, true);
-                    } else if (eventData) {
-                        navigateTo('event-details', eventData);
-                    }
-                });
-            });
-
-            document.querySelectorAll('.reaction-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const eventId = e.currentTarget.dataset.eventid;
-                    const reactionType = e.currentTarget.dataset.reactiontype;
-                    handleReaction(eventId, reactionType, false); 
-                });
-            });
-            document.querySelectorAll('.toggle-comment-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const eventId = e.currentTarget.dataset.eventid;
-                    toggleQuickComment(eventId);
-                });
-            });
-            document.querySelectorAll('.post-quick-comment-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const eventId = e.currentTarget.dataset.eventid;
-                    postQuickComment(eventId);
-                });
-            });
-            document.querySelectorAll('.edit-event-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const eventId = e.currentTarget.dataset.eventid;
-                    handleEditEvent(eventId);
-                });
-            });
-            document.querySelectorAll('.delete-event-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const eventId = e.currentTarget.dataset.eventid;
-                    const imageUrl = e.currentTarget.dataset.imageurl;
-                    handleDeleteEvent(eventId, imageUrl);
-                });
-            });
         }
         
         async function loadEventDetails(eventData) {
-            document.getElementById('event-details-breadcrumb').textContent = eventData.title;
-            const eventDateFormatted = new Date(eventData.event_date).toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            
-            const reactionTypes = [
-                { type: 'like', emoji: '👍', label: 'أعجبني' },
-                { type: 'love', emoji: '❤️', label: 'أحببته' },
-                { type: 'sad', emoji: '😢', label: 'أحزنني' }
-            ];
-
-            let reactionButtonsHTML = '';
-            reactionTypes.forEach(rt => {
-                reactionButtonsHTML += `
-                    <button class="reaction-btn p-1 rounded-full hover:bg-gray-200 focus:outline-none" data-eventid="${eventData.id}" data-reactiontype="${rt.type}" aria-label="${rt.label}">
-                        <span id="${rt.type}-icon-details-${eventData.id}" class="text-xl">${rt.emoji}</span>
-                    </button>
-                    <span id="${rt.type}-count-details-${eventData.id}" class="text-xs text-slate-500 mr-1">0</span>
-                `;
-            });
-            
-            let ownerControlsHTML = '';
-            if (currentUser && currentUser.id === eventData.user_id) {
-                ownerControlsHTML = `
-                    <div class="mt-4 flex gap-2">
-                        <button class="edit-event-btn text-sm bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded" data-eventid="${eventData.id}">تعديل الفعالية</button>
-                        <button class="delete-event-btn text-sm bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded" data-eventid="${eventData.id}" data-imageurl="${eventData.image_url || ''}">حذف الفعالية</button>
-                    </div>
-                `;
+            const eventDetailsContent = document.getElementById('event-details-content');
+            if (!eventDetailsContent) {
+                console.error("Event details content container not found");
+                return;
             }
+            eventDetailsContent.innerHTML = '<div class="text-center p-4 text-gray-500">جاري تحميل تفاصيل الفعالية...</div>';
+
+            try {
+                document.getElementById('event-details-breadcrumb').textContent = eventData.title;
+                const eventDateFormatted = new Date(eventData.event_date).toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                
+                const reactionTypes = [
+                    { type: 'like', emoji: '👍', label: 'أعجبني' },
+                    { type: 'love', emoji: '❤️', label: 'أحببته' },
+                    { type: 'sad', emoji: '😢', label: 'أحزنني' }
+                ];
+
+                let reactionButtonsHTML = '';
+                reactionTypes.forEach(rt => {
+                    reactionButtonsHTML += `
+                        <button class="reaction-btn p-1 rounded-full hover:bg-gray-200 focus:outline-none" data-eventid="${eventData.id}" data-reactiontype="${rt.type}" aria-label="${rt.label}">
+                            <span id="${rt.type}-icon-details-${eventData.id}" class="text-xl">${rt.emoji}</span>
+                        </button>
+                        <span id="${rt.type}-count-details-${eventData.id}" class="text-xs text-slate-500 mr-1">0</span>
+                    `;
+                });
+                
+                let ownerControlsHTML = '';
+                if (currentUser && currentUser.id === eventData.user_id) {
+                    ownerControlsHTML = `
+                        <div class="mt-4 flex gap-2">
+                            <button class="edit-event-btn text-sm bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded" data-eventid="${eventData.id}">تعديل الفعالية</button>
+                            <button class="delete-event-btn text-sm bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded" data-eventid="${eventData.id}" data-imageurl="${eventData.image_url || ''}">حذف الفعالية</button>
+                        </div>
+                    `;
+                }
 
 
-            eventDetailsContent.innerHTML = `
-                <h1 class="text-[#0e141b] tracking-light text-[32px] font-bold leading-tight mb-2">${eventData.title}</h1>
-                <p class="text-slate-500 text-sm mb-4">تاريخ النشر: ${new Date(eventData.created_at).toLocaleDateString('ar-EG')} | تاريخ الفعالية: ${eventDateFormatted}</p>
-                <img src="${eventData.image_url || 'https://placehold.co/800x400/64748B/E0E7FF?text=Event+Image'}" alt="${eventData.title}" class="w-full h-auto max-h-[400px] object-cover rounded-lg mb-6 shadow">
-                <p class="text-[#0e141b] text-base leading-relaxed whitespace-pre-wrap">${eventData.description || 'لا يوجد وصف تفصيلي لهذه الفعالية.'}</p>
-                 <div class="mt-6 pt-4 border-t border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-2">التفاعلات:</h3>
-                    <div class="flex items-center gap-2 text-slate-500 text-xs">
-                        ${reactionButtonsHTML}
+                eventDetailsContent.innerHTML = `
+                    <h1 class="text-[#0e141b] tracking-light text-[32px] font-bold leading-tight mb-2">${eventData.title}</h1>
+                    <p class="text-slate-500 text-sm mb-4">تاريخ النشر: ${new Date(eventData.created_at).toLocaleDateString('ar-EG')} | تاريخ الفعالية: ${eventDateFormatted}</p>
+                    <img src="${eventData.image_url || 'https://placehold.co/800x400/64748B/E0E7FF?text=Event+Image'}" alt="${eventData.title}" class="w-full h-auto max-h-[400px] object-cover rounded-lg mb-6 shadow">
+                    <p class="text-[#0e141b] text-base leading-relaxed whitespace-pre-wrap">${eventData.description || 'لا يوجد وصف تفصيلي لهذه الفعالية.'}</p>
+                     <div class="mt-6 pt-4 border-t border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">التفاعلات:</h3>
+                        <div class="flex items-center gap-2 text-slate-500 text-xs">
+                            ${reactionButtonsHTML}
+                        </div>
                     </div>
-                </div>
-                ${ownerControlsHTML}
-            `;
+                    ${ownerControlsHTML}
+                `;
 
-            await fetchEventCounts(eventData.id, true); 
-            await checkUserReaction(eventData.id, true);
+                await fetchEventCounts(eventData.id, true); 
+                await checkUserReaction(eventData.id, true);
 
-            eventDetailsContent.querySelectorAll('.reaction-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const eventId = e.currentTarget.dataset.eventid;
-                    const reactionType = e.currentTarget.dataset.reactiontype;
-                    handleReaction(eventId, reactionType, true); 
-                });
-            });
-             eventDetailsContent.querySelectorAll('.edit-event-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const eventId = e.currentTarget.dataset.eventid;
-                    handleEditEvent(eventId);
-                });
-            });
-            eventDetailsContent.querySelectorAll('.delete-event-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const eventId = e.currentTarget.dataset.eventid;
-                    const imageUrl = e.currentTarget.dataset.imageurl;
-                    handleDeleteEvent(eventId, imageUrl);
-                });
-            });
+                // Attach listeners after content is rendered
+                attachDynamicEventListenersForDetails(eventDetailsContent);
+                await loadEventComments(eventData.id);
 
-
-            loadEventComments(eventData.id);
+            } catch (error) {
+                console.error('Error in loadEventDetails:', error);
+                eventDetailsContent.innerHTML = '<p class="text-red-500 p-4 text-center">فشل تحميل تفاصيل الفعالية.</p>';
+            }
         }
 
         async function loadEventComments(eventId) {
+            const eventCommentsList = document.getElementById('event-comments-list');
+            if (!eventCommentsList) {
+                 console.error("Event comments list container not found"); return;
+            }
             eventCommentsList.innerHTML = '<div class="text-center p-4 text-gray-500">جاري تحميل التعليقات...</div>';
             
-            const { data: commentsData, error: commentsError } = await _supabase
-                .from('event_comments')
-                .select('*, profiles(avatar_url, full_name)') // Join with profiles directly
-                .eq('event_id', eventId)
-                .order('created_at', { ascending: false });
+            try {
+                const { data: commentsData, error: commentsError } = await _supabase
+                    .from('event_comments')
+                    .select('*, profiles(avatar_url, full_name)') 
+                    .eq('event_id', eventId)
+                    .order('created_at', { ascending: false });
 
-            if (commentsError) {
-                console.error('Error fetching comments:', commentsError);
-                eventCommentsList.innerHTML = '<p class="text-red-500">فشل تحميل التعليقات.</p>';
-                return;
-            }
+                if (commentsError) throw commentsError;
 
-            if (commentsData && commentsData.length > 0) {
-                eventCommentsList.innerHTML = commentsData.map(comment => {
-                    const commenterName = comment.profiles?.full_name || comment.commenter_name || 'مستخدم غير معروف';
-                    const commenterAvatarUrl = comment.profiles?.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=?';
-                    const commentDate = new Date(comment.created_at).toLocaleString('ar-EG', {dateStyle: 'medium', timeStyle: 'short'});
-                    
-                    let commentOwnerControls = '';
-                    if (currentUser && currentUser.id === comment.user_id) {
-                        commentOwnerControls = `
-                            <div class="comment-actions text-xs mt-1">
-                                <button class="edit-comment-btn text-blue-500 hover:text-blue-700" data-commentid="${comment.id}" data-eventid="${eventId}">تعديل</button>
-                                <button class="delete-comment-btn text-red-500 hover:text-red-700" data-commentid="${comment.id}" data-eventid="${eventId}">حذف</button>
+                if (commentsData && commentsData.length > 0) {
+                    eventCommentsList.innerHTML = commentsData.map(comment => {
+                        const commenterName = comment.profiles?.full_name || comment.commenter_name || 'مستخدم غير معروف';
+                        const commenterAvatarUrl = comment.profiles?.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=?';
+                        const commentDate = new Date(comment.created_at).toLocaleString('ar-EG', {dateStyle: 'medium', timeStyle: 'short'});
+                        
+                        let commentOwnerControls = '';
+                        if (currentUser && currentUser.id === comment.user_id) {
+                            commentOwnerControls = `
+                                <div class="comment-actions text-xs mt-1">
+                                    <button class="edit-comment-btn text-blue-500 hover:text-blue-700" data-commentid="${comment.id}" data-eventid="${eventId}">تعديل</button>
+                                    <button class="delete-comment-btn text-red-500 hover:text-red-700" data-commentid="${comment.id}" data-eventid="${eventId}">حذف</button>
+                                </div>
+                            `;
+                        }
+
+                        return `
+                            <div class="flex items-start gap-3 p-3 border-b border-gray-200 last:border-b-0" id="comment-item-${comment.id}">
+                                <img src="${commenterAvatarUrl}" alt="${commenterName}" class="size-10 rounded-full shrink-0 object-cover">
+                                <div class="flex-1">
+                                    <div class="flex items-baseline gap-2">
+                                        <p class="text-[#0e141b] text-sm font-bold">${commenterName}</p>
+                                        <p class="text-[#4e7097] text-xs">${commentDate}</p>
+                                    </div>
+                                    <p class="comment-text-display text-[#0e141b] text-sm mt-1 whitespace-pre-wrap">${comment.comment_text}</p>
+                                    <div class="edit-comment-area hidden-section mt-1">
+                                        <textarea class="form-input w-full p-2 border rounded-md text-sm" rows="2">${comment.comment_text}</textarea>
+                                        <div class="mt-1 flex gap-2">
+                                            <button class="save-edit-comment-btn text-xs bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600" data-commentid="${comment.id}" data-eventid="${eventId}">حفظ</button>
+                                            <button class="cancel-edit-comment-btn text-xs bg-gray-300 text-gray-700 py-1 px-2 rounded hover:bg-gray-400" data-commentid="${comment.id}">إلغاء</button>
+                                        </div>
+                                    </div>
+                                    ${commentOwnerControls}
+                                </div>
                             </div>
                         `;
-                    }
+                    }).join('');
+                    
+                    attachCommentActionListeners(eventCommentsList);
 
-                    return `
-                        <div class="flex items-start gap-3 p-3 border-b border-gray-200 last:border-b-0" id="comment-item-${comment.id}">
-                            <img src="${commenterAvatarUrl}" alt="${commenterName}" class="size-10 rounded-full shrink-0 object-cover">
-                            <div class="flex-1">
-                                <div class="flex items-baseline gap-2">
-                                    <p class="text-[#0e141b] text-sm font-bold">${commenterName}</p>
-                                    <p class="text-[#4e7097] text-xs">${commentDate}</p>
-                                </div>
-                                <p class="comment-text-display text-[#0e141b] text-sm mt-1 whitespace-pre-wrap">${comment.comment_text}</p>
-                                <div class="edit-comment-area hidden-section mt-1">
-                                    <textarea class="form-input w-full p-2 border rounded-md text-sm" rows="2">${comment.comment_text}</textarea>
-                                    <div class="mt-1 flex gap-2">
-                                        <button class="save-edit-comment-btn text-xs bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600" data-commentid="${comment.id}" data-eventid="${eventId}">حفظ</button>
-                                        <button class="cancel-edit-comment-btn text-xs bg-gray-300 text-gray-700 py-1 px-2 rounded hover:bg-gray-400" data-commentid="${comment.id}">إلغاء</button>
-                                    </div>
-                                </div>
-                                ${commentOwnerControls}
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-                
-                // Add event listeners for new comment edit/delete buttons
-                eventCommentsList.querySelectorAll('.edit-comment-btn').forEach(btn => btn.addEventListener('click', handleEditCommentClick));
-                eventCommentsList.querySelectorAll('.delete-comment-btn').forEach(btn => btn.addEventListener('click', handleDeleteCommentClick));
-                eventCommentsList.querySelectorAll('.save-edit-comment-btn').forEach(btn => btn.addEventListener('click', handleSaveEditCommentClick));
-                eventCommentsList.querySelectorAll('.cancel-edit-comment-btn').forEach(btn => btn.addEventListener('click', handleCancelEditCommentClick));
-
-
-            } else {
-                eventCommentsList.innerHTML = '<p class="text-gray-500">لا توجد تعليقات حتى الآن. كن أول من يعلق!</p>';
+                } else {
+                    eventCommentsList.innerHTML = '<p class="text-gray-500 p-4 text-center">لا توجد تعليقات حتى الآن. كن أول من يعلق!</p>';
+                }
+            } catch (error) {
+                console.error('Error in loadEventComments:', error);
+                eventCommentsList.innerHTML = '<p class="text-red-500 p-4 text-center">فشل تحميل التعليقات.</p>';
             }
         }
 
@@ -1525,7 +1478,6 @@
                 commentItem.querySelector('.comment-text-display').classList.remove('hidden-section');
                 commentItem.querySelector('.comment-actions').classList.remove('hidden-section');
                 commentItem.querySelector('.edit-comment-area').classList.add('hidden-section');
-                // Optionally reset textarea value to original if needed, but not strictly necessary for cancel
             }
         }
         async function handleSaveEditCommentClick(e) {
@@ -1542,7 +1494,7 @@
 
             const { error } = await _supabase
                 .from('event_comments')
-                .update({ comment_text: newText, created_at: new Date().toISOString() }) // updated_at might be better here if you have it
+                .update({ comment_text: newText, updated_at: new Date().toISOString() }) 
                 .eq('id', commentId)
                 .eq('user_id', currentUser.id);
 
@@ -1550,7 +1502,7 @@
                 showModalMessage(`فشل تعديل التعليق: ${error.message}`, true);
             } else {
                 showModalMessage('تم تعديل التعليق بنجاح.');
-                loadEventComments(eventId); // Refresh comments list
+                loadEventComments(eventId); 
             }
         }
 
@@ -1570,7 +1522,7 @@
                     showModalMessage(`فشل حذف التعليق: ${error.message}`, true);
                 } else {
                     showModalMessage('تم حذف التعليق بنجاح.');
-                    loadEventComments(eventId); // Refresh comments list
+                    loadEventComments(eventId); 
                     fetchEventCounts(eventId, true); 
                     fetchEventCounts(eventId, false);
                 }
@@ -1621,8 +1573,8 @@
                 showModalMessage('تم إضافة التعليق بنجاح!');
                 document.getElementById('comment-text').value = ''; 
                 loadEventComments(currentEventId); 
-                fetchEventCounts(currentEventId, true); // Update counts on details page
-                fetchEventCounts(currentEventId, false); // Attempt to update counts on list page
+                fetchEventCounts(currentEventId, true); 
+                fetchEventCounts(currentEventId, false); 
             }
         });
 
@@ -1711,42 +1663,114 @@
         }
 
         async function loadFlashPosts() {
+            const flashPostsList = document.getElementById('flash-posts-list');
+             if (!flashPostsList) { console.error("Flash posts list container not found"); return; }
             flashPostsList.innerHTML = '<div class="text-center p-4 text-gray-500">جاري تحميل منشورات فلاش...</div>';
             
-            const { data: postsData, error: postsError } = await _supabase
-                .from('Flash')
-                .select('*') 
-                .order('created_at', { ascending: false });
+            try {
+                const { data: postsData, error: postsError } = await _supabase
+                    .from('Flash')
+                    .select('*, profiles(avatar_url, full_name)') 
+                    .order('created_at', { ascending: false });
 
-            if (postsError) {
-                console.error('Error fetching flash posts:', postsError);
-                flashPostsList.innerHTML = `<p class="text-red-500">فشل تحميل المنشورات: ${postsError.message}</p>`;
-                return;
-            }
+                if (postsError) throw postsError;
 
-            if (postsData && postsData.length > 0) {
-                const postsWithProfileInfo = await Promise.all(postsData.map(async (post) => {
-                    let profileInfo = { avatar_url: null, full_name: null };
-                    if (post.user_id) { 
-                        const { data: profileData, error: profileError } = await _supabase
-                            .from('profiles')
-                            .select('avatar_url, full_name')
-                            .eq('id', post.user_id)
-                            .single();
-                        if (!profileError && profileData) {
-                            profileInfo = profileData;
-                        } else if (profileError) {
-                            console.warn(`Could not fetch profile for user_id ${post.user_id} for flash post ${post.id}:`, profileError.message);
-                        }
-                    }
-                    return { ...post, profiles: profileInfo }; 
-                }));
-
-                flashPostsList.innerHTML = postsWithProfileInfo.map(createFlashPostCard).join('');
-            } else {
-                flashPostsList.innerHTML = '<p class="text-gray-500">لا توجد منشورات فلاش حتى الآن.</p>';
+                if (postsData && postsData.length > 0) {
+                    flashPostsList.innerHTML = postsData.map(createFlashPostCard).join('');
+                } else {
+                    flashPostsList.innerHTML = '<p class="text-gray-500 p-4 text-center">لا توجد منشورات فلاش حتى الآن.</p>';
+                }
+            } catch (error) {
+                 console.error('Error in loadFlashPosts:', error);
+                flashPostsList.innerHTML = '<p class="text-red-500 p-4 text-center">فشل تحميل المنشورات.</p>';
             }
         }
+
+        function attachDynamicEventListeners() {
+            document.querySelectorAll('.reaction-btn').forEach(button => {
+                button.removeEventListener('click', handleReactionEvent); // Remove old if any
+                button.addEventListener('click', handleReactionEvent);
+            });
+            document.querySelectorAll('.toggle-comment-btn').forEach(button => {
+                button.removeEventListener('click', handleToggleCommentEvent);
+                button.addEventListener('click', handleToggleCommentEvent);
+            });
+            document.querySelectorAll('.post-quick-comment-btn').forEach(button => {
+                button.removeEventListener('click', handlePostQuickCommentEvent);
+                button.addEventListener('click', handlePostQuickCommentEvent);
+            });
+            document.querySelectorAll('.edit-event-btn').forEach(button => {
+                button.removeEventListener('click', handleEditEventClick);
+                button.addEventListener('click', handleEditEventClick);
+            });
+            document.querySelectorAll('.delete-event-btn').forEach(button => {
+                button.removeEventListener('click', handleDeleteEventClick);
+                button.addEventListener('click', handleDeleteEventClick);
+            });
+        }
+        
+        function attachDynamicEventListenersForDetails(containerElement) {
+            containerElement.querySelectorAll('.reaction-btn').forEach(button => {
+                button.removeEventListener('click', handleReactionEventFromDetails);
+                button.addEventListener('click', handleReactionEventFromDetails);
+            });
+             containerElement.querySelectorAll('.edit-event-btn').forEach(button => {
+                button.removeEventListener('click', handleEditEventClick);
+                button.addEventListener('click', handleEditEventClick);
+            });
+            containerElement.querySelectorAll('.delete-event-btn').forEach(button => {
+                button.removeEventListener('click', handleDeleteEventClick);
+                button.addEventListener('click', handleDeleteEventClick);
+            });
+        }
+        function attachCommentActionListeners(containerElement) {
+            containerElement.querySelectorAll('.edit-comment-btn').forEach(btn => {
+                 btn.removeEventListener('click', handleEditCommentClick);
+                 btn.addEventListener('click', handleEditCommentClick);
+            });
+            containerElement.querySelectorAll('.delete-comment-btn').forEach(btn => {
+                btn.removeEventListener('click', handleDeleteCommentClick);
+                btn.addEventListener('click', handleDeleteCommentClick);
+            });
+            containerElement.querySelectorAll('.save-edit-comment-btn').forEach(btn => {
+                btn.removeEventListener('click', handleSaveEditCommentClick);
+                btn.addEventListener('click', handleSaveEditCommentClick);
+            });
+            containerElement.querySelectorAll('.cancel-edit-comment-btn').forEach(btn => {
+                btn.removeEventListener('click', handleCancelEditCommentClick);
+                btn.addEventListener('click', handleCancelEditCommentClick);
+            });
+        }
+
+        // Event handler wrappers to pass the 'fromDetails' flag
+        function handleReactionEvent(e) {
+            const eventId = e.currentTarget.dataset.eventid;
+            const reactionType = e.currentTarget.dataset.reactiontype;
+            handleReaction(eventId, reactionType, false);
+        }
+        function handleReactionEventFromDetails(e) {
+            const eventId = e.currentTarget.dataset.eventid;
+            const reactionType = e.currentTarget.dataset.reactiontype;
+            handleReaction(eventId, reactionType, true);
+        }
+        function handleToggleCommentEvent(e) {
+            const eventId = e.currentTarget.dataset.eventid;
+            toggleQuickComment(eventId);
+        }
+        function handlePostQuickCommentEvent(e) {
+            const eventId = e.currentTarget.dataset.eventid;
+            postQuickComment(eventId);
+        }
+        function handleEditEventClick(e) {
+            const eventId = e.currentTarget.dataset.eventid;
+            handleEditEvent(eventId);
+        }
+        function handleDeleteEventClick(e) {
+            const eventId = e.currentTarget.dataset.eventid;
+            const imageUrl = e.currentTarget.dataset.imageurl;
+            handleDeleteEvent(eventId, imageUrl);
+        }
+
 
         async function handleEditEvent(eventId) {
             if (!currentUser) {
@@ -1759,7 +1783,7 @@
                 .from('project_events')
                 .select('*')
                 .eq('id', eventId)
-                .eq('user_id', currentUser.id) // Ensure only owner can fetch for edit
+                .eq('user_id', currentUser.id) 
                 .single();
 
             if (error || !eventToEdit) {
@@ -1774,7 +1798,7 @@
             document.getElementById('event-description').value = eventToEdit.description;
             document.getElementById('event-date').value = eventToEdit.event_date;
             
-            currentEditingEventImageUrl = eventToEdit.image_url; // Store current image URL
+            currentEditingEventImageUrl = eventToEdit.image_url; 
             const imagePreview = document.getElementById('event-image-preview-edit');
             if (eventToEdit.image_url) {
                 imagePreview.src = eventToEdit.image_url;
@@ -1783,13 +1807,19 @@
                 imagePreview.classList.add('hidden-section');
                 imagePreview.src = '';
             }
-            document.getElementById('event-image-file').value = ''; // Clear file input
+            document.getElementById('event-image-file').value = ''; 
 
 
             createEventFormContainer.classList.remove('hidden-section');
             createEventBtn.classList.add('hidden-section');
-            navigateTo('events'); // Stay on events page, but show the form
-            createEventFormContainer.scrollIntoView({ behavior: 'smooth' });
+            // No need to navigateTo('events') if already on events page, just ensure form is visible
+            // If edit is clicked from event-details, this will navigate back to events to show the form
+            if(!document.getElementById('events').classList.contains('hidden-section')) {
+                 createEventFormContainer.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                navigateTo('events'); // This will show events and then the form needs to be manually scrolled to
+                setTimeout(() => createEventFormContainer.scrollIntoView({ behavior: 'smooth' }), 100);
+            }
         }
 
 
@@ -1801,50 +1831,37 @@
             }
 
             showConfirmModal('هل أنت متأكد أنك تريد حذف هذه الفعالية؟ هذا الإجراء لا يمكن التراجع عنه.', async () => {
-                // First, delete dependent records
-                const { error: commentsError } = await _supabase.from('event_comments').delete().eq('event_id', eventId);
-                if (commentsError) {
-                    showModalMessage(`فشل حذف تعليقات الفعالية: ${commentsError.message}`, true);
-                    // Optionally, decide if you want to stop the whole delete process here
-                }
+                try {
+                    const { error: commentsError } = await _supabase.from('event_comments').delete().eq('event_id', eventId);
+                    if (commentsError) throw commentsError;
 
-                const { error: reactionsError } = await _supabase.from('event_reactions').delete().eq('event_id', eventId);
-                if (reactionsError) {
-                    showModalMessage(`فشل حذف تفاعلات الفعالية: ${reactionsError.message}`, true);
-                }
+                    const { error: reactionsError } = await _supabase.from('event_reactions').delete().eq('event_id', eventId);
+                    if (reactionsError) throw reactionsError;
 
-                // Delete image from storage if URL exists
-                if (imageUrl) {
-                    try {
+                    if (imageUrl) {
                         const fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
                         if (fileName) {
                             const { error: storageError } = await _supabase.storage.from('events-images').remove([fileName]);
-                            if (storageError) {
-                                console.warn("Could not delete event image from storage, it might not exist or RLS issue:", storageError.message);
-                                // Don't necessarily block event deletion for this, but log it.
-                            }
+                            if (storageError) console.warn("Could not delete event image from storage (it might not exist or RLS issue):", storageError.message);
                         }
-                    } catch (e) {
-                        console.warn("Error parsing image URL for deletion:", e);
                     }
-                }
 
-                // Finally, delete the event itself
-                const { error: eventDeleteError } = await _supabase
-                    .from('project_events')
-                    .delete()
-                    .eq('id', eventId)
-                    .eq('user_id', currentUser.id); // Ensure only owner can delete
+                    const { error: eventDeleteError } = await _supabase
+                        .from('project_events')
+                        .delete()
+                        .eq('id', eventId)
+                        .eq('user_id', currentUser.id); 
 
-                if (eventDeleteError) {
-                    showModalMessage(`فشل حذف الفعالية: ${eventDeleteError.message}`, true);
-                } else {
+                    if (eventDeleteError) throw eventDeleteError;
+
                     showModalMessage('تم حذف الفعالية بنجاح.');
-                    loadEvents(); // Refresh the list
-                    // If on event details page for this event, navigate away
+                    loadEvents(); 
                     if (document.getElementById('event-details').classList.contains('hidden-section') === false && currentEventId === eventId) {
                         navigateTo('events');
                     }
+                } catch (error) {
+                     showModalMessage(`فشل حذف الفعالية: ${error.message}`, true);
+                     console.error("Detailed error during event deletion:", error);
                 }
             });
         }
