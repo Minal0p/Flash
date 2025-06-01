@@ -196,11 +196,11 @@
         }
 
         /* Mobile menu styles (basic) */
-        #mobile-menu-button-container { /* New container for centering */
+        #mobile-menu-button-container { 
             display: none; 
         }
         #mobile-menu {
-            display: none; /* Hidden by default, shown when toggled */
+            /* REMOVED display: none; from here. It's controlled by hidden-section and md:hidden */
         }
 
         @media (max-width: 768px) { /* md breakpoint in Tailwind */
@@ -208,7 +208,7 @@
                 display: none;
             }
             #mobile-menu-button-container {
-                display: flex; /* Show and center on small screens */
+                display: flex; 
             }
         }
     </style>
@@ -747,9 +747,15 @@
         const mobileMenu = document.getElementById('mobile-menu');
 
         if (mobileMenuButton && mobileMenu) {
+            console.log("Mobile menu button and menu element found. Attaching listener."); // DEBUG
             mobileMenuButton.addEventListener('click', () => {
+                console.log("Mobile menu button clicked!"); // DEBUG
                 mobileMenu.classList.toggle('hidden-section');
+                console.log("Mobile menu hidden-section toggled. Is hidden:", mobileMenu.classList.contains('hidden-section')); // DEBUG
             });
+        } else {
+            if (!mobileMenuButton) console.error("Mobile menu button NOT found!");
+            if (!mobileMenu) console.error("Mobile menu element NOT found!");
         }
 
         // --- Authentication ---
