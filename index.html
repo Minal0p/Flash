@@ -868,16 +868,21 @@
         
         navLogoutBtn.addEventListener('click', async () => {
             console.log("Logout button clicked. Current user before signout:", currentUser);
-            if (!currentUser) { 
+            if (!currentUser) {
                 showModalMessage('أنت غير مسجل الدخول حاليًا.', true);
-                await updateAuthState(null); 
-                navigateTo('home');       
+                // No need to call updateAuthState or navigateTo here explicitly,
+                // onAuthStateChange will handle the state if it's inconsistent
+                // or if the UI needs to reflect a "not logged in" state.
                 return;
             }
             try {
                 const { error } = await _supabase.auth.signOut();
-                if (error) throw error;
+                if (error) {
+                    throw error;
+                }
                 showModalMessage('تم تسجيل الخروج بنجاح.');
+                // onAuthStateChange will be triggered with (event: 'SIGNED_OUT', session: null)
+                // and will then call updateAuthState(null) and navigateTo('home').
             } catch (error) {
                 showModalMessage(`خطأ في تسجيل الخروج: ${error.message}`, true);
                 console.error("Logout error:", error);
@@ -902,13 +907,23 @@
 
         async function updateAuthState(user) {
             console.log("Updating auth state for user:", user); 
-            const updateProfileFormContainer = document.getElementById('current-user-profile-form-container'); 
+            currentUser = user; // Ensure global currentUser is updated first
+
+            const authLinks = document.getElementById('auth-links');
+            const userInfoDisplay = document.getElementById('user-info');
+            const myProfileNavLink = document.getElementById('my-profile-nav-link');
+            const myProfileNavLinkMobile = document.getElementById('my-profile-nav-link-mobile');
+            const createEventBtnGeneral = document.getElementById('create-event-btn');
+            const userNameNav = document.getElementById('user-name-nav');
+            const userAvatarNav = document.getElementById('user-avatar-nav');
+            const commenterAvatar = document.getElementById('commenter-avatar');
+            const updateProfileFormContainer = document.getElementById('current-user-profile-form-container');
 
             if (user) {
-                authLinks.className = 'hidden-section items-center gap-2 sm:gap-4'; 
+                authLinks.classList.add('hidden-section');
                 myProfileNavLink.classList.remove('hidden-section');
-                if(myProfileNavLinkMobile) myProfileNavLinkMobile.classList.remove('hidden-section');
-                userInfoDisplay.className = 'flex items-center gap-2 sm:gap-3'; 
+                if (myProfileNavLinkMobile) myProfileNavLinkMobile.classList.remove('hidden-section');
+                userInfoDisplay.classList.remove('hidden-section');
 
                 try {
                     const { data: profile, error: profileError } = await _supabase
@@ -928,11 +943,7 @@
                         userAvatarNav.src = profile.avatar_url || 'https://placehold.co/32x32/E0E0E0/B0B0B0?text=U';
                         commenterAvatar.src = profile.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
                         if (createEventBtnGeneral) {
-                            if (profile.role === 'admin') {
-                                createEventBtnGeneral.classList.remove('hidden-section');
-                            } else {
-                                createEventBtnGeneral.classList.add('hidden-section');
-                            }
+                             createEventBtnGeneral.classList.toggle('hidden-section', profile.role !== 'admin');
                         }
                     } else {
                         console.warn("User authenticated but profile not found in DB for ID:", user.id);
@@ -956,10 +967,10 @@
                 }
 
             } else { 
-                authLinks.className = 'flex items-center gap-2 sm:gap-4'; 
+                authLinks.classList.remove('hidden-section');
                 myProfileNavLink.classList.add('hidden-section');
-                if(myProfileNavLinkMobile) myProfileNavLinkMobile.classList.add('hidden-section');
-                userInfoDisplay.className = 'hidden-section items-center gap-2 sm:gap-3'; 
+                if (myProfileNavLinkMobile) myProfileNavLinkMobile.classList.add('hidden-section');
+                userInfoDisplay.classList.add('hidden-section');
                 userNameNav.textContent = '';
                 userAvatarNav.src = 'https://placehold.co/32x32/E0E0E0/B0B0B0?text=U';
                 commenterAvatar.src = 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
@@ -970,37 +981,39 @@
         
         _supabase.auth.onAuthStateChange(async (event, session) => { 
             console.log("onAuthStateChange - Event:", event, "Session:", session); 
-            const previousUser = currentUser; // Store previous user state for comparison
-            currentUser = session?.user || null; 
+            const previousUser = currentUser; 
+            const newUser = session?.user || null; // Get new user from session
             
-            await updateAuthState(currentUser); // Update UI elements immediately
+            // Update the global currentUser immediately
+            // This was previously inside updateAuthState, moving it here ensures
+            // currentUser is set before any navigation logic that might depend on it.
+            currentUser = newUser; 
+            
+            await updateAuthState(newUser); // Update UI elements based on new auth state
 
             if (!initialAuthProcessed) {
                 initialAuthProcessed = true;
-                // Use setTimeout to ensure DOM updates from updateAuthState are processed before navigation
                 setTimeout(() => { 
                     const hash = window.location.hash.substring(1);
                     let targetPage = 'home'; 
                     if (hash && document.getElementById(hash)) {
                         targetPage = hash;
-                    } else if (hash) { // If hash exists but element doesn't, log warning
+                    } else if (hash) { 
                         console.warn(`Hash target #${hash} not found, defaulting to home.`);
                     }
                     console.log("onAuthStateChange (Initial Navigation): Navigating to:", targetPage);
                     navigateTo(targetPage);
-                }, 0); // Small delay, can be 0
-            } else if (event === 'SIGNED_IN' && !previousUser) { // User just signed in
-                // Only navigate if currently on login/signup page
+                }, 0); 
+            } else if (event === 'SIGNED_IN' && !previousUser) { 
                 const currentSectionId = Array.from(contentSections).find(s => !s.classList.contains('hidden-section'))?.id;
                 if (currentSectionId === 'login' || currentSectionId === 'signup') {
                     console.log("onAuthStateChange (Post-Login Navigation): Navigating to home.");
                     navigateTo('home');
                 }
-            } else if (event === 'SIGNED_OUT') { // User just signed out
+            } else if (event === 'SIGNED_OUT') { 
                 console.log("onAuthStateChange (Post-Signout Navigation): Navigating to home.");
                 navigateTo('home');
             }
-            // For other events like USER_UPDATED or TOKEN_REFRESHED, updateAuthState is usually sufficient.
         });
 
         const teamMembersListContainer = document.getElementById('team-members-list'); 
@@ -1204,12 +1217,12 @@
             eventImagesPreviewContainer.innerHTML = ''; // Clear existing previews
 
             // Render previews for existing URLs (when editing)
-            if (Array.isArray(existingEventImageUrls)) { // ADDED CHECK
+            if (Array.isArray(existingEventImageUrls)) { 
                 existingEventImageUrls.forEach(url => {
                     const previewItem = createImagePreviewElement(url, url, false);
                     eventImagesPreviewContainer.appendChild(previewItem);
                 });
-            } else if (existingEventImageUrls) { // If it's not null/undefined but also not an array (e.g. single string from old data)
+            } else if (existingEventImageUrls) { 
                  console.warn("renderImagePreviews: existingEventImageUrls was not an array but had a value. Treating as single image URL for preview.", existingEventImageUrls);
                  const previewItem = createImagePreviewElement(existingEventImageUrls, existingEventImageUrls, false);
                  eventImagesPreviewContainer.appendChild(previewItem);
@@ -1946,7 +1959,7 @@
             if (!currentUser) { showModalMessage('يجب تسجيل الدخول لتعديل الفعالية.', true); navigateTo('login'); return; }
             editingEventId = eventId;
             eventImageFilesToUpload = []; 
-            // existingEventImageUrls = []; // Keep this line, it will be repopulated
+            // existingEventImageUrls = []; // This was the issue, should be correctly populated below
             selectedMainImagePreviewUrl = null;
 
             try {
@@ -1960,16 +1973,8 @@
                 document.getElementById('event-description').value = eventToEdit.description;
                 document.getElementById('event-date').value = eventToEdit.event_date;
                 
-                // Ensure existingEventImageUrls is an array
-                if (Array.isArray(eventToEdit.image_urls)) {
-                    existingEventImageUrls = eventToEdit.image_urls;
-                } else if (eventToEdit.image_urls === null || typeof eventToEdit.image_urls === 'undefined') {
-                    existingEventImageUrls = [];
-                } else {
-                    // This case should ideally not happen if the DB schema is TEXT[]
-                    console.warn("handleEditEvent: eventToEdit.image_urls is not an array, null, or undefined. Value:", eventToEdit.image_urls, "Defaulting to empty array.");
-                    existingEventImageUrls = []; 
-                }
+                // Ensure existingEventImageUrls is an array, even if image_urls is null or not an array
+                existingEventImageUrls = Array.isArray(eventToEdit.image_urls) ? eventToEdit.image_urls : (eventToEdit.image_urls ? [eventToEdit.image_urls] : []);
                 
                 selectedMainImagePreviewUrl = eventToEdit.main_image_url || (existingEventImageUrls.length > 0 ? existingEventImageUrls[0] : null);
                 
