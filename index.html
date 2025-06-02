@@ -982,14 +982,11 @@
         _supabase.auth.onAuthStateChange(async (event, session) => { 
             console.log("onAuthStateChange - Event:", event, "Session:", session); 
             const previousUser = currentUser; 
-            const newUser = session?.user || null; // Get new user from session
+            const newUser = session?.user || null; 
             
-            // Update the global currentUser immediately
-            // This was previously inside updateAuthState, moving it here ensures
-            // currentUser is set before any navigation logic that might depend on it.
             currentUser = newUser; 
             
-            await updateAuthState(newUser); // Update UI elements based on new auth state
+            await updateAuthState(newUser); 
 
             if (!initialAuthProcessed) {
                 initialAuthProcessed = true;
