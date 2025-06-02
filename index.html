@@ -15,21 +15,21 @@
             transition: background-color 0.3s, color 0.3s;
         }
         .dark body {
-            background-color: #1f2937; /* Tailwind gray-800 */
+            background-color: #000000; /* Black */
             color: #f3f4f6; /* Tailwind gray-100 */
         }
         .dark header, .dark footer, .dark .modal-content, .dark #mobile-menu {
-            background-color: #374151; /* Tailwind gray-700 */
-            border-color: #4b5563; /* Tailwind gray-600 */
+            background-color: #111827; /* Tailwind gray-900 (very dark gray) */
+            border-color: #1f2937; /* Tailwind gray-800 */
         }
         .dark .content-section, .dark .layout-content-container, .dark #create-event-form-container, 
         .dark #event-details-content, .dark #event-comments-list, .dark #add-comment-form-container,
         .dark #current-user-profile-form-container { 
-            background-color: #374151; 
+            background-color: #111827; 
         }
          .dark .team-member-card, .dark .bg-white { 
-            background-color: #4b5563; 
-            border-color: #6b7280; 
+            background-color: #1f2937; 
+            border-color: #374151; 
         }
 
         .dark .text-\[\#0e141b\], .dark .text-\[\#101418\], .dark .text-black, .dark .text-gray-800, .dark .text-gray-700 {
@@ -39,20 +39,20 @@
             color: #d1d5db; 
         }
         .dark .border-\[\#d4dbe2\], .dark .border-gray-300, .dark .border-gray-200 {
-            border-color: #6b7280; 
+            border-color: #374151; 
         }
         .dark .bg-gray-50, .dark .bg-slate-50 {
-            background-color: #1f2937; 
+            background-color: #000000; 
         }
          .dark .bg-gray-100 {
-            background-color: #374151; 
+            background-color: #111827; 
          }
         .dark .placeholder\:text-\[\#5c718a\]::placeholder {
             color: #9ca3af; 
         }
         .dark .form-input {
-            background-color: #374151; 
-            border-color: #6b7280; 
+            background-color: #1f2937; 
+            border-color: #374151; 
             color: #f3f4f6;
         }
         .dark .form-input:focus {
@@ -71,18 +71,18 @@
             color: #3b82f6;
          }
         .dark #create-event-btn { 
-            background-color: #4b5563; 
+            background-color: #374151; 
             color: #f3f4f6;
         }
         .dark #create-event-btn:hover { 
-            background-color: #6b7280; 
+            background-color: #4b5563; 
         }
         .dark .form-button.bg-gray-300 {
-            background-color: #6b7280; 
+            background-color: #4b5563; 
             color: #f3f4f6;
         }
         .dark .form-button.bg-gray-300:hover {
-            background-color: #4b5563; 
+            background-color: #374151; 
         }
 
 
@@ -172,8 +172,8 @@
              border: 1px solid #e5e7eb; 
         }
         .dark .team-member-card {
-            background-color: #4b5563; /* Tailwind gray-600 */
-            border-color: #6b7280; /* Tailwind gray-500 */
+            background-color: #1f2937; /* Tailwind gray-800 for cards in dark mode */
+            border-color: #374151; /* Tailwind gray-700 for card borders in dark mode */
         }
          /* Animation for cards */
         @keyframes slideInUp {
@@ -346,12 +346,8 @@
                         <h2 class="text-[#101418] tracking-light text-[28px] font-bold leading-tight text-center pb-6">إنشاء حساب جديد</h2>
                         <form id="signup-form">
                             <div class="mb-4">
-                                <label class="block text-[#101418] text-base font-medium leading-normal pb-2" for="signup-fullname">الاسم الكامل</label>
-                                <input id="signup-fullname" type="text" placeholder="أدخل اسمك الكامل" required class="form-input input-field"/>
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-[#101418] text-base font-medium leading-normal pb-2" for="signup-username">اسم المستخدم</label>
-                                <input id="signup-username" type="text" placeholder="اختر اسم مستخدم" required class="form-input input-field"/>
+                                <label class="block text-[#101418] text-base font-medium leading-normal pb-2" for="signup-fullname">الاسم</label>
+                                <input id="signup-fullname" type="text" placeholder="أدخل اسمك (سيستخدم كاسم كامل واسم مستخدم)" required class="form-input input-field"/>
                             </div>
                             <div class="mb-4">
                                 <label class="block text-[#101418] text-base font-medium leading-normal pb-2" for="signup-email">البريد الإلكتروني</label>
@@ -362,9 +358,8 @@
                                 <input id="signup-password" type="password" placeholder="اختر كلمة مرور قوية" required class="form-input input-field"/>
                             </div>
                              <div class="mb-4">
-                                <label class="block text-[#101418] text-base font-medium leading-normal pb-2" for="signup-academic-id">الرقم الأكاديمي</label>
-                                <input id="signup-academic-id" type="text" placeholder="أدخل رقمك الأكاديمي" required class="form-input input-field"/>
-                            </div>
+                                <label class="block text-[#101418] text-base font-medium leading-normal pb-2" for="signup-academic-id">الرقم الأكاديمي (اختياري)</label>
+                                <input id="signup-academic-id" type="text" placeholder="أدخل رقمك الأكاديمي إن وجد" class="form-input input-field"/> </div>
                             <div class="mb-6">
                                 <label class="block text-[#101418] text-base font-medium leading-normal pb-2" for="signup-admin-code-input">رمز المسؤول (اختياري)</label>
                                 <input id="signup-admin-code-input" type="text" placeholder="أدخل رمز المسؤول إن وجد" class="form-input input-field"/>
@@ -397,7 +392,6 @@
                         </p>
                     </div>
                 </section>
-
 
                 <section id="profiles" class="content-section hidden-section px-5 md:px-20 lg:px-40 py-5">
                     <div class="layout-content-container flex flex-col max-w-[960px] mx-auto">
@@ -445,13 +439,11 @@
                     </div>
                 </section>
 
-
                 <section id="events" class="content-section hidden-section px-5 md:px-20 lg:px-40 py-5">
                     <div class="layout-content-container flex flex-col max-w-[960px] mx-auto">
                         <div class="flex flex-wrap justify-between items-center gap-3 p-4">
                             <p class="text-[#101418] tracking-light text-2xl sm:text-[32px] font-bold leading-tight min-w-72">فعاليات المشروع</p>
-                            <button id="create-event-btn" class="form-button bg-[#eaedf1] text-[#101418] hover:bg-gray-300">
-                                <span class="truncate">إنشاء فعالية</span>
+                            <button id="create-event-btn" class="form-button bg-[#eaedf1] text-[#101418] hover:bg-gray-300 hidden-section"> <span class="truncate">إنشاء فعالية</span>
                             </button>
                         </div>
 
@@ -523,7 +515,6 @@
                 </section>
 
                 <section id="flash-feed" class="content-section hidden-section px-5 md:px-20 lg:px-40 py-5">
-                   
                 </section>
 
                 <section id="contact" class="content-section hidden-section px-5 md:px-20 lg:px-40 py-10 text-center">
@@ -590,8 +581,7 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6Y3JqaGh2d2dsbHNkc3ZmdHVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgyMTcxNzcsImV4cCI6MjA2Mzc5MzE3N30.wy_ei_ZVJoMGbXMVqrW8NVUEgk2-EvPQYpgb9gWMW18';
         const ADMIN_SECRET_CODE = "FLASH_ADMIN_2024"; 
 
-
-        // --- Modal Elements (Declared early) ---
+        // --- Modal Elements ---
         const messageModal = document.getElementById('messageModal');
         const modalMessageText = document.getElementById('modalMessageText');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
@@ -601,9 +591,8 @@
         const confirmModalCancelBtn = document.getElementById('confirmModalCancelBtn');
         let confirmCallback = null;
         
-        // Function to show modal messages
         function showModalMessage(message, isError = false) {
-            if (modalMessageText && messageModal) { // Check if elements exist
+            if (modalMessageText && messageModal) {
                 modalMessageText.textContent = message;
                 modalMessageText.className = isError ? 'text-red-600 font-semibold' : 'text-green-600 font-semibold';
                 messageModal.classList.remove('hidden-section');
@@ -638,9 +627,8 @@
             });
         }
 
-
         if (!SUPABASE_URL || !SUPABASE_ANON_KEY || SUPABASE_URL === 'YOUR_SUPABASE_URL') { 
-            console.warn('Supabase URL and Anon Key might still be placeholders or missing if the hardcoded values are incorrect.');
+            console.warn('Supabase URL and Anon Key might still be placeholders or missing.');
             if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
                  showModalMessage('خطأ في الإعداد: يرجى التأكد من صحة Supabase URL و Anon Key.');
             }
@@ -649,28 +637,25 @@
         const { createClient } = supabase;
         const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Common styles for form inputs and buttons
+        // --- Global Variables for Auth and Navigation ---
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        let currentEventId = null; 
+        let currentUser = null; 
+        let initialAuthProcessed = false; // Flag to ensure initial navigation happens once
+        let editingEventId = null; 
+        let currentEditingEventImageUrl = null; 
+
+        // --- Common styles (already applied in HTML, kept for reference if needed by JS) ---
         const inputFieldStyles = "form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#101418] focus:outline-0 focus:ring-2 focus:ring-[#1978e5] border border-[#d4dbe2] bg-gray-50 focus:border-[#1978e5] h-14 placeholder:text-[#5c718a] p-[15px] text-base font-normal leading-normal";
         const formButtonStyles = "flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-4 text-base font-bold leading-normal tracking-[0.015em] transition-colors";
-
         document.querySelectorAll('.input-field').forEach(el => el.className = inputFieldStyles);
         document.querySelectorAll('.form-button').forEach(el => el.className = `${formButtonStyles} ${el.className}`);
 
 
         // --- Navigation ---
-        const navLinks = document.querySelectorAll('.nav-link');
-        const contentSections = document.querySelectorAll('.content-section');
-        let currentEventId = null; 
-        let currentUser = null; 
-        let initialAuthProcessed = false;
-        let pendingNavigationTarget = null;
-        const myProfileNavLink = document.getElementById('my-profile-nav-link');
-        const myProfileNavLinkMobile = document.getElementById('my-profile-nav-link-mobile');
-        let editingEventId = null; 
-        let currentEditingEventImageUrl = null; 
-
-
         async function navigateTo(targetId, eventData = null) { 
+            console.log(`Navigating to: ${targetId}`, eventData); // Debug navigation
             contentSections.forEach(section => {
                 section.classList.add('hidden-section');
             });
@@ -686,29 +671,19 @@
                 targetSection.classList.remove('hidden-section');
                 window.scrollTo(0, 0); 
 
-                if (targetId === 'profiles') {
-                    await loadProfiles(); 
-                }
+                // Load content for specific sections
+                if (targetId === 'profiles') await loadProfiles();
                 if (targetId === 'my-profile-section') {
-                    const currentUserProfileForm = document.getElementById('current-user-profile-form-container');
-                    if (currentUser) { 
-                        currentUserProfileForm.classList.remove('hidden-section'); 
-                        await loadCurrentUserProfileData(); 
-                    } else {
-                        currentUserProfileForm.classList.add('hidden-section');
-                        navigateTo('login'); 
-                    }
+                    if (currentUser) await loadCurrentUserProfileData();
+                    else navigateTo('login'); // Redirect if not logged in
                 }
                 if (targetId === 'events') await loadEvents();
                 if (targetId === 'event-details' && eventData) {
                     currentEventId = eventData.id; 
                     await loadEventDetails(eventData);
                 }
-                // Removed Flash Feed related navigation
-                // if (targetId === 'flash-feed') await loadFlashPosts();
-
             } else {
-                console.error(`Section with id "${targetId}" not found.`);
+                console.error(`Section with id "${targetId}" not found. Defaulting to home.`);
                 document.getElementById('home').classList.remove('hidden-section'); 
             }
         }
@@ -718,7 +693,6 @@
                 e.preventDefault();
                 const targetId = e.currentTarget.dataset.target;
                 navigateTo(targetId); 
-                // Close mobile menu if open
                 const mobileMenu = document.getElementById('mobile-menu');
                 if (mobileMenu && !mobileMenu.classList.contains('hidden-section')) {
                     mobileMenu.classList.add('hidden-section');
@@ -730,18 +704,12 @@
         const mobileMenu = document.getElementById('mobile-menu');
 
         if (mobileMenuButton && mobileMenu) {
-            console.log("Mobile menu button and menu element found. Attaching listener."); // DEBUG
             mobileMenuButton.addEventListener('click', () => {
-                console.log("Mobile menu button clicked!"); // DEBUG
                 mobileMenu.classList.toggle('hidden-section');
-                console.log("Mobile menu hidden-section toggled. Is hidden:", mobileMenu.classList.contains('hidden-section')); // DEBUG
             });
-        } else {
-            if (!mobileMenuButton) console.error("Mobile menu button NOT found!");
-            if (!mobileMenu) console.error("Mobile menu element NOT found!");
         }
 
-        // --- Authentication ---
+        // --- Authentication Elements ---
         const loginForm = document.getElementById('login-form');
         const signupForm = document.getElementById('signup-form');
         const authLinks = document.getElementById('auth-links');
@@ -749,26 +717,31 @@
         const userNameNav = document.getElementById('user-name-nav');
         const userAvatarNav = document.getElementById('user-avatar-nav');
         const navLogoutBtn = document.getElementById('nav-logout-btn');
-        const navLoginBtn = document.getElementById('nav-login-btn');
-        const navSignupBtn = document.getElementById('nav-signup-btn');
         const commenterAvatar = document.getElementById('commenter-avatar');
         const forgotPasswordForm = document.getElementById('forgot-password-form');
+        const myProfileNavLink = document.getElementById('my-profile-nav-link');
+        const myProfileNavLinkMobile = document.getElementById('my-profile-nav-link-mobile');
+        const createEventBtnGeneral = document.getElementById('create-event-btn');
 
 
+        // --- Authentication Logic ---
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             
-            const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
-
-            if (error) {
+            try {
+                const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                if (data.user) {
+                    showModalMessage('تم تسجيل الدخول بنجاح!');
+                    // onAuthStateChange will handle navigation and UI updates
+                } else {
+                    showModalMessage('فشل تسجيل الدخول. الرجاء المحاولة مرة أخرى.', true);
+                }
+            } catch (error) {
                 showModalMessage(`خطأ في تسجيل الدخول: ${error.message}`, true);
-            } else if (data.user) {
-                showModalMessage('تم تسجيل الدخول بنجاح!');
-                navigateTo('home'); 
-            } else {
-                 showModalMessage('فشل تسجيل الدخول. الرجاء المحاولة مرة أخرى.', true);
+                console.error("Login error:", error);
             }
         });
 
@@ -776,9 +749,8 @@
             e.preventDefault();
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
-            const fullName = document.getElementById('signup-fullname').value;
-            const userName = document.getElementById('signup-username').value;
-            const academicId = document.getElementById('signup-academic-id').value;
+            const fullName = document.getElementById('signup-fullname').value; 
+            const academicId = document.getElementById('signup-academic-id').value; // Will be empty if not filled
             const enteredAdminCode = document.getElementById('signup-admin-code-input').value;
             
             let assignedRole = 'user';
@@ -786,49 +758,56 @@
                 assignedRole = 'admin';
             }
 
-
-            const { data: authData, error: authError } = await _supabase.auth.signUp({
-                email,
-                password,
-                options: {
-                    data: { 
-                        full_name: fullName,
-                        user_name: userName,
+            try {
+                const { data: authData, error: authError } = await _supabase.auth.signUp({
+                    email,
+                    password,
+                    options: { 
+                        data: { 
+                            full_name: fullName, 
+                            user_name: fullName, 
+                            academic_id: academicId || null, // Send null if empty, or let DB handle empty string
+                            role: assignedRole 
+                        }
                     }
-                }
-            });
+                });
 
-            if (authError) {
-                showModalMessage(`خطأ في إنشاء الحساب: ${authError.message}`, true);
-            } else if (authData.user) {
-                const { error: profileError } = await _supabase
-                    .from('profiles')
-                    .insert({
-                        id: authData.user.id, 
-                        full_name: fullName,
-                        User_Name: userName, 
-                        academic_id: academicId,
-                        role: assignedRole, 
-                        email: authData.user.email, 
-                        avatar_url: `https://placehold.co/100x100/E0E0E0/B0B0B0?text=${userName.substring(0,1).toUpperCase()}` 
-                    });
+                if (authError) throw authError;
 
-                if (profileError) {
-                    showModalMessage(`تم إنشاء الحساب ولكن فشل إنشاء الملف الشخصي: ${profileError.message}`, true);
+                if (authData.user) {
+                    showModalMessage('تم إنشاء حساب المصادقة بنجاح! يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب.');
                 } else {
-                    showModalMessage('تم إنشاء الحساب والملف الشخصي بنجاح! يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب.');
-                    navigateTo('home'); 
+                    showModalMessage('حدث خطأ غير متوقع أثناء إنشاء الحساب. الرجاء المحاولة مرة أخرى.', true);
                 }
+            } catch (authError) {
+                let userMessage = `خطأ في إنشاء حساب المصادقة: ${authError.message}.`;
+                if (authError.message.toLowerCase().includes('for security purposes, you can only request this after')) {
+                    const secondsMatch = authError.message.match(/\d+/);
+                    const secondsToWait = secondsMatch ? secondsMatch[0] : 'بعض';
+                    userMessage = `تم تجاوز حد محاولات إنشاء الحساب. لأسباب أمنية، يرجى الانتظار ${secondsToWait} ثواني ثم المحاولة مرة أخرى.`;
+                } else if (authError.message.toLowerCase().includes('database error saving new user')) {
+                     userMessage += " هذا الخطأ يحدث غالبًا بسبب مشكلة في trigger قاعدة البيانات أو دالة SQL مرتبطة به. يرجى مراجعة إعدادات قاعدة البيانات.";
+                }
+                showModalMessage(userMessage, true);
+                console.error("Signup auth error:", authError); 
             }
         });
         
         navLogoutBtn.addEventListener('click', async () => {
-            const { error } = await _supabase.auth.signOut();
-            if (error) {
-                showModalMessage(`خطأ في تسجيل الخروج: ${error.message}`, true);
-            } else {
+            console.log("Logout button clicked. Current user before signout:", currentUser);
+            if (!currentUser) { 
+                showModalMessage('أنت غير مسجل الدخول حاليًا.', true);
+                await updateAuthState(null); 
+                navigateTo('home');       
+                return;
+            }
+            try {
+                const { error } = await _supabase.auth.signOut();
+                if (error) throw error;
                 showModalMessage('تم تسجيل الخروج بنجاح.');
-                navigateTo('home');
+            } catch (error) {
+                showModalMessage(`خطأ في تسجيل الخروج: ${error.message}`, true);
+                console.error("Logout error:", error);
             }
         });
 
@@ -837,48 +816,64 @@
             const email = document.getElementById('forgot-password-email').value;
             const redirectTo = 'https://minal0p.github.io/Flash-Team-Reset-Password/'; 
 
-            const { error } = await _supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: redirectTo,
-            });
-
-            if (error) {
-                console.error('خطأ في إرسال إيميل إعادة التعيين:', error.message);
-                showModalMessage(`خطأ في إرسال رابط إعادة التعيين: ${error.message}`, true);
-            } else {
-                console.log('تم إرسال طلب إعادة تعيين كلمة المرور بنجاح!');
-                showModalMessage('إذا كان البريد الإلكتروني موجودًا، فسيتم إرسال رابط إعادة تعيين كلمة المرور إليه. يرجى التحقق من صندوق الوارد الخاص بك.');
+            try {
+                const { error } = await _supabase.auth.resetPasswordForEmail(email, { redirectTo });
+                if (error) throw error;
+                showModalMessage('إذا كان البريد الإلكتروني موجودًا، فسيتم إرسال رابط إعادة تعيين كلمة المرور إليه.');
                 navigateTo('login'); 
+            } catch (error) {
+                showModalMessage(`خطأ في إرسال رابط إعادة التعيين: ${error.message}`, true);
+                console.error('Forgot password error:', error.message);
             }
         });
 
-
         async function updateAuthState(user) {
-            const myProfileNavLink = document.getElementById('my-profile-nav-link');
-            const myProfileNavLinkMobile = document.getElementById('my-profile-nav-link-mobile');
+            console.log("Updating auth state for user:", user); 
             const updateProfileFormContainer = document.getElementById('current-user-profile-form-container'); 
 
             if (user) {
                 authLinks.className = 'hidden-section items-center gap-2 sm:gap-4'; 
                 myProfileNavLink.classList.remove('hidden-section');
                 if(myProfileNavLinkMobile) myProfileNavLinkMobile.classList.remove('hidden-section');
-
-
                 userInfoDisplay.className = 'flex items-center gap-2 sm:gap-3'; 
 
-                const { data: profile, error } = await _supabase
-                    .from('profiles')
-                    .select('full_name, avatar_url')
-                    .eq('id', user.id)
-                    .single();
+                try {
+                    const { data: profile, error: profileError } = await _supabase
+                        .from('profiles')
+                        .select('full_name, avatar_url, role') 
+                        .eq('id', user.id)
+                        .single();
 
-                if (profile) {
-                    userNameNav.textContent = profile.full_name || user.email;
-                    userAvatarNav.src = profile.avatar_url || 'https://placehold.co/32x32/E0E0E0/B0B0B0?text=U';
-                    commenterAvatar.src = profile.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
-                } else {
+                    if (profileError) {
+                        console.error("Error fetching profile for UI update:", profileError);
+                        userNameNav.textContent = user.email; 
+                        userAvatarNav.src = 'https://placehold.co/32x32/E0E0E0/B0B0B0?text=U';
+                        commenterAvatar.src = 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
+                        if (createEventBtnGeneral) createEventBtnGeneral.classList.add('hidden-section'); 
+                    } else if (profile) {
+                        userNameNav.textContent = profile.full_name || user.email;
+                        userAvatarNav.src = profile.avatar_url || 'https://placehold.co/32x32/E0E0E0/B0B0B0?text=U';
+                        commenterAvatar.src = profile.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
+                        if (createEventBtnGeneral) {
+                            if (profile.role === 'admin') {
+                                createEventBtnGeneral.classList.remove('hidden-section');
+                            } else {
+                                createEventBtnGeneral.classList.add('hidden-section');
+                            }
+                        }
+                    } else {
+                        console.warn("User authenticated but profile not found in DB for ID:", user.id);
+                        userNameNav.textContent = user.email;
+                        userAvatarNav.src = 'https://placehold.co/32x32/E0E0E0/B0B0B0?text=U';
+                        commenterAvatar.src = 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
+                        if (createEventBtnGeneral) createEventBtnGeneral.classList.add('hidden-section');
+                    }
+                } catch (e) { 
+                    console.error("Unexpected error in updateAuthState profile section:", e);
                     userNameNav.textContent = user.email; 
                     userAvatarNav.src = 'https://placehold.co/32x32/E0E0E0/B0B0B0?text=U';
                     commenterAvatar.src = 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
+                    if (createEventBtnGeneral) createEventBtnGeneral.classList.add('hidden-section');
                 }
                 
                 const myProfileSection = document.getElementById('my-profile-section');
@@ -887,47 +882,43 @@
                     await loadCurrentUserProfileData(); 
                 }
 
-
-            } else {
+            } else { 
                 authLinks.className = 'flex items-center gap-2 sm:gap-4'; 
                 myProfileNavLink.classList.add('hidden-section');
                 if(myProfileNavLinkMobile) myProfileNavLinkMobile.classList.add('hidden-section');
-
-
                 userInfoDisplay.className = 'hidden-section items-center gap-2 sm:gap-3'; 
                 userNameNav.textContent = '';
                 userAvatarNav.src = 'https://placehold.co/32x32/E0E0E0/B0B0B0?text=U';
                 commenterAvatar.src = 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=User';
                 if (updateProfileFormContainer) updateProfileFormContainer.classList.add('hidden-section');
+                if (createEventBtnGeneral) createEventBtnGeneral.classList.add('hidden-section');
             }
         }
         
         _supabase.auth.onAuthStateChange(async (event, session) => { 
-            console.log("onAuthStateChange event:", event, "session:", session);
+            console.log("onAuthStateChange - Event:", event, "Session:", session); 
             currentUser = session?.user || null; 
-            await updateAuthState(currentUser);
+            await updateAuthState(currentUser); 
 
-            if (!initialAuthProcessed && (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED' || event === 'PASSWORD_RECOVERY')) {
+            if (!initialAuthProcessed) {
                 initialAuthProcessed = true;
-                if (pendingNavigationTarget) {
-                    console.log("onAuthStateChange: Navigating to pending target:", pendingNavigationTarget.targetId);
-                    navigateTo(pendingNavigationTarget.targetId, pendingNavigationTarget.eventData);
-                    pendingNavigationTarget = null;
-                } else {
-                     // If no pending target, and it's the initial session or a sign-in, navigate to home.
-                    // This helps ensure the page loads correctly after a refresh.
-                    const hash = window.location.hash.substring(1);
-                    const targetPage = (hash && document.getElementById(hash)) ? hash : 'home';
-                    console.log("onAuthStateChange: Navigating to initial/default target:", targetPage);
-                    navigateTo(targetPage);
+                const hash = window.location.hash.substring(1);
+                let targetPage = 'home';
+                if (hash && document.getElementById(hash)) {
+                    targetPage = hash;
                 }
-            } else if (initialAuthProcessed && event === 'SIGNED_IN' && !pendingNavigationTarget) {
-                 // If already processed and user signs in (e.g. from another tab), navigate to home or a default logged-in page.
-                 // navigateTo('home'); // Or a dashboard page
+                console.log("onAuthStateChange (Initial Load/Refresh): Navigating to target page:", targetPage);
+                navigateTo(targetPage);
+            } else if (event === 'SIGNED_IN') {
+                const currentVisibleSection = Array.from(contentSections).find(s => !s.classList.contains('hidden-section'));
+                if (currentVisibleSection && (currentVisibleSection.id === 'login' || currentVisibleSection.id === 'signup')) {
+                    navigateTo('home');
+                }
+            } else if (event === 'SIGNED_OUT') {
+                navigateTo('home');
             }
         });
 
-        // --- Profiles ---
         const teamMembersListContainer = document.getElementById('team-members-list'); 
         const updateProfileForm = document.getElementById('update-profile-form');
         const updateAvatarPreview = document.getElementById('update-avatar-preview');
@@ -946,30 +937,39 @@
 
         async function loadCurrentUserProfileData() {
             if (!currentUser) { 
-                console.error('No user logged in for profile data.');
+                console.error('No user logged in, cannot load profile data.');
                 document.getElementById('current-user-profile-form-container').classList.add('hidden-section');
                 return;
             }
             document.getElementById('current-user-profile-form-container').classList.remove('hidden-section');
 
+            try {
+                const { data: profile, error } = await _supabase
+                    .from('profiles')
+                    .select('full_name, User_Name, academic_id, role, avatar_url')
+                    .eq('id', currentUser.id)
+                    .single();
 
-            const { data: profile, error } = await _supabase
-                .from('profiles')
-                .select('full_name, User_Name, academic_id, role, avatar_url')
-                .eq('id', currentUser.id)
-                .single();
+                if (error) throw error;
 
-            if (error) {
-                console.error('Error fetching current user profile:', error);
-                return;
-            }
-
-            if (profile) {
-                document.getElementById('update-full-name').value = profile.full_name || '';
-                document.getElementById('update-user-name').value = profile.User_Name || '';
-                document.getElementById('update-academic-id').value = profile.academic_id || '';
-                document.getElementById('update-profile-role-display').textContent = profile.role || 'غير محدد';
-                updateAvatarPreview.src = profile.avatar_url || 'https://placehold.co/100x100/E0E0E0/B0B0B0?text=Avatar';
+                if (profile) {
+                    document.getElementById('update-full-name').value = profile.full_name || '';
+                    document.getElementById('update-user-name').value = profile.User_Name || '';
+                    document.getElementById('update-academic-id').value = profile.academic_id || '';
+                    document.getElementById('update-profile-role-display').textContent = profile.role || 'غير محدد';
+                    updateAvatarPreview.src = profile.avatar_url || 'https://placehold.co/100x100/E0E0E0/B0B0B0?text=Avatar';
+                } else {
+                    console.warn("Current user profile not found in DB for ID:", currentUser.id);
+                    document.getElementById('update-profile-form').reset();
+                    updateAvatarPreview.src = 'https://placehold.co/100x100/E0E0E0/B0B0B0?text=Avatar';
+                    document.getElementById('update-profile-role-display').textContent = 'غير محدد';
+                }
+            } catch (error) {
+                console.error('Error fetching current user profile for editing:', error);
+                showModalMessage(`فشل تحميل بيانات الملف الشخصي: ${error.message}`, true);
+                document.getElementById('update-profile-form').reset();
+                updateAvatarPreview.src = 'https://placehold.co/100x100/E0E0E0/B0B0B0?text=Avatar';
+                document.getElementById('update-profile-role-display').textContent = 'غير محدد';
             }
         }
 
@@ -984,49 +984,38 @@
             const fullName = document.getElementById('update-full-name').value;
             const userName = document.getElementById('update-user-name').value;
             const academicId = document.getElementById('update-academic-id').value;
-            // Role is not updated from this form
             const avatarFile = document.getElementById('update-avatar-file').files[0];
-
             let avatarUrl = updateAvatarPreview.src; 
 
-            if (avatarFile) {
-                const fileName = `${currentUser.id}/${Date.now()}-${avatarFile.name.replace(/\s+/g, '_')}`; 
-                const { data: uploadData, error: uploadError } = await _supabase.storage
-                    .from('personal-image') 
-                    .upload(fileName, avatarFile, {
-                        cacheControl: '3600',
-                        upsert: true 
-                    });
-
-                if (uploadError) {
-                    showModalMessage(`فشل رفع الصورة الرمزية: ${uploadError.message}`, true);
-                    return;
+            try {
+                if (avatarFile) {
+                    const fileName = `${currentUser.id}/${Date.now()}-${avatarFile.name.replace(/\s+/g, '_')}`; 
+                    const { data: uploadData, error: uploadError } = await _supabase.storage
+                        .from('personal-image') 
+                        .upload(fileName, avatarFile, { cacheControl: '3600', upsert: true });
+                    if (uploadError) throw uploadError;
+                    const { data: urlData } = _supabase.storage.from('personal-image').getPublicUrl(fileName);
+                    avatarUrl = urlData.publicUrl;
                 }
-                const { data: urlData } = _supabase.storage.from('personal-image').getPublicUrl(fileName);
-                avatarUrl = urlData.publicUrl;
-            }
-            
-            const updates = {
-                full_name: fullName,
-                User_Name: userName, 
-                academic_id: academicId,
-                avatar_url: avatarUrl,
-                updated_at: new Date().toISOString()
-            };
+                
+                const updates = {
+                    full_name: fullName, User_Name: userName, academic_id: academicId,
+                    avatar_url: avatarUrl, updated_at: new Date().toISOString()
+                };
 
-            const { error: updateError } = await _supabase
-                .from('profiles')
-                .update(updates)
-                .eq('id', currentUser.id);
+                const { error: updateError } = await _supabase
+                    .from('profiles')
+                    .update(updates)
+                    .eq('id', currentUser.id);
+                if (updateError) throw updateError;
 
-            if (updateError) {
-                showModalMessage(`فشل تحديث الملف الشخصي: ${updateError.message}`, true);
-            } else {
                 showModalMessage('تم تحديث الملف الشخصي بنجاح!');
                 await updateAuthState(currentUser); 
+            } catch (error) {
+                showModalMessage(`فشل تحديث الملف الشخصي: ${error.message}`, true);
+                console.error("Profile update error:", error);
             }
         });
-
 
         function createProfileCard(member) { 
             const imgSrc = member.imgUrl ? member.imgUrl : `https://placehold.co/70x70/1a1a1a/00f0ff?text=${encodeURIComponent(member.imgInitial || '؟')}&font=cairo`;
@@ -1050,7 +1039,6 @@
             }
             socialLinksHTML += '</div>';
 
-
             return `
                 <div class="team-member-card p-2 sm:p-3 rounded-lg text-center" style="--animation-delay: ${member.animationDelay || 0}s;">
                     <img src="${imgSrc}" alt="صورة ${member.name || 'عضو'}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full mx-auto mb-1 border-2 shadow-md object-cover" onerror="this.onerror=null; this.src='${placeholderSrc}';">
@@ -1061,19 +1049,18 @@
         }
 
         async function loadProfiles() {
-            const teamMembersContainer = document.getElementById('team-members-list');
-            if (!teamMembersContainer) {
-                console.error("Profile container 'team-members-list' not found in DOM during loadProfiles.");
+            if (!teamMembersListContainer) {
+                console.error("Profile container 'team-members-list' not found.");
                 return; 
             }
-            teamMembersContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل ملفات الفريق...</div>';
+            teamMembersListContainer.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل ملفات الفريق...</div>';
             
-           const teamMembersData = [ 
+            const teamMembersData = [ 
                 { name: "مينا حنا فهيم", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mina%20Hanna.png", imgInitial: "م.ح", linkedinUrl: "https://www.linkedin.com/in/engminahanna", facebookUrl: "https://www.facebook.com/Eng.Mina.H.F", phone: "+201203006152" },
                 { name: "مينا فليب لبيب", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mena%20Philip.jpg", imgInitial: "م.ف", linkedinUrl: "https://www.linkedin.com/in/mena-philip-766454340", facebookUrl: "https://www.facebook.com/profile.php?id=100004623032980", phone: "+201228226064" },
                 { name: "عمر عبد الهادي رمادي", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Omar%20Ramady.png", imgInitial: "ع.ع", linkedinUrl: "https://www.linkedin.com/in/omar-al-ramady-3a2022206", facebookUrl: "https://www.facebook.com/omar.al.ramady.2025", phone: "+201118525778" },
                 { name: "محمد سيد محمد حسان", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Bakar.jpg", imgInitial: "م.س", linkedinUrl: "https://www.linkedin.com/in/mohammed-sayed-mohammed-1892382b8", facebookUrl: "https://www.facebook.com/share/15aNJqX3NS/", phone: "+201152216149" },
-                { name: "محمد محمود بربري", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Bakar.jpg", imgInitial: "م.م" },
+                { name: "محمد محمود بربري", role: "مهندس كهرباء", imgUrl: "https://scontent.fcai2-2.fna.fbcdn.net/v/t39.30808-6/470165541_4094575017436722_4593658555281273385_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=VJQgz6RpGeoQ7kNvwEx496C&_nc_oc=AdkF6Cy3nZgJQO6yCEtJBEwsgi5tgoopzrxjgBcugYfq5bwJoggbEp7WGh3mw_eF5QU&_nc_zt=23&_nc_ht=scontent.fcai2-2.fna&_nc_gid=u0NjoM5BSF6XuW5o5ZfQYA&oh=00_AfJlJ55AuNqroATBFoS7HT6x3TpFkV8VR4WXUaBlpz7DTQ&oe=683BE7E3", imgInitial: "م.م" },
                 { name: "احمد طارق احمد محمد", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Ahmed%20Tarek.jpg", imgInitial: "أ.ط", linkedinUrl: "https://www.linkedin.com/in/ahmed-tarek-a6b9061b6", facebookUrl: "https://www.facebook.com/share/1EGXAoeUcn/", phone: "+201023237803" },
                 { name: "شروق محمد فتحي", role: "مهندس كهرباء", imgInitial: "ش.م" },
                 { name: "فرحه محمد صلاح", role: "مهندس كهرباء", imgInitial: "ف.م" },
@@ -1082,23 +1069,15 @@
                 { name: "كريم احمد نور الدين", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Karim%20Ahmed.jpg", imgInitial: "ك.أ", linkedinUrl: "https://www.linkedin.com/in/karim-ahmed-b68877251", facebookUrl: "https://www.facebook.com/share/1Mu5LQo5sK/?mibextid=wwXIfr", phone: "+201006036359" },
                 { name: "محمد يوسف عمار", role: "مهندس كهرباء", imgUrl: "https://uzcrjhhvwgllsdsvftuj.supabase.co/storage/v1/object/public/personal-image//Mohamed%20Yousef.jpg", imgInitial: "م.ي", linkedinUrl: "https://www.linkedin.com/in/mohamed-yousef-bab471352", facebookUrl: "https://www.facebook.com/share/19JDJBVuch/", phone: "+201063815096" }
             ];
-            const vacantSpots = 3; // Adjusted to make total 15 (12 members + 3 vacant = 15)
+            const vacantSpots = 3; 
             let memberHtml = '';
-
 
             teamMembersData.forEach((member, index) => {
                  const profileData = { 
-                    name: member.name, 
-                    role: member.role,
-                    imgUrl: member.imgUrl, 
-                    imgInitial: member.imgInitial,
-                    linkedinUrl: member.linkedinUrl,
-                    facebookUrl: member.facebookUrl,
-                    phone: member.phone,
+                    name: member.name, role: member.role, imgUrl: member.imgUrl, imgInitial: member.imgInitial,
+                    linkedinUrl: member.linkedinUrl, facebookUrl: member.facebookUrl, phone: member.phone,
                     animationDelay: `${index * 0.05}s`,
-                    // These are not strictly needed for static display but good for consistency
-                    academic_id: 'N/A', // Assuming this is not in the static data
-                    User_Name: member.name ? member.name.toLowerCase().replace(/\s+/g, '_') : `user_${index}` // Simple username generation
+                    academic_id: 'N/A', User_Name: member.name ? member.name.toLowerCase().replace(/\s+/g, '_') : `user_${index}` 
                 };
                 memberHtml += createProfileCard(profileData); 
             });
@@ -1116,17 +1095,15 @@
                     </button>
                 </div>`;
             }
-            teamMembersContainer.innerHTML = memberHtml;
+            teamMembersListContainer.innerHTML = memberHtml;
         }
         
 
-        // --- Events ---
         const upcomingEventsList = document.getElementById('upcoming-events-list');
         const pastEventsList = document.getElementById('past-events-list');
         const eventDetailsContent = document.getElementById('event-details-content');
         const eventCommentsList = document.getElementById('event-comments-list');
         const addCommentForm = document.getElementById('add-comment-form');
-        const createEventBtn = document.getElementById('create-event-btn');
         const createEventFormContainer = document.getElementById('create-event-form-container');
         const createEventForm = document.getElementById('create-event-form');
         const cancelCreateEventBtn = document.getElementById('cancel-create-event-btn');
@@ -1135,21 +1112,25 @@
         const eventImagePreviewEdit = document.getElementById('event-image-preview-edit');
 
 
-        createEventBtn.addEventListener('click', () => {
-            editingEventId = null; // Ensure we are in "create" mode
+        createEventBtnGeneral.addEventListener('click', () => {
+            editingEventId = null; 
             currentEditingEventImageUrl = null;
             eventFormTitle.textContent = 'إنشاء فعالية جديدة';
             submitEventFormBtn.textContent = 'إنشاء';
-            createEventForm.reset(); // Clear form fields
-            eventImagePreviewEdit.classList.add('hidden-section'); // Hide preview for new event
+            createEventForm.reset(); 
+            eventImagePreviewEdit.classList.add('hidden-section'); 
             eventImagePreviewEdit.src = '';
             createEventFormContainer.classList.remove('hidden-section');
-            createEventBtn.classList.add('hidden-section');
+            createEventBtnGeneral.classList.add('hidden-section'); 
         });
 
         cancelCreateEventBtn.addEventListener('click', () => {
             createEventFormContainer.classList.add('hidden-section');
-            createEventBtn.classList.remove('hidden-section');
+            if (currentUser) { 
+                 updateAuthState(currentUser); 
+            } else {
+                createEventBtnGeneral.classList.add('hidden-section');
+            }
             createEventForm.reset();
             editingEventId = null;
             currentEditingEventImageUrl = null;
@@ -1171,63 +1152,38 @@
             const description = document.getElementById('event-description').value;
             const event_date = document.getElementById('event-date').value;
             const imageFile = document.getElementById('event-image-file').files[0];
-            let imageUrl = editingEventId ? currentEditingEventImageUrl : null; // Keep old image if not changed during edit
+            let imageUrl = editingEventId ? currentEditingEventImageUrl : null; 
 
-            if (imageFile) { // If a new image is selected
-                // If editing and there was an old image, delete it first
-                if (editingEventId && currentEditingEventImageUrl) {
-                    try {
-                        const oldFileName = currentEditingEventImageUrl.split('/').pop();
-                        if (oldFileName) {
-                             await _supabase.storage.from('events-images').remove([oldFileName]);
-                        }
-                    } catch (storageError) {
-                        console.warn("Could not delete old event image from storage:", storageError);
+            try {
+                if (imageFile) { 
+                    if (editingEventId && currentEditingEventImageUrl) {
+                        try {
+                            const oldFileName = currentEditingEventImageUrl.split('/').pop();
+                            if (oldFileName) await _supabase.storage.from('events-images').remove([oldFileName]);
+                        } catch (storageError) { console.warn("Could not delete old event image:", storageError); }
                     }
+                    const fileName = `event_${currentUser.id}_${Date.now()}_${imageFile.name.replace(/\s+/g, '_')}`;
+                    const { data: uploadData, error: uploadError } = await _supabase.storage
+                        .from('events-images').upload(fileName, imageFile, { cacheControl: '3600', upsert: false });
+                    if (uploadError) throw uploadError;
+                    const { data: urlData } = _supabase.storage.from('events-images').getPublicUrl(fileName);
+                    imageUrl = urlData.publicUrl;
                 }
 
-                const fileName = `event_${currentUser.id}_${Date.now()}_${imageFile.name.replace(/\s+/g, '_')}`;
-                const { data: uploadData, error: uploadError } = await _supabase.storage
-                    .from('events-images') 
-                    .upload(fileName, imageFile, {
-                        cacheControl: '3600',
-                        upsert: false 
-                    });
-                
-                if (uploadError) {
-                    showModalMessage(`فشل رفع صورة الفعالية: ${uploadError.message}`, true);
-                    return;
+                const eventDataPayload = { title, description, event_date, image_url: imageUrl, user_id: currentUser.id };
+                let operationError = null;
+
+                if (editingEventId) {
+                    const updatePayload = { title, description, event_date, image_url: imageUrl, updated_at: new Date().toISOString() };
+                    const { error } = await _supabase.from('project_events').update(updatePayload)
+                                        .eq('id', editingEventId).eq('user_id', currentUser.id); 
+                    operationError = error;
+                } else {
+                    const { error } = await _supabase.from('project_events').insert(eventDataPayload);
+                    operationError = error;
                 }
-                const { data: urlData } = _supabase.storage.from('events-images').getPublicUrl(fileName);
-                imageUrl = urlData.publicUrl;
-            }
+                if (operationError) throw operationError;
 
-            const eventDataPayload = {
-                title,
-                description,
-                event_date,
-                image_url: imageUrl,
-                user_id: currentUser.id 
-            };
-
-            let operationError = null;
-            if (editingEventId) {
-                const updatePayload = { title, description, event_date, image_url: imageUrl, updated_at: new Date().toISOString() };
-                const { error } = await _supabase
-                    .from('project_events')
-                    .update(updatePayload)
-                    .eq('id', editingEventId)
-                    .eq('user_id', currentUser.id); 
-                operationError = error;
-            } else {
-                const { error } = await _supabase.from('project_events').insert(eventDataPayload);
-                operationError = error;
-            }
-
-
-            if (operationError) {
-                showModalMessage(`فشل ${editingEventId ? 'تحديث' : 'إنشاء'} الفعالية: ${operationError.message}`, true);
-            } else {
                 showModalMessage(`تم ${editingEventId ? 'تحديث' : 'إنشاء'} الفعالية بنجاح!`);
                 createEventForm.reset();
                 eventFormTitle.textContent = 'إنشاء فعالية جديدة';
@@ -1235,30 +1191,28 @@
                 eventImagePreviewEdit.classList.add('hidden-section');
                 eventImagePreviewEdit.src = '';
                 createEventFormContainer.classList.add('hidden-section');
-                createEventBtn.classList.remove('hidden-section');
+                if (currentUser) updateAuthState(currentUser); 
                 editingEventId = null; 
                 currentEditingEventImageUrl = null;
-                loadEvents(); 
+                await loadEvents(); 
+            } catch (error) {
+                showModalMessage(`فشل ${editingEventId ? 'تحديث' : 'إنشاء'} الفعالية: ${error.message}`, true);
+                console.error("Event form submission error:", error);
             }
         });
 
         function createEventCard(eventItem, isUpcoming = true) {
             const eventDate = new Date(eventItem.event_date).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
             const reactionTypes = [
-                { type: 'like', emoji: '👍', label: 'أعجبني' },
-                { type: 'love', emoji: '❤️', label: 'أحببته' },
+                { type: 'like', emoji: '👍', label: 'أعجبني' }, { type: 'love', emoji: '❤️', label: 'أحببته' },
                 { type: 'sad', emoji: '😢', label: 'أحزنني' }
             ];
-
-            let reactionButtonsHTML = '';
-            reactionTypes.forEach(rt => {
-                reactionButtonsHTML += `
-                    <button class="reaction-btn p-1 rounded-full hover:bg-gray-200 focus:outline-none" data-eventid="${eventItem.id}" data-reactiontype="${rt.type}" aria-label="${rt.label}">
-                        <span id="${rt.type}-icon-${eventItem.id}" class="text-xl">${rt.emoji}</span>
-                    </button>
-                    <span id="${rt.type}-count-${eventItem.id}" class="text-xs text-slate-500 mr-1">0</span>
-                `;
-            });
+            let reactionButtonsHTML = reactionTypes.map(rt => `
+                <button class="reaction-btn p-1 rounded-full hover:bg-gray-200 focus:outline-none" data-eventid="${eventItem.id}" data-reactiontype="${rt.type}" aria-label="${rt.label}">
+                    <span id="${rt.type}-icon-${eventItem.id}" class="text-xl">${rt.emoji}</span>
+                </button>
+                <span id="${rt.type}-count-${eventItem.id}" class="text-xs text-slate-500 mr-1">0</span>
+            `).join('');
             
             let ownerControlsHTML = '';
             if (currentUser && currentUser.id === eventItem.user_id) {
@@ -1267,7 +1221,6 @@
                     <button class="delete-event-btn text-xs bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded" data-eventid="${eventItem.id}" data-imageurl="${eventItem.image_url || ''}">حذف</button>
                 `;
             }
-
 
             const cardHTML = `
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -1281,9 +1234,7 @@
                                 <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline event-details-link" data-eventid="${eventItem.id}">${eventItem.title}</a>
                                 <p class="mt-2 text-slate-600 text-sm">${eventItem.description ? eventItem.description.substring(0, 150) + (eventItem.description.length > 150 ? '...' : '') : 'لا يوجد وصف متاح.'}</p>
                             </div>
-                             <div class="mt-2">
-                                ${ownerControlsHTML}
-                            </div>
+                             <div class="mt-2"> ${ownerControlsHTML} </div>
                             <div class="mt-4 flex justify-between items-center">
                                 <button class="event-details-link text-sm font-medium text-[#1978e5] hover:text-blue-700 py-2 px-3 rounded-md bg-blue-50 hover:bg-blue-100 transition" data-eventid="${eventItem.id}">
                                     ${isUpcoming ? 'معرفة المزيد' : 'عرض التفاصيل'}
@@ -1312,233 +1263,156 @@
         async function fetchEventCounts(eventId, forDetails = false) {
             const suffix = forDetails ? '-details' : '';
             const reactionTypes = ['like', 'love', 'sad'];
-            for (const type of reactionTypes) {
-                const { count, error } = await _supabase
-                    .from('event_reactions')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('event_id', eventId)
-                    .eq('reaction_type', type);
-                
-                const countElement = document.getElementById(`${type}-count${suffix}-${eventId}`);
-                if (!error && countElement) {
-                    countElement.textContent = count || 0;
+            try {
+                for (const type of reactionTypes) {
+                    const { count, error } = await _supabase.from('event_reactions').select('*', { count: 'exact', head: true })
+                                            .eq('event_id', eventId).eq('reaction_type', type);
+                    if (error) console.warn(`Error fetching ${type} count for event ${eventId}:`, error.message);
+                    const countElement = document.getElementById(`${type}-count${suffix}-${eventId}`);
+                    if (countElement) countElement.textContent = count || 0;
                 }
-            }
-
-            const { count: commentsCount, error: commentsError } = await _supabase
-                .from('event_comments')
-                .select('*', { count: 'exact', head: true })
-                .eq('event_id', eventId);
-
-            const commentCountElement = document.getElementById(`comments-count${suffix}-${eventId}`);
-            if (!commentsError && commentCountElement) {
-                commentCountElement.textContent = commentsCount || 0;
-            }
+                const { count: commentsCount, error: commentsError } = await _supabase.from('event_comments')
+                                                                    .select('*', { count: 'exact', head: true })
+                                                                    .eq('event_id', eventId);
+                if (commentsError) console.warn(`Error fetching comments count for event ${eventId}:`, commentsError.message);
+                const commentCountElement = document.getElementById(`comments-count${suffix}-${eventId}`);
+                if (commentCountElement) commentCountElement.textContent = commentsCount || 0;
+            } catch (e) { console.error("Error in fetchEventCounts:", e); }
         }
 
         async function checkUserReaction(eventId, forDetails = false) {
             if (!currentUser) return; 
             const suffix = forDetails ? '-details' : '';
+            try {
+                const { data: userReaction, error } = await _supabase.from('event_reactions').select('reaction_type')
+                                                    .eq('event_id', eventId).eq('user_id', currentUser.id).maybeSingle(); 
+                if (error) throw error;
 
-            const { data: userReaction, error } = await _supabase
-                .from('event_reactions')
-                .select('reaction_type')
-                .eq('event_id', eventId)
-                .eq('user_id', currentUser.id)
-                .maybeSingle(); 
+                const reactionTypes = ['like', 'love', 'sad'];
+                reactionTypes.forEach(type => {
+                    const iconElement = document.getElementById(`${type}-icon${suffix}-${eventId}`);
+                    if (iconElement) {
+                        iconElement.classList.remove('selected', 'text-blue-600', 'text-red-600', 'text-yellow-500'); 
+                    }
+                });
 
-            const reactionTypes = ['like', 'love', 'sad'];
-            reactionTypes.forEach(type => {
-                const iconElement = document.getElementById(`${type}-icon${suffix}-${eventId}`);
-                if (iconElement) {
-                    iconElement.classList.remove('selected', 'text-blue-600', 'text-red-600', 'text-yellow-500'); 
-                    // iconElement.classList.add('text-gray-400'); // Reset to default color if needed, or rely on CSS
+                if (userReaction && userReaction.reaction_type) {
+                    const activeIconElement = document.getElementById(`${userReaction.reaction_type}-icon${suffix}-${eventId}`);
+                    if (activeIconElement) {
+                        activeIconElement.classList.add('selected');
+                        if(userReaction.reaction_type === 'like') activeIconElement.classList.add('text-blue-600');
+                        if(userReaction.reaction_type === 'love') activeIconElement.classList.add('text-red-600');
+                        if(userReaction.reaction_type === 'sad') activeIconElement.classList.add('text-yellow-500'); 
+                    }
                 }
-            });
-
-            if (!error && userReaction && userReaction.reaction_type) {
-                const activeIconElement = document.getElementById(`${userReaction.reaction_type}-icon${suffix}-${eventId}`);
-                if (activeIconElement) {
-                    activeIconElement.classList.add('selected');
-                    // activeIconElement.classList.remove('text-gray-400'); // Remove default if applied
-                    if(userReaction.reaction_type === 'like') activeIconElement.classList.add('text-blue-600');
-                    if(userReaction.reaction_type === 'love') activeIconElement.classList.add('text-red-600');
-                    if(userReaction.reaction_type === 'sad') activeIconElement.classList.add('text-yellow-500'); 
-                }
-            }
+            } catch (error) { console.error(`Error checking user reaction for event ${eventId}:`, error.message); }
         }
-
 
         async function handleReaction(eventId, reactionType, fromDetails = false) {
             if (!currentUser) { 
-                showModalMessage('يجب تسجيل الدخول للتفاعل.', true);
-                navigateTo('login');
-                return;
+                showModalMessage('يجب تسجيل الدخول للتفاعل.', true); navigateTo('login'); return;
             }
+            try {
+                const { data: existingReaction, error: fetchError } = await _supabase.from('event_reactions')
+                    .select('id, reaction_type').eq('event_id', eventId).eq('user_id', currentUser.id).maybeSingle(); 
+                if (fetchError) throw fetchError;
 
-            const { data: existingReaction, error: fetchError } = await _supabase
-                .from('event_reactions')
-                .select('id, reaction_type')
-                .eq('event_id', eventId)
-                .eq('user_id', currentUser.id)
-                .maybeSingle(); 
-
-            if (fetchError) {
-                showModalMessage(`خطأ في التحقق من التفاعل: ${fetchError.message}`, true);
-                return;
-            }
-
-            if (existingReaction) { 
-                if (existingReaction.reaction_type === reactionType) { 
-                    const { error: deleteError } = await _supabase
-                        .from('event_reactions')
-                        .delete()
-                        .match({ id: existingReaction.id });
-                    if (deleteError) {
-                        showModalMessage(`فشل إلغاء التفاعل: ${deleteError.message}`, true);
+                if (existingReaction) { 
+                    if (existingReaction.reaction_type === reactionType) { 
+                        const { error: deleteError } = await _supabase.from('event_reactions').delete().match({ id: existingReaction.id });
+                        if (deleteError) throw deleteError;
+                    } else { 
+                        const { error: updateError } = await _supabase.from('event_reactions')
+                            .update({ reaction_type: reactionType, created_at: new Date().toISOString() }).match({ id: existingReaction.id });
+                        if (updateError) throw updateError;
                     }
                 } else { 
-                    const { error: updateError } = await _supabase
-                        .from('event_reactions')
-                        .update({ reaction_type: reactionType, created_at: new Date().toISOString() })
-                        .match({ id: existingReaction.id });
-                    if (updateError) {
-                        showModalMessage(`فشل تحديث التفاعل: ${updateError.message}`, true);
-                    }
+                    const { error: insertError } = await _supabase.from('event_reactions')
+                        .insert({ event_id: eventId, user_id: currentUser.id, reaction_type: reactionType });
+                    if (insertError) throw insertError;
                 }
-            } else { 
-                const { error: insertError } = await _supabase
-                    .from('event_reactions')
-                    .insert({ event_id: eventId, user_id: currentUser.id, reaction_type: reactionType });
-                if (insertError) {
-                    showModalMessage(`فشل إضافة التفاعل: ${insertError.message}`, true);
-                     console.error("Insert reaction error (check RLS policies and unique constraints for event_reactions):", insertError);
-                }
-            }
-            
-            await fetchEventCounts(eventId, fromDetails); 
-            await checkUserReaction(eventId, fromDetails); 
-            
-            if (fromDetails) {
-                 await fetchEventCounts(eventId, false); 
-                 await checkUserReaction(eventId, false);
-            } else {
-                 await fetchEventCounts(eventId, true); 
-                 await checkUserReaction(eventId, true);
+                await fetchEventCounts(eventId, fromDetails); 
+                await checkUserReaction(eventId, fromDetails); 
+                await fetchEventCounts(eventId, !fromDetails); 
+                await checkUserReaction(eventId, !fromDetails);
+            } catch (error) {
+                showModalMessage(`خطأ في معالجة التفاعل: ${error.message}`, true);
+                console.error("Reaction handling error:", error);
             }
         }
 
         function toggleQuickComment(eventId) {
             const container = document.getElementById(`quick-comment-container-${eventId}`);
-            if (container) {
-                container.classList.toggle('hidden-section');
-            }
+            if (container) container.classList.toggle('hidden-section');
         }
 
         async function postQuickComment(eventId) {
             if (!currentUser) { 
-                showModalMessage('يجب تسجيل الدخول للتعليق.', true);
-                navigateTo('login');
-                return;
+                showModalMessage('يجب تسجيل الدخول للتعليق.', true); navigateTo('login'); return;
             }
-            
             const commentTextElement = document.getElementById(`quick-comment-text-${eventId}`);
             const commentText = commentTextElement.value;
+            if (!commentText.trim()) { showModalMessage('لا يمكن إرسال تعليق فارغ.', true); return; }
 
-            if (!commentText.trim()) {
-                showModalMessage('لا يمكن إرسال تعليق فارغ.', true);
-                return;
-            }
+            try {
+                const { data: profile, error: profileError } = await _supabase.from('profiles').select('full_name')
+                                                                .eq('id', currentUser.id).single();
+                if (profileError || !profile) throw (profileError || new Error("Profile not found for commenter."));
 
-            const { data: profile, error: profileError } = await _supabase
-                .from('profiles')
-                .select('full_name')
-                .eq('id', currentUser.id)
-                .single();
+                const { error: insertError } = await _supabase.from('event_comments').insert({
+                    event_id: eventId, user_id: currentUser.id, commenter_name: profile.full_name,
+                    commenter_email: currentUser.email, comment_text: commentText
+                });
+                if (insertError) throw insertError;
 
-            if (profileError || !profile) {
-                showModalMessage('فشل في جلب معلومات المعلق.', true);
-                return;
-            }
-
-            const { error: insertError } = await _supabase.from('event_comments').insert({
-                event_id: eventId,
-                user_id: currentUser.id,
-                commenter_name: profile.full_name,
-                commenter_email: currentUser.email, 
-                comment_text: commentText
-            });
-
-            if (insertError) {
-                showModalMessage(`فشل إضافة التعليق: ${insertError.message}`, true);
-            } else {
                 showModalMessage('تم إضافة التعليق بنجاح!');
                 commentTextElement.value = ''; 
                 toggleQuickComment(eventId); 
-                fetchEventCounts(eventId); 
-                fetchEventCounts(eventId, true); // Also update details if open
+                await fetchEventCounts(eventId); 
+                await fetchEventCounts(eventId, true); 
+            } catch (error) {
+                showModalMessage(`فشل إضافة التعليق: ${error.message}`, true);
+                console.error("Quick comment error:", error);
             }
         }
 
-
         async function loadEvents() {
-            const upcomingEventsList = document.getElementById('upcoming-events-list');
-            const pastEventsList = document.getElementById('past-events-list');
-            if (!upcomingEventsList || !pastEventsList) {
-                console.error("Event list containers not found");
-                return;
-            }
+            if (!upcomingEventsList || !pastEventsList) { console.error("Event list containers not found"); return; }
             upcomingEventsList.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل الفعاليات القادمة...</div>';
             pastEventsList.innerHTML = '<div class="text-center p-4 text-gray-500 col-span-full">جاري تحميل الفعاليات السابقة...</div>';
-
             try {
                 const { data: events, error } = await _supabase.from('project_events').select('*').order('event_date', { ascending: false });
-
                 if (error) throw error;
-
                 const today = new Date().toISOString().split('T')[0]; 
                 const upcoming = events.filter(e => e.event_date >= today);
                 const past = events.filter(e => e.event_date < today);
-
                 upcomingEventsList.innerHTML = upcoming.length ? upcoming.map(e => createEventCard(e, true)).join('') : '<p class="text-gray-600 p-4 text-center col-span-full">لا توجد فعاليات قادمة حالياً.</p>';
                 pastEventsList.innerHTML = past.length ? past.map(e => createEventCard(e, false)).join('') : '<p class="text-gray-600 p-4 text-center col-span-full">لا توجد فعاليات سابقة.</p>';
-                
                 attachDynamicEventListeners();
-
             } catch (error) {
                 console.error('Error in loadEvents:', error);
-                upcomingEventsList.innerHTML = '<p class="text-red-500 p-4 text-center col-span-full">فشل تحميل الفعاليات القادمة. الرجاء المحاولة مرة أخرى.</p>';
-                pastEventsList.innerHTML = '<p class="text-red-500 p-4 text-center col-span-full">فشل تحميل الفعاليات السابقة. الرجاء المحاولة مرة أخرى.</p>';
+                upcomingEventsList.innerHTML = '<p class="text-red-500 p-4 text-center col-span-full">فشل تحميل الفعاليات القادمة.</p>';
+                pastEventsList.innerHTML = '<p class="text-red-500 p-4 text-center col-span-full">فشل تحميل الفعاليات السابقة.</p>';
+                showModalMessage(`فشل تحميل الفعاليات: ${error.message}`, true);
             }
         }
         
         async function loadEventDetails(eventData) {
-            const eventDetailsContent = document.getElementById('event-details-content');
-            if (!eventDetailsContent) {
-                console.error("Event details content container not found");
-                return;
-            }
+            if (!eventDetailsContent) { console.error("Event details content container not found"); return; }
             eventDetailsContent.innerHTML = '<div class="text-center p-4 text-gray-500">جاري تحميل تفاصيل الفعالية...</div>';
-
             try {
                 document.getElementById('event-details-breadcrumb').textContent = eventData.title;
                 const eventDateFormatted = new Date(eventData.event_date).toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                
                 const reactionTypes = [
-                    { type: 'like', emoji: '👍', label: 'أعجبني' },
-                    { type: 'love', emoji: '❤️', label: 'أحببته' },
+                    { type: 'like', emoji: '👍', label: 'أعجبني' }, { type: 'love', emoji: '❤️', label: 'أحببته' },
                     { type: 'sad', emoji: '😢', label: 'أحزنني' }
                 ];
-
-                let reactionButtonsHTML = '';
-                reactionTypes.forEach(rt => {
-                    reactionButtonsHTML += `
-                        <button class="reaction-btn p-1 rounded-full hover:bg-gray-200 focus:outline-none" data-eventid="${eventData.id}" data-reactiontype="${rt.type}" aria-label="${rt.label}">
-                            <span id="${rt.type}-icon-details-${eventData.id}" class="text-xl">${rt.emoji}</span>
-                        </button>
-                        <span id="${rt.type}-count-details-${eventData.id}" class="text-xs text-slate-500 mr-1">0</span>
-                    `;
-                });
+                let reactionButtonsHTML = reactionTypes.map(rt => `
+                    <button class="reaction-btn p-1 rounded-full hover:bg-gray-200 focus:outline-none" data-eventid="${eventData.id}" data-reactiontype="${rt.type}" aria-label="${rt.label}">
+                        <span id="${rt.type}-icon-details-${eventData.id}" class="text-xl">${rt.emoji}</span>
+                    </button>
+                    <span id="${rt.type}-count-details-${eventData.id}" class="text-xs text-slate-500 mr-1">0</span>
+                `).join('');
                 
                 let ownerControlsHTML = '';
                 if (currentUser && currentUser.id === eventData.user_id) {
@@ -1546,10 +1420,8 @@
                         <div class="mt-4 flex gap-2">
                             <button class="edit-event-btn text-sm bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded" data-eventid="${eventData.id}">تعديل الفعالية</button>
                             <button class="delete-event-btn text-sm bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded" data-eventid="${eventData.id}" data-imageurl="${eventData.image_url || ''}">حذف الفعالية</button>
-                        </div>
-                    `;
+                        </div>`;
                 }
-
 
                 eventDetailsContent.innerHTML = `
                     <h1 class="text-[#0e141b] tracking-light text-[32px] font-bold leading-tight mb-2">${eventData.title}</h1>
@@ -1558,68 +1430,59 @@
                     <p class="text-[#0e141b] text-base leading-relaxed whitespace-pre-wrap">${eventData.description || 'لا يوجد وصف تفصيلي لهذه الفعالية.'}</p>
                      <div class="mt-6 pt-4 border-t border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-700 mb-2">التفاعلات:</h3>
-                        <div class="flex items-center gap-2 text-slate-500 text-xs">
-                            ${reactionButtonsHTML}
-                        </div>
+                        <div class="flex items-center gap-2 text-slate-500 text-xs"> ${reactionButtonsHTML} </div>
                     </div>
-                    ${ownerControlsHTML}
-                `;
+                    ${ownerControlsHTML}`;
 
                 await fetchEventCounts(eventData.id, true); 
                 await checkUserReaction(eventData.id, true);
-
-                // Attach listeners after content is rendered
                 attachDynamicEventListenersForDetails(eventDetailsContent);
-                await loadEventComments(eventData.id);
-
+                await loadEventComments(eventData.id); // Make sure this is called
             } catch (error) {
                 console.error('Error in loadEventDetails:', error);
                 eventDetailsContent.innerHTML = '<p class="text-red-500 p-4 text-center">فشل تحميل تفاصيل الفعالية.</p>';
+                showModalMessage(`فشل تحميل تفاصيل الفعالية: ${error.message}`, true);
             }
         }
 
         async function loadEventComments(eventId) {
-            const eventCommentsList = document.getElementById('event-comments-list');
-            if (!eventCommentsList) {
-                 console.error("Event comments list container not found"); return;
-            }
+            if (!eventCommentsList) { console.error("Event comments list container not found"); return; }
             eventCommentsList.innerHTML = '<div class="text-center p-4 text-gray-500">جاري تحميل التعليقات...</div>';
-            
             try {
-                 const { data: commentsData, error: commentsError } = await _supabase
+                // Step 1: Fetch comments
+                const { data: commentsData, error: commentsError } = await _supabase
                     .from('event_comments')
-                    .select('*') // Select all from event_comments first
+                    .select('*') // Select all columns from event_comments
                     .eq('event_id', eventId)
                     .order('created_at', { ascending: false });
 
                 if (commentsError) throw commentsError;
 
                 if (commentsData && commentsData.length > 0) {
-                     const commentsWithProfileInfo = await Promise.all(
+                    // Step 2: Fetch profile information for each commenter
+                    const commentsWithProfileInfo = await Promise.all(
                         commentsData.map(async (comment) => {
-                            let profileInfo = { avatar_url: null, full_name: null };
-                            if (comment.user_id) { 
+                            let commenterProfile = { avatar_url: null, full_name: null }; // Default structure
+                            if (comment.user_id) { // Check if there's a user_id to fetch profile for
                                 const { data: profileData, error: profileError } = await _supabase
                                     .from('profiles')
                                     .select('avatar_url, full_name')
-                                    .eq('id', comment.user_id) 
+                                    .eq('id', comment.user_id)
                                     .single();
-                                if (!profileError && profileData) {
-                                    profileInfo = profileData;
-                                } else if (profileError) {
-                                     console.warn(`Could not fetch profile for user_id ${comment.user_id} for comment ${comment.id}:`, profileError.message);
+                                if (profileError) {
+                                    console.warn(`Could not fetch profile for user_id ${comment.user_id} (comment_id: ${comment.id}):`, profileError.message);
+                                } else if (profileData) {
+                                    commenterProfile = profileData;
                                 }
                             }
-                            return { 
-                                ...comment, 
-                                profiles: profileInfo 
-                            };
+                            return { ...comment, commenter_profile: commenterProfile }; // Add profile data under 'commenter_profile'
                         })
                     );
 
+                    // Step 3: Render comments with profile information
                     eventCommentsList.innerHTML = commentsWithProfileInfo.map(comment => {
-                        const commenterName = comment.profiles?.full_name || comment.commenter_name || 'مستخدم غير معروف';
-                        const commenterAvatarUrl = comment.profiles?.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=?';
+                        const commenterName = comment.commenter_profile?.full_name || comment.commenter_name || 'مستخدم غير معروف';
+                        const commenterAvatarUrl = comment.commenter_profile?.avatar_url || 'https://placehold.co/40x40/E0E0E0/B0B0B0?text=?';
                         const commentDate = new Date(comment.created_at).toLocaleString('ar-EG', {dateStyle: 'medium', timeStyle: 'short'});
                         
                         let commentOwnerControls = '';
@@ -1628,8 +1491,7 @@
                                 <div class="comment-actions text-xs mt-1">
                                     <button class="edit-comment-btn text-blue-500 hover:text-blue-700" data-commentid="${comment.id}" data-eventid="${eventId}">تعديل</button>
                                     <button class="delete-comment-btn text-red-500 hover:text-red-700" data-commentid="${comment.id}" data-eventid="${eventId}">حذف</button>
-                                </div>
-                            `;
+                                </div>`;
                         }
 
                         return `
@@ -1650,20 +1512,19 @@
                                     </div>
                                     ${commentOwnerControls}
                                 </div>
-                            </div>
-                        `;
+                            </div>`;
                     }).join('');
-                    
                     attachCommentActionListeners(eventCommentsList);
-
                 } else {
                     eventCommentsList.innerHTML = '<p class="text-gray-500 p-4 text-center">لا توجد تعليقات حتى الآن. كن أول من يعلق!</p>';
                 }
             } catch (error) {
-                console.error('Error in loadEventComments:', error);
+                console.error('Error in loadEventComments:', error); // Log the actual error object
                 eventCommentsList.innerHTML = '<p class="text-red-500 p-4 text-center">فشل تحميل التعليقات.</p>';
+                showModalMessage(`فشل تحميل التعليقات: ${error.message}`, true);
             }
         }
+
 
         function handleEditCommentClick(e) {
             const commentId = e.currentTarget.dataset.commentid;
@@ -1674,7 +1535,6 @@
                 commentItem.querySelector('.edit-comment-area').classList.remove('hidden-section');
             }
         }
-
         function handleCancelEditCommentClick(e) {
             const commentId = e.currentTarget.dataset.commentid;
             const commentItem = document.getElementById(`comment-item-${commentId}`);
@@ -1689,105 +1549,73 @@
             const eventId = e.currentTarget.dataset.eventid;
             const commentItem = document.getElementById(`comment-item-${commentId}`);
             if (!commentItem || !currentUser) return;
-
             const newText = commentItem.querySelector('.edit-comment-area textarea').value;
-            if (!newText.trim()) {
-                showModalMessage('لا يمكن حفظ تعليق فارغ.', true);
-                return;
-            }
+            if (!newText.trim()) { showModalMessage('لا يمكن حفظ تعليق فارغ.', true); return; }
 
-            const { error } = await _supabase
-                .from('event_comments')
-                .update({ comment_text: newText, updated_at: new Date().toISOString() }) 
-                .eq('id', commentId)
-                .eq('user_id', currentUser.id);
-
-            if (error) {
-                showModalMessage(`فشل تعديل التعليق: ${error.message}`, true);
-            } else {
+            try {
+                const { error } = await _supabase.from('event_comments')
+                    .update({ comment_text: newText, updated_at: new Date().toISOString() }) 
+                    .eq('id', commentId).eq('user_id', currentUser.id);
+                if (error) throw error;
                 showModalMessage('تم تعديل التعليق بنجاح.');
-                loadEventComments(eventId); 
+                await loadEventComments(eventId); 
+            } catch (error) {
+                showModalMessage(`فشل تعديل التعليق: ${error.message}`, true);
+                console.error("Save edit comment error:", error);
             }
         }
-
         async function handleDeleteCommentClick(e) {
             const commentId = e.currentTarget.dataset.commentid;
             const eventId = e.currentTarget.dataset.eventid;
-             if (!currentUser) return;
-
+            if (!currentUser) return;
             showConfirmModal('هل أنت متأكد أنك تريد حذف هذا التعليق؟', async () => {
-                const { error } = await _supabase
-                    .from('event_comments')
-                    .delete()
-                    .eq('id', commentId)
-                    .eq('user_id', currentUser.id);
-
-                if (error) {
-                    showModalMessage(`فشل حذف التعليق: ${error.message}`, true);
-                } else {
+                try {
+                    const { error } = await _supabase.from('event_comments').delete()
+                                        .eq('id', commentId).eq('user_id', currentUser.id);
+                    if (error) throw error;
                     showModalMessage('تم حذف التعليق بنجاح.');
-                    loadEventComments(eventId); 
-                    fetchEventCounts(eventId, true); 
-                    fetchEventCounts(eventId, false);
+                    await loadEventComments(eventId); 
+                    await fetchEventCounts(eventId, true); 
+                    await fetchEventCounts(eventId, false);
+                } catch (error) {
+                    showModalMessage(`فشل حذف التعليق: ${error.message}`, true);
+                    console.error("Delete comment error:", error);
                 }
             });
         }
         
         addCommentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-             if (!currentUser) { 
-                showModalMessage('يجب تسجيل الدخول للتعليق.', true);
-                navigateTo('login');
-                return;
-            }
-            if (!currentEventId) {
-                 showModalMessage('لم يتم تحديد فعالية للتعليق عليها.', true);
-                return;
-            }
-
+            if (!currentUser) { showModalMessage('يجب تسجيل الدخول للتعليق.', true); navigateTo('login'); return; }
+            if (!currentEventId) { showModalMessage('لم يتم تحديد فعالية للتعليق عليها.', true); return; }
             const commentText = document.getElementById('comment-text').value;
-            if (!commentText.trim()) {
-                showModalMessage('لا يمكن إرسال تعليق فارغ.', true);
-                return;
-            }
+            if (!commentText.trim()) { showModalMessage('لا يمكن إرسال تعليق فارغ.', true); return; }
 
-            const { data: profile, error: profileError } = await _supabase
-                .from('profiles')
-                .select('full_name, User_Name') 
-                .eq('id', currentUser.id)
-                .single();
+            try {
+                const { data: profile, error: profileError } = await _supabase.from('profiles')
+                    .select('full_name').eq('id', currentUser.id).single();
+                if (profileError || !profile) throw (profileError || new Error("Profile not found for commenter."));
+                
+                const { error } = await _supabase.from('event_comments').insert({
+                    event_id: currentEventId, user_id: currentUser.id, commenter_name: profile.full_name, 
+                    commenter_email: currentUser.email, comment_text: commentText
+                });
+                if (error) throw error;
 
-            if (profileError || !profile) {
-                showModalMessage('فشل في جلب معلومات المعلق.', true);
-                console.error("Error fetching commenter profile:", profileError);
-                return;
-            }
-            
-            const { error } = await _supabase.from('event_comments').insert({
-                event_id: currentEventId,
-                user_id: currentUser.id,
-                commenter_name: profile.full_name, 
-                commenter_email: currentUser.email, 
-                comment_text: commentText
-            });
-
-            if (error) {
-                showModalMessage(`فشل إضافة التعليق: ${error.message}`, true);
-            } else {
                 showModalMessage('تم إضافة التعليق بنجاح!');
                 document.getElementById('comment-text').value = ''; 
-                loadEventComments(currentEventId); 
-                fetchEventCounts(currentEventId, true); 
-                fetchEventCounts(currentEventId, false); 
+                await loadEventComments(currentEventId); 
+                await fetchEventCounts(currentEventId, true); 
+                await fetchEventCounts(currentEventId, false); 
+            } catch (error) {
+                showModalMessage(`فشل إضافة التعليق: ${error.message}`, true);
+                console.error("Add comment error:", error);
             }
         });
 
-        // --- Flash Posts (Removed) ---
-        
-
         function attachDynamicEventListeners() {
             document.querySelectorAll('.reaction-btn').forEach(button => {
-                button.removeEventListener('click', handleReactionEvent); // Remove old if any
+                button.removeEventListener('click', handleReactionEvent); 
                 button.addEventListener('click', handleReactionEvent);
             });
             document.querySelectorAll('.toggle-comment-btn').forEach(button => {
@@ -1806,7 +1634,7 @@
                 button.removeEventListener('click', handleDeleteEventClick);
                 button.addEventListener('click', handleDeleteEventClick);
             });
-             document.querySelectorAll('.event-details-link').forEach(link => { // Ensure this is re-attached
+             document.querySelectorAll('.event-details-link').forEach(link => { 
                 link.removeEventListener('click', handleEventDetailsLinkClick);
                 link.addEventListener('click', handleEventDetailsLinkClick);
             });
@@ -1815,18 +1643,17 @@
         async function handleEventDetailsLinkClick(e) {
             e.preventDefault();
             const eventId = e.currentTarget.dataset.eventid;
-            const { data: eventData, error: fetchError } = await _supabase
-                .from('project_events')
-                .select('*')
-                .eq('id', eventId)
-                .single();
-            if (fetchError) {
-                showModalMessage(`فشل تحميل تفاصيل الفعالية: ${fetchError.message}`, true);
-            } else if (eventData) {
-                navigateTo('event-details', eventData);
+            try {
+                const { data: eventData, error: fetchError } = await _supabase.from('project_events')
+                    .select('*').eq('id', eventId).single();
+                if (fetchError) throw fetchError;
+                if (eventData) navigateTo('event-details', eventData);
+                else showModalMessage('لم يتم العثور على الفعالية.', true);
+            } catch (error) {
+                showModalMessage(`فشل تحميل تفاصيل الفعالية: ${error.message}`, true);
+                console.error("Event details link click error:", error);
             }
         }
-
 
         function attachDynamicEventListenersForDetails(containerElement) {
             containerElement.querySelectorAll('.reaction-btn').forEach(button => {
@@ -1844,138 +1671,81 @@
         }
         function attachCommentActionListeners(containerElement) {
             containerElement.querySelectorAll('.edit-comment-btn').forEach(btn => {
-                 btn.removeEventListener('click', handleEditCommentClick);
-                 btn.addEventListener('click', handleEditCommentClick);
+                 btn.removeEventListener('click', handleEditCommentClick); btn.addEventListener('click', handleEditCommentClick);
             });
             containerElement.querySelectorAll('.delete-comment-btn').forEach(btn => {
-                btn.removeEventListener('click', handleDeleteCommentClick);
-                btn.addEventListener('click', handleDeleteCommentClick);
+                btn.removeEventListener('click', handleDeleteCommentClick); btn.addEventListener('click', handleDeleteCommentClick);
             });
             containerElement.querySelectorAll('.save-edit-comment-btn').forEach(btn => {
-                btn.removeEventListener('click', handleSaveEditCommentClick);
-                btn.addEventListener('click', handleSaveEditCommentClick);
+                btn.removeEventListener('click', handleSaveEditCommentClick); btn.addEventListener('click', handleSaveEditCommentClick);
             });
             containerElement.querySelectorAll('.cancel-edit-comment-btn').forEach(btn => {
-                btn.removeEventListener('click', handleCancelEditCommentClick);
-                btn.addEventListener('click', handleCancelEditCommentClick);
+                btn.removeEventListener('click', handleCancelEditCommentClick); btn.addEventListener('click', handleCancelEditCommentClick);
             });
         }
 
-        // Event handler wrappers to pass the 'fromDetails' flag
-        function handleReactionEvent(e) {
-            const eventId = e.currentTarget.dataset.eventid;
-            const reactionType = e.currentTarget.dataset.reactiontype;
-            handleReaction(eventId, reactionType, false);
-        }
-        function handleReactionEventFromDetails(e) {
-            const eventId = e.currentTarget.dataset.eventid;
-            const reactionType = e.currentTarget.dataset.reactiontype;
-            handleReaction(eventId, reactionType, true);
-        }
-        function handleToggleCommentEvent(e) {
-            const eventId = e.currentTarget.dataset.eventid;
-            toggleQuickComment(eventId);
-        }
-        function handlePostQuickCommentEvent(e) {
-            const eventId = e.currentTarget.dataset.eventid;
-            postQuickComment(eventId);
-        }
-        function handleEditEventClick(e) {
-            const eventId = e.currentTarget.dataset.eventid;
-            handleEditEvent(eventId);
-        }
-        function handleDeleteEventClick(e) {
-            const eventId = e.currentTarget.dataset.eventid;
-            const imageUrl = e.currentTarget.dataset.imageurl;
-            handleDeleteEvent(eventId, imageUrl);
-        }
-
+        function handleReactionEvent(e) { handleReaction(e.currentTarget.dataset.eventid, e.currentTarget.dataset.reactiontype, false); }
+        function handleReactionEventFromDetails(e) { handleReaction(e.currentTarget.dataset.eventid, e.currentTarget.dataset.reactiontype, true); }
+        function handleToggleCommentEvent(e) { toggleQuickComment(e.currentTarget.dataset.eventid); }
+        function handlePostQuickCommentEvent(e) { postQuickComment(e.currentTarget.dataset.eventid); }
+        function handleEditEventClick(e) { handleEditEvent(e.currentTarget.dataset.eventid); }
+        function handleDeleteEventClick(e) { handleDeleteEvent(e.currentTarget.dataset.eventid, e.currentTarget.dataset.imageurl); }
 
         async function handleEditEvent(eventId) {
-            if (!currentUser) {
-                showModalMessage('يجب تسجيل الدخول لتعديل الفعالية.', true);
-                navigateTo('login');
-                return;
-            }
+            if (!currentUser) { showModalMessage('يجب تسجيل الدخول لتعديل الفعالية.', true); navigateTo('login'); return; }
             editingEventId = eventId;
-            const { data: eventToEdit, error } = await _supabase
-                .from('project_events')
-                .select('*')
-                .eq('id', eventId)
-                .eq('user_id', currentUser.id) 
-                .single();
+            try {
+                const { data: eventToEdit, error } = await _supabase.from('project_events').select('*')
+                    .eq('id', eventId).eq('user_id', currentUser.id).single();
+                if (error || !eventToEdit) throw (error || new Error("Event not found or not authorized to edit."));
 
-            if (error || !eventToEdit) {
-                showModalMessage('فشل تحميل بيانات الفعالية للتعديل أو أنك لا تملك الصلاحية.', true);
+                document.getElementById('event-form-title').textContent = 'تعديل الفعالية';
+                document.getElementById('submit-event-form-btn').textContent = 'تحديث الفعالية';
+                document.getElementById('event-title').value = eventToEdit.title;
+                document.getElementById('event-description').value = eventToEdit.description;
+                document.getElementById('event-date').value = eventToEdit.event_date;
+                currentEditingEventImageUrl = eventToEdit.image_url; 
+                const imagePreview = document.getElementById('event-image-preview-edit');
+                if (eventToEdit.image_url) {
+                    imagePreview.src = eventToEdit.image_url; imagePreview.classList.remove('hidden-section');
+                } else { imagePreview.classList.add('hidden-section'); imagePreview.src = ''; }
+                document.getElementById('event-image-file').value = ''; 
+                createEventFormContainer.classList.remove('hidden-section');
+                createEventBtnGeneral.classList.add('hidden-section');
+                if(!document.getElementById('events').classList.contains('hidden-section')) {
+                     createEventFormContainer.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    navigateTo('events'); 
+                    setTimeout(() => createEventFormContainer.scrollIntoView({ behavior: 'smooth' }), 100);
+                }
+            } catch (error) {
+                showModalMessage(`فشل تحميل بيانات الفعالية للتعديل: ${error.message}`, true);
                 editingEventId = null;
-                return;
-            }
-
-            document.getElementById('event-form-title').textContent = 'تعديل الفعالية';
-            document.getElementById('submit-event-form-btn').textContent = 'تحديث الفعالية';
-            document.getElementById('event-title').value = eventToEdit.title;
-            document.getElementById('event-description').value = eventToEdit.description;
-            document.getElementById('event-date').value = eventToEdit.event_date;
-            
-            currentEditingEventImageUrl = eventToEdit.image_url; 
-            const imagePreview = document.getElementById('event-image-preview-edit');
-            if (eventToEdit.image_url) {
-                imagePreview.src = eventToEdit.image_url;
-                imagePreview.classList.remove('hidden-section');
-            } else {
-                imagePreview.classList.add('hidden-section');
-                imagePreview.src = '';
-            }
-            document.getElementById('event-image-file').value = ''; 
-
-
-            createEventFormContainer.classList.remove('hidden-section');
-            createEventBtn.classList.add('hidden-section');
-            // No need to navigateTo('events') if already on events page, just ensure form is visible
-            // If edit is clicked from event-details, this will navigate back to events to show the form
-            if(!document.getElementById('events').classList.contains('hidden-section')) {
-                 createEventFormContainer.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                navigateTo('events'); // This will show events and then the form needs to be manually scrolled to
-                setTimeout(() => createEventFormContainer.scrollIntoView({ behavior: 'smooth' }), 100);
+                console.error("Edit event load error:", error);
             }
         }
 
-
         async function handleDeleteEvent(eventId, imageUrl) {
-            if (!currentUser) {
-                showModalMessage('يجب تسجيل الدخول لحذف الفعالية.', true);
-                navigateTo('login');
-                return;
-            }
-
+            if (!currentUser) { showModalMessage('يجب تسجيل الدخول لحذف الفعالية.', true); navigateTo('login'); return; }
             showConfirmModal('هل أنت متأكد أنك تريد حذف هذه الفعالية؟ هذا الإجراء لا يمكن التراجع عنه.', async () => {
                 try {
-                    const { error: commentsError } = await _supabase.from('event_comments').delete().eq('event_id', eventId);
-                    if (commentsError) throw commentsError;
-
-                    const { error: reactionsError } = await _supabase.from('event_reactions').delete().eq('event_id', eventId);
-                    if (reactionsError) throw reactionsError;
+                    await _supabase.from('event_comments').delete().eq('event_id', eventId); 
+                    await _supabase.from('event_reactions').delete().eq('event_id', eventId); 
 
                     if (imageUrl) {
                         const fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
                         if (fileName) {
                             const { error: storageError } = await _supabase.storage.from('events-images').remove([fileName]);
-                            if (storageError) console.warn("Could not delete event image from storage (it might not exist or RLS issue):", storageError.message);
+                            if (storageError) console.warn("Could not delete event image:", storageError.message);
                         }
                     }
-
-                    const { error: eventDeleteError } = await _supabase
-                        .from('project_events')
-                        .delete()
-                        .eq('id', eventId)
-                        .eq('user_id', currentUser.id); 
-
+                    const { error: eventDeleteError } = await _supabase.from('project_events').delete()
+                        .eq('id', eventId).eq('user_id', currentUser.id); 
                     if (eventDeleteError) throw eventDeleteError;
 
                     showModalMessage('تم حذف الفعالية بنجاح.');
-                    loadEvents(); 
-                    if (document.getElementById('event-details').classList.contains('hidden-section') === false && currentEventId === eventId) {
+                    await loadEvents(); 
+                    if (!document.getElementById('event-details').classList.contains('hidden-section') && currentEventId === eventId) {
                         navigateTo('events');
                     }
                 } catch (error) {
@@ -1985,19 +1755,17 @@
             });
         }
 
-        // --- Theme Toggle ---
         const themeToggleButton = document.getElementById('theme-toggle-button');
         const darkIcon = document.getElementById('theme-toggle-dark-icon');
         const lightIcon = document.getElementById('theme-toggle-light-icon');
 
-        // Function to apply the saved theme or default to light
         function applyTheme() {
             const currentTheme = localStorage.getItem('theme');
             if (currentTheme === 'dark') {
                 document.documentElement.classList.add('dark');
                 darkIcon.classList.remove('hidden-section');
                 lightIcon.classList.add('hidden-section');
-            } else {
+            } else { 
                 document.documentElement.classList.remove('dark');
                 lightIcon.classList.remove('hidden-section');
                 darkIcon.classList.add('hidden-section');
@@ -2006,45 +1774,14 @@
         
         if (themeToggleButton && darkIcon && lightIcon) {
             themeToggleButton.addEventListener('click', () => {
-                // Toggle theme
-                if (localStorage.getItem('theme') === 'dark') {
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    localStorage.setItem('theme', 'dark');
-                }
+                localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'light' : 'dark');
                 applyTheme();
             });
         }
 
-
-        // --- Initial Load ---
-        async function initializeApp() {
-            applyTheme(); // Apply theme on initial load
-            const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
-            
-            if (sessionError) {
-                console.error("Error getting initial session:", sessionError);
-                currentUser = null; // Assume no user if error
-            } else {
-                currentUser = session?.user || null;
-            }
-            
-            await updateAuthState(currentUser); // Update UI based on initial session or lack thereof
-            initialAuthProcessed = true; // Mark initial auth as processed
-
-            const hash = window.location.hash.substring(1);
-            let targetPage = 'home'; // Default to home
-            if (hash && document.getElementById(hash)) {
-                 targetPage = hash;
-            }
-            
-            // If there was a pending navigation target from onAuthStateChange (e.g., from a redirect), prioritize it
-            if (pendingNavigationTarget && initialAuthProcessed) {
-                navigateTo(pendingNavigationTarget.targetId, pendingNavigationTarget.eventData);
-                pendingNavigationTarget = null;
-            } else {
-                 navigateTo(targetPage);
-            }
+        function initializeApp() {
+            applyTheme(); 
+            console.log("App initialized. Waiting for onAuthStateChange.");
         }
 
         initializeApp();
